@@ -1,0 +1,50 @@
+#================================================================================
+# PackMan.rogue
+# August 15, 2021
+#================================================================================
+
+$requireRogue "1.8.7"
+
+uses Utility/CommandLineParser
+
+try
+  PackMan( System.command_line_arguments )
+catch (error:Error)
+  local w = Console.width.or_smaller( 80 )
+  Console.error.println "="*w
+  Console.error.println "ERROR"
+  Console.error.println error->String.word_wrapped(w-2).indented(2)
+  Console.error.println "="*w
+  System.exit 1
+endTry
+
+class PackMan
+  METHODS
+    method init( args:String[] )
+      local command = parse_args( args )
+
+      trace command
+      # has //options and possibly //args
+
+      if (command//options//help)
+        print_usage
+        System.exit 0
+      endIf
+
+    method parse_args( args:String[] )->Value
+      local command = CommandLineParser().
+      [
+        option( "--flag",     &alias="-f" )
+        option( "--help",     &aliases=["-h","-?"] )
+        option( "--setting=", &alias="-s" )
+      ].parse( args )
+      return command
+
+    method print_usage
+      println @|USAGE
+               |  packman [OPTIONS]
+               |
+               |OPTIONS
+               |  --help, -h, -?
+               |    Show this help text.
+endClass

@@ -1,0 +1,12 @@
+# Build
+/Build
+BuildLocal.rogue
+.rogo
+
+# Vim
+*.swo
+*.swp
+
+# macOS
+.DS_Store
+
