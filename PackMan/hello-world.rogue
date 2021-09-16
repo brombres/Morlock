@@ -1,0 +1,11 @@
+class HelloWorld : Package
+  PROPERTIES
+    name = "hello-world"
+
+  METHODS
+    method init
+
+    method install
+      download
+endClass
+

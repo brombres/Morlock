@@ -1,0 +1,112 @@
+forEach (type in TypeInfo.iterator)
+  if (type.instance_of(<<Package>>) and type is not <<Package>>)
+    local package = type.create_object<<Package>>
+    package.init( System.command_line_arguments.cloned )
+    package.install
+  endIf
+endForEach
+
+class Package
+  PROPERTIES
+    name        : String
+    version     = "1.0.0"
+    url         : String
+    url_linux   : String
+    url_macos   : String
+    url_windows : String
+
+    properties  = @{}
+
+  METHODS
+    method init( args:String[] )
+      init
+
+    method init
+      noAction
+
+    method download
+      localize url
+      trace url
+
+    method install
+
+    method error( message:String )->Error
+      return Error( "$: $."(name,message) )
+
+    method name->String
+      if (@name) return @name
+      return type_name.after_any("::")
+
+    method url->String
+      if (System.is_macos)
+        if (url_macos) return url_macos
+        if (url_linux) return url_linux
+      endIf
+      if (System.is_linux   and url_linux)   return url_linux
+      if (System.is_windows and url_windows) return url_windows
+      if (@url) return @url
+      throw error( "no package url specified" )
+
+endClass
+
+#{
+class Package
+  PROPERTIES
+    package  : String
+      # E.g. https://github.com/user/repo/.../app      [or]
+      #          git@github.com:user/repo.git/.../app
+    repo     : String
+      # E.g. https://github.com/user/repo
+      #          git@github.com:user/repo.git
+    app      : String
+      # E.g. .../app
+
+    homepage : String
+    version  : String
+    url      : String
+    sha256   : String
+
+  METHODS
+    method init( repo, app )
+      package = repo / app
+      #{
+      # name -> https://github.com/name/name/name
+      #   https://github.com/user/repo/.../package -> [https://github.com/user/repo, .../package]
+      contingent
+        sufficient (package.contains("://"))            # http(s)://...
+        sufficient (package.matches_pattern("*@*.*:*")) # git@github.com:...
+        which (package.count('/'))
+          case 0
+            # 'repo' -> 'https://github.com/repo/repo' 'PackMan/repo.rogue'
+            # User "repo", repository "repo", project "repo"
+            package = "https://github.com/$/$/$" (package,package,package)
+
+          case 1
+            # 'user/repo' -> 'https://github.com/user/repo/repo'
+            #             -> 'https://github.com/user/repo', 'PackMan/repo.rogue'
+            local user = package.before_first( '/' )
+            local repo = package.after_first( '/' )
+            package = "https://github.com/$/$/$" (user,repo,repo)
+
+          others
+            # 'user/repo/[.../]package
+            local user = package.before_first( '/' )
+            package .= after_first( '/' )
+            local repo = package.before_first( '/' )
+            local package = package.after_first( '/' )
+            package = "https://github.com/$/$/$" (user,repo,package)
+        endWhich
+      endContingent
+      repo = package
+      }#
+
+    method display
+      @trace package
+      @trace repo
+      @trace app
+      @trace homepage
+      @trace version
+      @trace url
+      @trace sha256
+endClass
+}#

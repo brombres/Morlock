@@ -3,9 +3,29 @@
 # August 15, 2021
 #================================================================================
 
-$requireRogue "1.8.7"
+$requireRogue "1.8.8"
 
+uses Utility/UUID
+
+local build_folder = "Build/$" (UUID())
+File.create_folder( build_folder )
+local build = File.esc( build_folder )
+
+local cmd = "roguec PackMan/hello-world.rogue Source/Package.rogue --essential --api --compile --output=$/installer" (build)
+execute cmd
+execute "cd $ && ./installer" (build)
+
+File.delete( build_folder )
+
+routine execute( cmd:String )
+  println "> " + cmd
+  System.run( cmd )
+endRoutine
+
+#{
 uses Utility/CommandLineParser
+
+$include "Package.rogue"
 
 try
   PackMan( System.command_line_arguments )
@@ -17,6 +37,8 @@ catch (error:Error)
   Console.error.println "="*w
   System.exit 1
 endTry
+
+# curl -L https://raw.githubusercontent.com/abepralle/rogo/main/README.md
 
 class PackMan
   METHODS
@@ -30,6 +52,59 @@ class PackMan
         print_usage
         System.exit 0
       endIf
+
+      local package = resolve_package( "abepralle/rogo" )
+
+    method resolve_package( name:String )->Package
+      # TODO: use any added indices to translate unqualified names to qualified names,
+      # e.g. 'rogo' -> 'https://github.com/AbePralle/Rogo.git/rogo
+
+      # Add github url if package does not already include a protocol (like HTTPS) or SSH portion.
+      local host : String
+      if (name.contains_pattern("@*:"))
+        # git@github.com:name/...
+        host = name.before_first(':') + ":"
+        name .= rightmost( -host.count )
+
+      elseIf (name.contains("://"))
+        # https://github.com/name/...
+        local protocol = name.before_first("://") + "://"
+        name .= rightmost( -protocol.count )
+        local _host = name.before_first('/') + '/'
+        name .= after_first('/')
+        host = protocol + _host
+
+      else
+        host = "https://github.com/"
+
+      endIf
+
+      # app
+      # user/app
+      # user/repo/.../app
+      which (name.count('/'))
+        case 0
+          # 'name' -> 'name/name.git/name' (user/repo/app)
+          host += "$/$.git" (name,name)
+
+        case 1
+          # 'user/name' -> 'user/name.git/name' (user/repo/app)
+          local user = name.before_first('/')
+          name .= after_first('/')
+          host += "$/$.git" (user,name)
+
+        others
+          # user/repo/.../app -> user/repo.git/.../app
+          local parts = name.split('/')
+          parts[1] = parts[1].with_trailing(".git")
+          host += parts.remove_first  # user
+          host += '/'
+          host += parts.remove_first  # repo.git
+          name = parts.join('/')
+      endWhich
+
+      return Package( host, name )
+
 
     method parse_args( args:String[] )->Value
       local command = CommandLineParser().
@@ -48,3 +123,4 @@ class PackMan
                |  --help, -h, -?
                |    Show this help text.
 endClass
+}#
