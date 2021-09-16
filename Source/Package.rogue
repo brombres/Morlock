@@ -1,20 +1,35 @@
-forEach (type in TypeInfo.iterator)
-  if (type.instance_of(<<Package>>) and type is not <<Package>>)
-    local package = type.create_object<<Package>>
-    package.init( System.command_line_arguments.cloned )
-    package.install
-  endIf
-endForEach
+uses Utility/Best
+
+try
+  forEach (type in TypeInfo.iterator)
+    if (type.instance_of(<<Package>>) and type is not <<Package>>)
+      local package = type.create_object<<Package>>
+      package.init( System.command_line_arguments.cloned )
+      package.select_version
+      println "Installing $ v$" (package.name,package.version)
+      println package.url
+    endIf
+  endForEach
+
+catch (err:Error)
+  local w = Console.width.or_smaller(80)
+  local hr = "=" * w
+  Console.error.println hr
+  Console.error.println "ERROR\n  "
+  Console.error.println err->String.word_wrapped(w-2).indented(2)
+  Console.error.println hr
+  System.exit 1
+
+endTry
 
 class Package
   PROPERTIES
     name        : String
-    version     = "1.0.0"
-    url         : String
-    url_linux   : String
-    url_macos   : String
-    url_windows : String
 
+    version     : String
+    url         : String
+
+    releases    = @[]
     properties  = @{}
 
   METHODS
@@ -24,29 +39,95 @@ class Package
     method init
       noAction
 
-    method download
-      localize url
-      trace url
+    method release( url:String, platforms=null:String, version=null:String )
+      # platforms
+      #   Any combination of characters w, m, l (windows, mac, linux)
+      #   If unspecified then .tar.gz implies "ml" and any other extension
+      #   implies "wml". Mac and Linux will prefer .tar.gz over other extensions
+      #   if multiple possibilities are given.
+      #
+      # version
+      #   In the format "1", "1.0", "1.0.0", etc. Will be inferred from url
+      #   if unspecified.
+      if (not platforms)
+        local lc = url.to_lowercase
+        platforms = which { lc.ends_with(".tar.gz"):"ml" || "wml" }
+      endIf
 
-    method install
+      if (not version)
+        local lc = url.to_lowercase
+        local span = lc.locate_pattern("v$(I)")
+        contingent
+          sufficient (span.exists)
+          span = lc.locate_pattern("$(I).(I)")
+          sufficient (span.exists)
+          span = lc.locate_pattern("$(I)?(I)")
+          sufficient (span.exists)
+          span = lc.locate_pattern("$(I)")
+          sufficient (span.exists)
+          throw error( 'cannot determine version number from release URL "$"'(url) )
+        endContingent
+        version = url.substring( span.value.index )
+        local separator_index = span.value.index + span.value.count
+        local separator = which{ (separator_index<url.count):url[separator_index] || '.' }
+        use builder = StringBuilder.pool
+          local found_numbers = false
+          forEach (ch in version)
+            if (ch == separator) builder.print "."
+            elseIf (ch.is_number) builder.print ch; found_numbers = true
+            elseIf (found_numbers) escapeForEach
+          endForEach
+          version = builder->String.without_trailing('.')
+        endUse
+      endIf
+
+      releases.add @{ :version, :url, :platforms }
+
+    method download
+      #localize url
+      #trace url
 
     method error( message:String )->Error
       return Error( "$: $."(name,message) )
+
+    method install
 
     method name->String
       if (@name) return @name
       return type_name.after_any("::")
 
-    method url->String
-      if (System.is_macos)
-        if (url_macos) return url_macos
-        if (url_linux) return url_linux
-      endIf
-      if (System.is_linux   and url_linux)   return url_linux
-      if (System.is_windows and url_windows) return url_windows
-      if (@url) return @url
-      throw error( "no package url specified" )
+    method select_version( version=null )
+      if (releases.is_empty) throw error( "no releases are available" )
 
+      if (String.exists(version))
+        local best = Best<<String>>( (a,b) => VersionNumber(a) > b )
+        forEach (release in releases)
+          local v = release//version->String
+          trace version, v, VersionNumber(version).is_compatible_with(v)
+          if (VersionNumber(version).is_compatible_with(v)) best.consider( v )
+        endForEach
+        if (not best.exists) throw error( "no such release '$'"(version) )
+        version = best.value
+
+      else
+        local best = Best<<String>>( (a,b) => VersionNumber(a) > b )
+        forEach (release in releases)
+          local v = release//version->String
+          best.consider( v )
+        endForEach
+        version = best.value
+
+      endIf
+
+      # Now pick the best URL with the given version number
+      url = null
+      local platform = which{ System.is_windows:'w' || System.is_macos:'m' || 'l' }
+      forEach (release in releases)
+        if (VersionNumber(release//version) == version and release//platforms->String.contains(platform))
+          url = release//url
+          if (not System.is_windows and url.ends_with(".tar.gz",&ignore_case)) escapeForEach
+        endIf
+      endForEach
 endClass
 
 #{

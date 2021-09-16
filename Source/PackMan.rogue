@@ -19,7 +19,9 @@ File.delete( build_folder )
 
 routine execute( cmd:String )
   println "> " + cmd
-  System.run( cmd )
+  if (System.run(cmd))
+    throw Error( "Error executing:\n$"(cmd) )
+  endIf
 endRoutine
 
 #{

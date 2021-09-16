@@ -4,6 +4,10 @@ class HelloWorld : Package
 
   METHODS
     method init
+      release "https://raw.githubusercontent.com/AbePralle/PackMan/main/Demos/Releases/hello-world-1.0.tar.gz"
+      release "https://raw.githubusercontent.com/AbePralle/PackMan/main/Demos/Releases/hello-world-1.0.zip"
+
+      println forEach in releases
 
     method install
       download
