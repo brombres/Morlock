@@ -1,5 +1,5 @@
 #================================================================================
-# PackMan.rogue
+# PLS.rogue
 # August 15, 2021
 #================================================================================
 
@@ -13,7 +13,7 @@ local build = File.esc( build_folder )
 local install_root = File.absolute_filepath("Build")
 local args = @{ :install_root }.to_json.to_escaped_ascii('"')
 
-local cmd = "roguec PackMan/hello-world.rogue Source/Package.rogue --essential --api --compile --output=$/installer" (build)
+local cmd = "roguec PLS/hello-world.rogue Source/Package.rogue --essential --api --compile --output=$/installer" (build)
 execute cmd
 execute 'cd $ && ./installer "$"' (build,args)
 
@@ -32,7 +32,7 @@ uses Utility/CommandLineParser
 $include "Package.rogue"
 
 try
-  PackMan( System.command_line_arguments )
+  PLS( System.command_line_arguments )
 catch (error:Error)
   local w = Console.width.or_smaller( 80 )
   Console.error.println "="*w
@@ -44,7 +44,7 @@ endTry
 
 # curl -L https://raw.githubusercontent.com/abepralle/rogo/main/README.md
 
-class PackMan
+class PLS
   METHODS
     method init( args:String[] )
       local command = parse_args( args )
@@ -121,7 +121,7 @@ class PackMan
 
     method print_usage
       println @|USAGE
-               |  packman [OPTIONS]
+               |  pls [OPTIONS]
                |
                |OPTIONS
                |  --help, -h, -?
