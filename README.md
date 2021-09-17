@@ -1,2 +1,2 @@
-# PackMan
-Multi-platform Package Manager written in Rogue
+# PLS (Package Locator System)
+Multi-platform package manager written in Rogue

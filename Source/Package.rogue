@@ -39,6 +39,7 @@ class Package
     method init( args:String[] )
       require args.count
       properties = JSON.parse( args.first )
+      name = properties//name
 
       init
       select_version
@@ -82,7 +83,7 @@ class Package
       endIf
 
     method download->String
-      execute "curl -LfO " + url
+      execute "curl -LfsSO " + url
       archive_filename = File.filename(url)
       if (not File.exists(archive_filename)) throw error( "Error downloading " + url )
       return archive_filename
@@ -105,10 +106,6 @@ class Package
 
     method install
       throw error( "install() must overridden." )
-
-    method name->String
-      if (@name) return @name
-      return type_name.after_any("::")
 
     method release( url:String, platforms=null:String, version=null:String )
       # Registers a release with .tar.gz/.zip URL and version number.

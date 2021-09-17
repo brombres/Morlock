@@ -7,29 +7,7 @@ $requireRogue "1.8.8"
 
 uses Utility/UUID
 
-local build_folder = "Build/$" (UUID())
-File.create_folder( build_folder )
-local build = File.esc( build_folder )
-local install_root = File.absolute_filepath("Build")
-local args = @{ :install_root }.to_json.to_escaped_ascii('"')
-
-local cmd = "roguec PLS/hello-world.rogue Source/Package.rogue --essential --api --compile --output=$/installer" (build)
-execute cmd
-execute 'cd $ && ./installer "$"' (build,args)
-
-File.delete( build_folder )
-
-routine execute( cmd:String )
-  println "> " + cmd
-  if (System.run(cmd))
-    throw Error( "Error executing:\n$"(cmd) )
-  endIf
-endRoutine
-
-#{
 uses Utility/CommandLineParser
-
-$include "Package.rogue"
 
 try
   PLS( System.command_line_arguments )
@@ -42,21 +20,64 @@ catch (error:Error)
   System.exit 1
 endTry
 
-# curl -L https://raw.githubusercontent.com/abepralle/rogo/main/README.md
-
 class PLS
+  DEFINITIONS
+    PLS_HOME = "/opt/PLS"
+
   METHODS
     method init( args:String[] )
+      #{
       local command = parse_args( args )
-
-      trace command
-      # has //options and possibly //args
+      # 'command' has //options and possibly //args
 
       if (command//options//help)
         print_usage
         System.exit 0
       endIf
+      }#
 
+      create_folder( PLS_HOME, &chown )
+      create_folder( PLS_HOME/"Packages" )
+
+      local build_folder = "Build/$" (UUID())
+      File.create_folder( build_folder )
+      local build = File.esc( build_folder )
+      local install_root = File.absolute_filepath("Build")
+      local install_args = @{ :install_root, name:"hello-world" }.to_json.to_escaped_ascii('"')
+
+      try
+        local cmd = "roguec PLS/hello-world.rogue Source/Package.rogue --essential --api --compile --output=$/installer" (build)
+        execute cmd
+        execute 'cd $ && ./installer "$"' (build,install_args)
+      catch (err:Error)
+        File.delete( build_folder )
+        throw err
+      endTry
+
+    method create_folder( folder:String, &chown )
+      if (not File.exists(folder))
+        execute( "mkdir -p "+folder, &allow_sudo )
+
+        if (chown)
+          local user = System.environment//USER
+          execute( "chown $ $" (user,folder), &allow_sudo )
+        endIf
+      endIf
+
+    method execute( cmd:String, &suppress_error, &allow_sudo )->Logical
+      println "> " + cmd
+      if (0 == System.run(cmd)) return true
+
+      if (allow_sudo)
+        println "Error executing '$'; retrying with 'sudo'."(cmd)
+        return execute( "sudo "+cmd, &=suppress_error )
+      endIf
+
+      if (suppress_error) return false
+      throw Error( "Error executing '$'."(cmd) )
+
+
+      #{
       local package = resolve_package( "abepralle/rogo" )
 
     method resolve_package( name:String )->Package
@@ -108,6 +129,7 @@ class PLS
       endWhich
 
       return Package( host, name )
+    }#
 
 
     method parse_args( args:String[] )->Value
@@ -127,4 +149,3 @@ class PLS
                |  --help, -h, -?
                |    Show this help text.
 endClass
-}#
