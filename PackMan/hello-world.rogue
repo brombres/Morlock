@@ -7,9 +7,14 @@ class HelloWorld : Package
       release "https://raw.githubusercontent.com/AbePralle/PackMan/main/Demos/Releases/hello-world-1.0.tar.gz"
       release "https://raw.githubusercontent.com/AbePralle/PackMan/main/Demos/Releases/hello-world-1.0.zip"
 
-      println forEach in releases
-
     method install
       download
+      unpack
+      build
+
+      local ext = which{ System.is_windows:".exe" || "-$"(System.os) }
+      local exe_list = File.listing( archive_folder/"Build/*$"(ext) )
+      if (exe_list.is_empty) error( "Cannot locate build product." )
+      copy_executable( exe_list.first )
 endClass
 

@@ -10,10 +10,12 @@ uses Utility/UUID
 local build_folder = "Build/$" (UUID())
 File.create_folder( build_folder )
 local build = File.esc( build_folder )
+local install_root = File.absolute_filepath("Build")
+local args = @{ :install_root }.to_json.to_escaped_ascii('"')
 
 local cmd = "roguec PackMan/hello-world.rogue Source/Package.rogue --essential --api --compile --output=$/installer" (build)
 execute cmd
-execute "cd $ && ./installer" (build)
+execute 'cd $ && ./installer "$"' (build,args)
 
 File.delete( build_folder )
 

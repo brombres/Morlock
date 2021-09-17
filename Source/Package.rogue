@@ -5,9 +5,7 @@ try
     if (type.instance_of(<<Package>>) and type is not <<Package>>)
       local package = type.create_object<<Package>>
       package.init( System.command_line_arguments.cloned )
-      package.select_version
-      println "Installing $ v$" (package.name,package.version)
-      println package.url
+      package.handle_install
     endIf
   endForEach
 
@@ -16,7 +14,7 @@ catch (err:Error)
   local hr = "=" * w
   Console.error.println hr
   Console.error.println "ERROR\n  "
-  Console.error.println err->String.word_wrapped(w-2).indented(2)
+  Console.error.println err->String.indented(2)
   Console.error.println hr
   System.exit 1
 
@@ -24,22 +22,97 @@ endTry
 
 class Package
   PROPERTIES
-    name        : String
+    name             : String
 
-    version     : String
-    url         : String
+    version          : String
+    url              : String
+    install_folder   : String
+    bin_folder       : String
+    archive_filename : String
+    archive_folder   : String
+    is_unpacked      : String
 
-    releases    = @[]
-    properties  = @{}
+    releases         = @[]
+    properties       : Value
 
   METHODS
     method init( args:String[] )
+      require args.count
+      properties = JSON.parse( args.first )
+
       init
+      select_version
+      install_folder = "$/$-$" (properties//install_root,name,version)
+      bin_folder = install_folder/"bin"
 
     method init
       noAction
 
+    method build
+      # Attempts to automatically figure out how build the downloaded & unpacked
+      # archive and launches the appropriate commands.
+      forEach (folder in File.listing(".",&folders))
+        if (File.exists(folder/"Build.rogue"))
+          execute "cd $ && rogo build" (folder)
+          archive_folder = folder
+          return
+        endIf
+      endForEach
+
+      if (not is_unpacked)
+        unpack
+        build
+      else
+        throw error( "Unable to determine how to build $ after unpacking it."(url) )
+      endIf
+
+    method copy_executable( src_filepath:String, dest_filename=null:String )
+      if (not dest_filename) dest_filename = name
+      local dest_filepath = bin_folder/dest_filename
+
+      println "> Copying $ -> $" (src_filepath,dest_filepath)
+      File.copy( src_filepath, dest_filepath )
+      execute( "chmod u+x $" (File.esc(dest_filepath)) )
+
+    method create_folder( folder:String )
+      println "  " + folder
+      File.create_folder( folder )
+      if (not File.is_folder(folder))
+        throw error( ''Error creating folder "$".''(folder) )
+      endIf
+
+    method download->String
+      execute "curl -LfO " + url
+      archive_filename = File.filename(url)
+      if (not File.exists(archive_filename)) throw error( "Error downloading " + url )
+      return archive_filename
+
+    method error( message:String )->Error
+      return Error( "[$] $"(name,message) )
+
+    method execute( cmd:String )
+      println "> " + cmd
+      if (0 != System.run(cmd))
+        throw error( "Error executing:\n"+cmd )
+      endIf
+
+    method handle_install
+      println "Installing $ v$" (name,version)
+      println "Creating install folder"
+      create_folder( install_folder )
+      create_folder( bin_folder )
+      install
+
+    method install
+      throw error( "install() must overridden." )
+
+    method name->String
+      if (@name) return @name
+      return type_name.after_any("::")
+
     method release( url:String, platforms=null:String, version=null:String )
+      # Registers a release with .tar.gz/.zip URL and version number.
+      #
       # platforms
       #   Any combination of characters w, m, l (windows, mac, linux)
       #   If unspecified then .tar.gz implies "ml" and any other extension
@@ -65,7 +138,7 @@ class Package
           sufficient (span.exists)
           span = lc.locate_pattern("$(I)")
           sufficient (span.exists)
-          throw error( 'cannot determine version number from release URL "$"'(url) )
+          throw error( 'Cannot determine version number from release URL "$".'(url) )
         endContingent
         version = url.substring( span.value.index )
         local separator_index = span.value.index + span.value.count
@@ -83,21 +156,8 @@ class Package
 
       releases.add @{ :version, :url, :platforms }
 
-    method download
-      #localize url
-      #trace url
-
-    method error( message:String )->Error
-      return Error( "$: $."(name,message) )
-
-    method install
-
-    method name->String
-      if (@name) return @name
-      return type_name.after_any("::")
-
     method select_version( version=null )
-      if (releases.is_empty) throw error( "no releases are available" )
+      if (releases.is_empty) throw error( "No releases are available." )
 
       if (String.exists(version))
         local best = Best<<String>>( (a,b) => VersionNumber(a) > b )
@@ -106,7 +166,7 @@ class Package
           trace version, v, VersionNumber(version).is_compatible_with(v)
           if (VersionNumber(version).is_compatible_with(v)) best.consider( v )
         endForEach
-        if (not best.exists) throw error( "no such release '$'"(version) )
+        if (not best.exists) throw error( "No such release '$'."(version) )
         version = best.value
 
       else
@@ -128,6 +188,19 @@ class Package
           if (not System.is_windows and url.ends_with(".tar.gz",&ignore_case)) escapeForEach
         endIf
       endForEach
+
+    method unpack
+      if (not archive_filename or not File.exists(archive_filename))
+        download
+      endIf
+      if (archive_filename.ends_with(".zip",&ignore_case))
+        throw error( "TODO: unpack ZIP." )
+      elseIf (archive_filename.ends_with(".tar.gz"))
+        execute "tar -xvf " + archive_filename
+        is_unpacked = true
+      else
+        throw error( "Cannot unpack() file type '.$'; write custom install() code to handle it." )
+      endIf
 endClass
 
 #{
