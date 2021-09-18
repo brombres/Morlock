@@ -22,10 +22,12 @@ endTry
 
 class Package
   PROPERTIES
-    name             : String
+    app_name         : String
 
     version          : String
     url              : String
+    pls_home         : String
+    launcher_folder  : String
     install_folder   : String
     bin_folder       : String
     archive_filename : String
@@ -39,11 +41,13 @@ class Package
     method init( args:String[] )
       require args.count
       properties = JSON.parse( args.first )
-      name = properties//name
+      app_name = properties//app_name
+      pls_home = properties//pls_home
+      launcher_folder = pls_home/"bin"
 
       init
       select_version
-      install_folder = "$/$-$" (properties//install_root,name,version)
+      install_folder = "$/$" (properties//package_folder,version)
       bin_folder = install_folder/"bin"
 
     method init
@@ -61,14 +65,16 @@ class Package
       endForEach
 
       if (not is_unpacked)
+        # Most likely the script just didn't call unpack() yet.
         unpack
+        is_unpacked = true
         build
       else
         throw error( "Unable to determine how to build $ after unpacking it."(url) )
       endIf
 
     method copy_executable( src_filepath:String, dest_filename=null:String )
-      if (not dest_filename) dest_filename = name
+      if (not dest_filename) dest_filename = app_name
       local dest_filepath = bin_folder/dest_filename
 
       println "> Copying $ -> $" (src_filepath,dest_filepath)
@@ -89,7 +95,7 @@ class Package
       return archive_filename
 
     method error( message:String )->Error
-      return Error( "[$] $"(name,message) )
+      return Error( "[$] $"(app_name,message) )
 
     method execute( cmd:String )
       println "> " + cmd
@@ -98,7 +104,7 @@ class Package
       endIf
 
     method handle_install
-      println "Installing $ v$" (name,version)
+      println "Installing $ v$" (app_name,version)
       println "Creating install folder"
       create_folder( install_folder )
       create_folder( bin_folder )
@@ -106,6 +112,16 @@ class Package
 
     method install
       throw error( "install() must overridden." )
+
+    method link
+      local exe_list = File.listing( bin_folder/"*" )
+      forEach (exe in exe_list)
+        local launcher = launcher_folder/File.filename(exe)
+        if (not File.exists(launcher))
+          local cmd = "ln -s $ $" (exe,launcher)
+          execute cmd
+        endIf
+      endForEach
 
     method release( url:String, platforms=null:String, version=null:String )
       # Registers a release with .tar.gz/.zip URL and version number.

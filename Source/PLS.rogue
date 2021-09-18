@@ -5,8 +5,6 @@
 
 $requireRogue "1.8.8"
 
-uses Utility/UUID
-
 uses Utility/CommandLineParser
 
 try
@@ -22,7 +20,7 @@ endTry
 
 class PLS
   DEFINITIONS
-    PLS_HOME = "/opt/PLS"
+    PLS_HOME = "/opt/pls"
 
   METHODS
     method init( args:String[] )
@@ -36,23 +34,28 @@ class PLS
       endIf
       }#
 
+      #if (not command//args//count) command//args = @[ "install", "abepralle/pls/
+
       create_folder( PLS_HOME, &chown )
-      create_folder( PLS_HOME/"Packages" )
+      create_folder( PLS_HOME/"bin" )
+      create_folder( PLS_HOME/"build" )
+      create_folder( PLS_HOME/"packages" )
 
-      local build_folder = "Build/$" (UUID())
-      File.create_folder( build_folder )
-      local build = File.esc( build_folder )
-      local install_root = File.absolute_filepath("Build")
-      local install_args = @{ :install_root, name:"hello-world" }.to_json.to_escaped_ascii('"')
+      local shellenv = PLS_HOME/"shellenv"
+      if (not File.exists(shellenv))
+        File.save( shellenv, ''echo export PATH="$/bin${PATH+:$PATH}";''(PLS_HOME,'$','$') )
+        execute( "chmod u+x $" (shellenv) )
+      endIf
 
-      try
-        local cmd = "roguec PLS/hello-world.rogue Source/Package.rogue --essential --api --compile --output=$/installer" (build)
-        execute cmd
-        execute 'cd $ && ./installer "$"' (build,install_args)
-      catch (err:Error)
-        File.delete( build_folder )
-        throw err
-      endTry
+      create_folder( PLS_HOME/"packages/abepralle/hello-world" )
+      local from_file = "PLS/hello-world.rogue"
+      local to_file   = PLS_HOME/"packages/abepralle/hello-world/hello-world.rogue"
+      if (File.is_different_than(from_file,to_file))
+        println "> Copy $ -> $" (from_file,to_file)
+        File.copy( from_file, to_file )
+      endIf
+
+      install( "abepralle", "hello-world" )
 
     method create_folder( folder:String, &chown )
       if (not File.exists(folder))
@@ -75,6 +78,36 @@ class PLS
 
       if (suppress_error) return false
       throw Error( "Error executing '$'."(cmd) )
+
+    method header( message:String )
+      println "-" * Console.width.or_smaller(80)
+      println message
+      println "-" * Console.width.or_smaller(80)
+
+    method install( provider:String, app_name:String )
+      local package_folder = PLS_HOME/"packages/$/$" (provider,app_name)
+      local build_folder = "$/$/$-$" (PLS_HOME,"build",provider,app_name)
+
+      header "Installing $/$" (provider,app_name)
+
+      println "> Create folder " + build_folder
+      File.delete( build_folder )
+      File.create_folder( build_folder )
+
+      File.copy( package_folder/(app_name+".rogue"), build_folder, &verbose )
+
+      local build = File.esc( build_folder )
+      local install_args = @{ :app_name, :package_folder, pls_home:PLS_HOME }.to_json.to_escaped_ascii('"')
+
+      try
+        local cmd = "roguec $.rogue Source/Package.rogue --essential --api --compile --output=$/installer" ...
+            (package_folder/app_name,build)
+        execute cmd
+        execute 'cd $ && ./installer "$"' (build,install_args)
+      catch (err:Error)
+        File.delete( build_folder )
+        throw err
+      endTry
 
 
       #{
