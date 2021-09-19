@@ -24,18 +24,22 @@ class PLS
 
   METHODS
     method init( args:String[] )
-      #{
       local command = parse_args( args )
       # 'command' has //options and possibly //args
 
-      if (command//options//help)
+      if (command//options//help or not command//action or command//action == "help")
         print_usage
         System.exit 0
       endIf
-      }#
 
-      #if (not command//args//count) command//args = @[ "install", "abepralle/pls/
+      which (command//action)
+        case "install"
+          local script_filepath = resolve_package( command//args.first )
+          trace script_filepath
+          # TODO
+      endWhich
 
+      #{
       create_folder( PLS_HOME, &chown )
       create_folder( PLS_HOME/"bin" )
       create_folder( PLS_HOME/"build" )
@@ -56,6 +60,7 @@ class PLS
       endIf
 
       install( "abepralle", "hello-world" )
+      }#
 
     method create_folder( folder:String, &chown )
       if (not File.exists(folder))
@@ -66,6 +71,9 @@ class PLS
           execute( "chown $ $" (user,folder), &allow_sudo )
         endIf
       endIf
+
+    method error( message:String )->Error
+      return Error( message )
 
     method execute( cmd:String, &suppress_error, &allow_sudo )->Logical
       println "> " + cmd
@@ -79,6 +87,76 @@ class PLS
       if (suppress_error) return false
       throw Error( "Error executing '$'."(cmd) )
 
+    method find_existing_package( name:String )->String
+      if (not name.contains('@') and not name.contains("://"))
+        contingent
+          if (File.exists(name))
+            if (File.is_folder(name))
+              local filepath = "$/$.rogue" (name,File.filename(name))
+              if (File.exists(filepath))
+                name = filepath
+              else
+                local listing = File.listing( name/"*.rogue", &omit_path )
+                if (listing.count == 1)
+                  name /= listing.first
+                elseIf (listing.is_empty)
+                  throw error( "No .rogue scripts exist in folder $"(name) )
+                else
+                  throw error( "Multiple .rogue scripts exist in folder $"(name) )
+                endIf
+              endIf
+            endIf
+            sufficient (true)
+
+          elseIf (File.exists(name+".rogue"))
+            name += ".rogue"
+            sufficient (true)
+
+          else
+            escapeContingent
+
+          endIf
+
+        satisfied
+          # 'name' is the filepath of an existing file
+          # Extract [provider]/[app_name].rogue
+          local provider = File.filename( File.folder(name) )
+          local app_name = File.filename(name).before_last(".rogue")
+
+          # Create PLS_HOME/packages/provider/app_name and copy the .rogue script there
+          local package_folder = PLS_HOME/"packages/$/$" (provider,app_name)
+          if (not File.exists(package_folder))
+            println "Creating " + package_folder
+            File.create_folder( package_folder )
+          endIf
+
+          local filepath = "$/$.rogue" (package_folder,app_name)
+          File.copy( name, filepath, &if_different, &verbose )
+          return filepath
+
+        endContingent
+
+        # See if we already have it installed
+        if (not name.contains('/'))
+          local listing = File.listing( PLS_HOME/"packages/*"/name )
+          if (listing.count == 1)
+            name = File.filename(File.parent(listing.first,1))/name
+            return name
+          elseIf (listing.count > 1)
+            println "[ERROR] Ambiguous package name matches mulitple installed packages:"
+            println "  $/$"(File.filename(File.parent(forEach in listing,1)),name)
+            System.exit 1
+          endIf
+        endIf
+
+        if (name.contains('/'))
+          local filepath = PLS_HOME/"packages/$/$.rogue" (name,File.filename(name))
+          if (File.exists(filepath)) return filepath
+        endIf
+
+      endIf
+      return "TODO"
+
     method header( message:String )
       println "-" * Console.width.or_smaller(80)
       println message
@@ -90,7 +168,7 @@ class PLS
 
       header "Installing $/$" (provider,app_name)
 
-      println "> Create folder " + build_folder
+      println "Creating " + build_folder
       File.delete( build_folder )
       File.create_folder( build_folder )
 
@@ -109,13 +187,66 @@ class PLS
         throw err
       endTry
 
+    method resolve_package( name:String )->String
+      if (name.contains_pattern("@*:"))
+        # git@github.com:name/...
+        local host = name.up_to_first(':')
+        local package = name.rightmost( -host.count )
+
+        if (package.contains('/'))
+          # git@github.com:provider/.../app_name
+          return name
+        else
+          # git@github.com:name -> git@github.com:name/name (git@github.com:provider/app_name)
+            return "$$/$" (host,package,package)
+        endIf
+
+      elseIf (name.contains("://"))
+        # https://github.com/name/...
+        local parts = name.extract_strings( "$://$/$" )
+        if (not parts) throw error( "Missing package name after URL "+name )
+        local host = "$://$" (parts[0],parts[1])
+        local package = parts[2]
+        if (package.contains('/'))
+          # https://github.com/provider/.../app_name
+          return name
+        else
+          # https://github.com/name -> https://github.com/name/name (https://github.com/provider/app_name)
+          return "$$/$" (host,package,package)
+        endIf
+
+      elseIf (File.exists(name))
+        # Local install. Return the full path to the install script.
+        if (not File.is_folder(name)) return name
+
+        local filepath = "$/$.rogue" (name,File.filename(name))
+        if (File.exists(filepath))
+          return filepath
+        else
+          local listing = File.listing( name/"*.rogue", &omit_path )
+          if (listing.count == 1)
+            return name/listing.first
+          elseIf (listing.is_empty)
+            throw error( "No PLS .rogue scripts exist in folder $"(name) )
+          else
+            throw error( "Multiple PLS .rogue scripts exist in folder $"(name) )
+          endIf
+        endIf
+
+      else
+        # Look for existing modules with the given name and get the origin from them if possible
+        local provider = name.before_first('/')  # same as app_name if no '/'
+        local app_name = File.filename(name)
+        local filepath = PLS_HOME/"packages/$/$/origin.txt" (provider,app_name)
+        if (File.exists(filepath)) return String(File(filepath)).trimmed
+
+        # Otherwise assume github and transform name into github URL
+        provider = name.before_last('/')  # same as app_name if no '/'
+        return "https://github.com/$/$" (provider,app_name)
+
+      endIf
 
       #{
-      local package = resolve_package( "abepralle/rogo" )
-
-    method resolve_package( name:String )->Package
-      # TODO: use any added indices to translate unqualified names to qualified names,
-      # e.g. 'rogo' -> 'https://github.com/AbePralle/Rogo.git/rogo
 
       # Add github url if package does not already include a protocol (like HTTPS) or SSH portion.
       local host : String
@@ -162,23 +293,33 @@ class PLS
       endWhich
 
       return Package( host, name )
-    }#
 
+      }#
 
     method parse_args( args:String[] )->Value
       local command = CommandLineParser().
       [
-        option( "--flag",     &alias="-f" )
-        option( "--help",     &aliases=["-h","-?"] )
-        option( "--setting=", &alias="-s" )
+        option( "--help", &aliases=["-h","-?"] )
       ].parse( args )
+
+      if (command//args.count)
+        command//action = command//args.remove_at(0)
+        local argc = command//args.count
+        which (command//action)
+          case "install"
+            if (argc != 1)
+              throw error( "'$' requires a single package name as argument."(command//action) )
+            endIf
+        endWhich
+      endIf
+
       return command
 
     method print_usage
       println @|USAGE
-               |  pls [OPTIONS]
+               |  pls <COMMAND>
                |
-               |OPTIONS
-               |  --help, -h, -?
+               |COMMANDS
+               |  help, --help, -h, -?
                |    Show this help text.
 endClass

@@ -77,7 +77,7 @@ class Package
       if (not dest_filename) dest_filename = app_name
       local dest_filepath = bin_folder/dest_filename
 
-      println "> Copying $ -> $" (src_filepath,dest_filepath)
+      println "Copying $ -> $" (src_filepath,dest_filepath)
       File.copy( src_filepath, dest_filepath )
       execute( "chmod u+x $" (File.esc(dest_filepath)) )
 
