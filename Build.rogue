@@ -11,8 +11,8 @@ augment Build
   # You can create a Local.settings file with overrides for these values, e.g.:
   # LAUNCHER_FOLDER = "~/bin"
   PROPERTIES
-    PROJECT           = "PLS"
-    LAUNCHER_NAME     = "pls"
+    PROJECT           = "Morlock"
+    LAUNCHER_NAME     = "morlock"
     LAUNCHER_FOLDER   = "/usr/local/bin"
     ROGUEC_FLAGS      = "--debug"
     CPP_FLAGS_UNIX    = "-O0"
@@ -34,7 +34,7 @@ endRoutine
 
 routine rogo_default
   rogo_build
-  rogo_install_launcher  # Uncomment to automatically install a /usr/local/bin/pls launcher
+  rogo_install_launcher  # Uncomment to automatically install a /usr/local/bin/morlock launcher
   rogo_run
 endRoutine
 

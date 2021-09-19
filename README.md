@@ -1,2 +1,2 @@
-# PLS (Package Locator System)
-Multi-platform package manager written in Rogue
+# Morlock
+Multi-platform package manager implemented in Rogue

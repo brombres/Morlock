@@ -26,7 +26,7 @@ class Package
 
     version          : String
     url              : String
-    pls_home         : String
+    morlock_home     : String
     launcher_folder  : String
     install_folder   : String
     bin_folder       : String
@@ -42,8 +42,8 @@ class Package
       require args.count
       properties = JSON.parse( args.first )
       app_name = properties//app_name
-      pls_home = properties//pls_home
-      launcher_folder = pls_home/"bin"
+      morlock_home = properties//morlock_home
+      launcher_folder = morlock_home/"bin"
 
       init
       select_version

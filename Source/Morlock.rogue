@@ -1,5 +1,5 @@
 #================================================================================
-# PLS.rogue
+# Morlock.rogue
 # August 15, 2021
 #================================================================================
 
@@ -8,7 +8,7 @@ $requireRogue "1.8.8"
 uses Utility/CommandLineParser
 
 try
-  PLS( System.command_line_arguments )
+  Morlock( System.command_line_arguments )
 catch (error:Error)
   local w = Console.width.or_smaller( 80 )
   Console.error.println "="*w
@@ -18,9 +18,9 @@ catch (error:Error)
   System.exit 1
 endTry
 
-class PLS
+class Morlock
   DEFINITIONS
-    PLS_HOME = "/opt/pls"
+    MORLOCK_HOME = "/opt/morlock"
 
   METHODS
     method init( args:String[] )
@@ -40,20 +40,20 @@ class PLS
       endWhich
 
       #{
-      create_folder( PLS_HOME, &chown )
-      create_folder( PLS_HOME/"bin" )
-      create_folder( PLS_HOME/"build" )
-      create_folder( PLS_HOME/"packages" )
+      create_folder( MORLOCK_HOME, &chown )
+      create_folder( MORLOCK_HOME/"bin" )
+      create_folder( MORLOCK_HOME/"build" )
+      create_folder( MORLOCK_HOME/"packages" )
 
-      local shellenv = PLS_HOME/"shellenv"
+      local shellenv = MORLOCK_HOME/"shellenv"
       if (not File.exists(shellenv))
-        File.save( shellenv, ''echo export PATH="$/bin${PATH+:$PATH}";''(PLS_HOME,'$','$') )
+        File.save( shellenv, ''echo export PATH="$/bin${PATH+:$PATH}";''(MORLOCK_HOME,'$','$') )
         execute( "chmod u+x $" (shellenv) )
       endIf
 
-      create_folder( PLS_HOME/"packages/abepralle/hello-world" )
-      local from_file = "PLS/hello-world.rogue"
-      local to_file   = PLS_HOME/"packages/abepralle/hello-world/hello-world.rogue"
+      create_folder( MORLOCK_HOME/"packages/abepralle/hello-world" )
+      local from_file = "Morlock/hello-world.rogue"
+      local to_file   = MORLOCK_HOME/"packages/abepralle/hello-world/hello-world.rogue"
       if (File.is_different_than(from_file,to_file))
         println "> Copy $ -> $" (from_file,to_file)
         File.copy( from_file, to_file )
@@ -123,8 +123,8 @@ class PLS
           local provider = File.filename( File.folder(name) )
           local app_name = File.filename(name).before_last(".rogue")
 
-          # Create PLS_HOME/packages/provider/app_name and copy the .rogue script there
-          local package_folder = PLS_HOME/"packages/$/$" (provider,app_name)
+          # Create MORLOCK_HOME/packages/provider/app_name and copy the .rogue script there
+          local package_folder = MORLOCK_HOME/"packages/$/$" (provider,app_name)
           if (not File.exists(package_folder))
             println "Creating " + package_folder
             File.create_folder( package_folder )
@@ -138,7 +138,7 @@ class PLS
 
         # See if we already have it installed
         if (not name.contains('/'))
-          local listing = File.listing( PLS_HOME/"packages/*"/name )
+          local listing = File.listing( MORLOCK_HOME/"packages/*"/name )
           if (listing.count == 1)
             name = File.filename(File.parent(listing.first,1))/name
             return name
@@ -150,7 +150,7 @@ class PLS
         endIf
 
         if (name.contains('/'))
-          local filepath = PLS_HOME/"packages/$/$.rogue" (name,File.filename(name))
+          local filepath = MORLOCK_HOME/"packages/$/$.rogue" (name,File.filename(name))
           if (File.exists(filepath)) return filepath
         endIf
 
@@ -163,8 +163,8 @@ class PLS
       println "-" * Console.width.or_smaller(80)
 
     method install( provider:String, app_name:String )
-      local package_folder = PLS_HOME/"packages/$/$" (provider,app_name)
-      local build_folder = "$/$/$-$" (PLS_HOME,"build",provider,app_name)
+      local package_folder = MORLOCK_HOME/"packages/$/$" (provider,app_name)
+      local build_folder = "$/$/$-$" (MORLOCK_HOME,"build",provider,app_name)
 
       header "Installing $/$" (provider,app_name)
 
@@ -175,7 +175,7 @@ class PLS
       File.copy( package_folder/(app_name+".rogue"), build_folder, &verbose )
 
       local build = File.esc( build_folder )
-      local install_args = @{ :app_name, :package_folder, pls_home:PLS_HOME }.to_json.to_escaped_ascii('"')
+      local install_args = @{ :app_name, :package_folder, morlock_home:MORLOCK_HOME }.to_json.to_escaped_ascii('"')
 
       try
         local cmd = "roguec $.rogue Source/Package.rogue --essential --api --compile --output=$/installer" ...
@@ -188,6 +188,8 @@ class PLS
       endTry
 
     method resolve_package( name:String )->String
+      # Resolves the given package name into either a URL or a valid local filepath.
+
       if (name.contains_pattern("@*:"))
         # git@github.com:name/...
         local host = name.up_to_first(':')
@@ -227,9 +229,9 @@ class PLS
           if (listing.count == 1)
             return name/listing.first
           elseIf (listing.is_empty)
-            throw error( "No PLS .rogue scripts exist in folder $"(name) )
+            throw error( "No Morlock .rogue scripts exist in folder $"(name) )
           else
-            throw error( "Multiple PLS .rogue scripts exist in folder $"(name) )
+            throw error( "Multiple Morlock .rogue scripts exist in folder $"(name) )
           endIf
         endIf
 
@@ -237,7 +239,7 @@ class PLS
         # Look for existing modules with the given name and get the origin from them if possible
         local provider = name.before_first('/')  # same as app_name if no '/'
         local app_name = File.filename(name)
-        local filepath = PLS_HOME/"packages/$/$/origin.txt" (provider,app_name)
+        local filepath = MORLOCK_HOME/"packages/$/$/origin.txt" (provider,app_name)
         if (File.exists(filepath)) return String(File(filepath)).trimmed
 
         # Otherwise assume github and transform name into github URL
@@ -317,7 +319,7 @@ class PLS
 
     method print_usage
       println @|USAGE
-               |  pls <COMMAND>
+               |  morlock <COMMAND>
                |
                |COMMANDS
                |  help, --help, -h, -?
