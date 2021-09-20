@@ -7,6 +7,9 @@ $requireRogue "1.8.8"
 
 uses Utility/CommandLineParser
 
+#https://raw.githubusercontent.com/abepralle/rogue/master/Build.rogue
+#curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/abepralle/rogue
+
 try
   Morlock( System.command_line_arguments )
 catch (error:Error)
@@ -20,7 +23,7 @@ endTry
 
 class Morlock
   DEFINITIONS
-    MORLOCK_HOME = "/opt/morlock"
+    HOME = "/opt/morlock"
 
   METHODS
     method init( args:String[] )
@@ -36,6 +39,11 @@ class Morlock
 
       which (command//action)
         case "install"
+          local info = resolve_package( command//args.first, &allow_local_script )
+          info.fetch_latest_script
+
+        #{
+        case "install"
           local package = resolve_package( command//args.first, &allow_local_script )
           install_using_local_script( package )
           #if (not install_using_local_script(package))
@@ -43,30 +51,33 @@ class Morlock
           # TODO
 
         case "shellenv"
-          local morlock_bin = MORLOCK_HOME/"bin"
+          local morlock_bin = HOME/"bin"
           if (not System.environment//PATH.contains(morlock_bin))
             print   ''export PATH="$'' (morlock_bin)
             println ''${PATH+:$PATH}";''
           endIf
+          }#
 
         case "uninstall"
-          local package = resolve_package( command//args.first, &allow_local_script )
-          run_script( "uninstall", package )
+          local info = resolve_package( command//args.first, &allow_local_script )
+          println System.command_line_arguments
+          println info
+          #run_script( "uninstall", package )
 
         others
           throw error( "Unrecognized morlock command '$'."(command//action) )
       endWhich
 
       #{
-      local shellenv = MORLOCK_HOME/"shellenv"
+      local shellenv = HOME/"shellenv"
       if (not File.exists(shellenv))
-        File.save( shellenv, ''echo export PATH="$/bin${PATH+:$PATH}";''(MORLOCK_HOME,'$','$') )
+        File.save( shellenv, ''echo export PATH="$/bin${PATH+:$PATH}";''(HOME,'$','$') )
         execute( "chmod u+x $" (shellenv) )
       endIf
 
-      create_folder( MORLOCK_HOME/"packages/abepralle/hello-world" )
+      create_folder( HOME/"packages/abepralle/hello-world" )
       local from_file = "Morlock/hello-world.rogue"
-      local to_file   = MORLOCK_HOME/"packages/abepralle/hello-world/hello-world.rogue"
+      local to_file   = HOME/"packages/abepralle/hello-world/hello-world.rogue"
       if (File.is_different_than(from_file,to_file))
         println "> Copy $ -> $" (from_file,to_file)
         File.copy( from_file, to_file )
@@ -76,10 +87,10 @@ class Morlock
       }#
 
     method configure_morlock
-      create_folder( MORLOCK_HOME, &chown )
-      create_folder( MORLOCK_HOME/"bin" )
-      create_folder( MORLOCK_HOME/"build" )
-      create_folder( MORLOCK_HOME/"packages" )
+      create_folder( HOME, &chown )
+      create_folder( HOME/"bin" )
+      create_folder( HOME/"build" )
+      create_folder( HOME/"packages" )
 
     method create_folder( folder:String, &chown )
       if (not File.exists(folder))
@@ -106,73 +117,6 @@ class Morlock
       if (suppress_error) return false
       throw Error( "Error executing '$'."(cmd) )
 
-    method find_existing_package( name:String )->String
-      if (not name.contains('@') and not name.contains("://"))
-        contingent
-          if (File.exists(name))
-            if (File.is_folder(name))
-              local filepath = "$/$.rogue" (name,File.filename(name))
-              if (File.exists(filepath))
-                name = filepath
-              else
-                local listing = File.listing( name/"*.rogue", &omit_path )
-                if (listing.count == 1)
-                  name /= listing.first
-                elseIf (listing.is_empty)
-                  throw error( "No .rogue scripts exist in folder $"(name) )
-                else
-                  throw error( "Multiple .rogue scripts exist in folder $"(name) )
-                endIf
-              endIf
-            endIf
-            sufficient (true)
-
-          elseIf (File.exists(name+".rogue"))
-            name += ".rogue"
-            sufficient (true)
-
-          else
-            escapeContingent
-
-          endIf
-
-        satisfied
-          # 'name' is the filepath of an existing file
-          # Extract [provider]/[app_name].rogue
-          local provider = File.filename( File.folder(name) )
-          local app_name = File.filename(name).before_last(".rogue")
-
-          # Create MORLOCK_HOME/packages/provider/app_name and copy the .rogue script there
-          local package_folder = MORLOCK_HOME/"packages/$/$" (provider,app_name)
-          if (not File.exists(package_folder))
-            println "Creating " + package_folder
-            File.create_folder( package_folder )
-          endIf
-
-          local filepath = "$/$.rogue" (package_folder,app_name)
-          File.copy( name, filepath, &if_different, &verbose )
-          return filepath
-
-        endContingent
-
-        # See if we already have it installed
-        if (not name.contains('/'))
-          local listing = File.listing( MORLOCK_HOME/"packages/*"/name )
-          if (listing.count == 1)
-            name = File.filename(File.parent(listing.first,1))/name
-            return name
-          elseIf (listing.count > 1)
-          endIf
-        endIf
-
-        if (name.contains('/'))
-          local filepath = MORLOCK_HOME/"packages/$/$.rogue" (name,File.filename(name))
-          if (File.exists(filepath)) return filepath
-        endIf
-
-      endIf
-      return "TODO"
-
     method header( message:String )
       println "-" * Console.width.or_smaller(80)
       println message
@@ -185,7 +129,7 @@ class Morlock
 
       local provider = File.filename(File.folder(package))
       local app_name = File.filename(package).before_last('.')
-      local package_folder = MORLOCK_HOME/"packages/$/$" (provider,app_name)
+      local package_folder = HOME/"packages/$/$" (provider,app_name)
       local script_filepath = "$/$.rogue" (package_folder,app_name)
 
       File.create_folder( package_folder )
@@ -211,8 +155,8 @@ class Morlock
       endIf
 
     method run_script( action:String, provider:String, app_name:String )
-      local package_folder = MORLOCK_HOME/"packages/$/$" (provider,app_name)
-      local build_folder = "$/$/$-$" (MORLOCK_HOME,"build",provider,app_name)
+      local package_folder = HOME/"packages/$/$" (provider,app_name)
+      local build_folder = "$/$/$-$" (HOME,"build",provider,app_name)
 
       if (not File.is_folder(build_folder))
         println "Creating " + build_folder
@@ -223,7 +167,7 @@ class Morlock
       File.copy( package_folder/(app_name+".rogue"), build_folder, &verbose )
 
       local build = File.esc( build_folder )
-      local script_args = @{ :action, :app_name, :package_folder, morlock_home:MORLOCK_HOME }.to_json.to_escaped_ascii('"')
+      local script_args = @{ :action, :app_name, :package_folder, morlock_home:HOME }.to_json.to_escaped_ascii('"')
 
       try
         local cmd = "roguec $.rogue Source/Package.rogue --essential --api --compile --output=$/script" ...
@@ -235,38 +179,14 @@ class Morlock
         throw err
       endTry
 
-    method resolve_package( name:String, &allow_local_script )->String
-      # Resolves the given package name into a URL
+    method resolve_package( name:String, &allow_local_script )->PackageInfo
+      local info : PackageInfo
 
-      if (name.contains_pattern("@*:"))
-        # git@github.com:name/...
-        local host = name.up_to_first(':')
-        local package = name.rightmost( -host.count )
-
-        if (package.contains('/'))
-          # git@github.com:provider/.../app_name
-          return name
-        else
-          # git@github.com:name -> git@github.com:name/name (git@github.com:provider/app_name)
-            return "$$/$" (host,package,package)
-        endIf
-
-      elseIf (name.contains("://"))
-        # https://github.com/name/...
-        local parts = name.extract_strings( "$://$/$" )
-        if (not parts) throw error( "Missing package name after URL "+name )
-        local host = "$://$" (parts[0],parts[1])
-        local package = parts[2]
-        if (package.contains('/'))
-          # https://github.com/provider/.../app_name
-          return name
-        else
-          # https://github.com/name -> https://github.com/name/name (https://github.com/provider/app_name)
-          return "$$/$" (host,package,package)
-        endIf
+      if (name.contains("://"))
+        info = PackageInfo( name )
 
       elseIf (File.exists(name))
-        # Local install. Return the full path to the install script.
+        # Local script for install.
         local filepath = name
         contingent
           sufficient (not File.is_folder(filepath))
@@ -287,43 +207,49 @@ class Morlock
           endIf
 
         satisfied
-          if (allow_local_script) return filepath
-          throw error( "A local .rogue script can only be used with 'morlock install'." )
+          if (not allow_local_script)
+            throw error( "A local .rogue script can only be used with 'morlock install'." )
+          endIf
 
+          if (filepath.contains('/'))
+            local provider = File.filename( File.folder(filepath) )
+            local app_name = File.filename( filepath ).before_last('.')
+            info = PackageInfo( provider/app_name )
+          else
+            local app_name = filepath.before_last('.')
+            info = PackageInfo( app_name/app_name )
+          endIf
+          info.using_local_script = true
+
+          # Copy script into place
+          File.create_folder( info.folder )
+          File.copy( filepath, info.filepath, &if_different, &verbose )
         endContingent
 
       else
-        # Look for existing modules with the given name and get the origin from them if possible
-        local app_name = File.filename(name)
-
-        local provider : String
+        # TODO: map 'name' to any "built-in" packages.
         if (name.contains('/'))
-          provider = name.before_first('/')  # same as app_name if no '/'
-          local filepath = MORLOCK_HOME/"packages/$/$/origin.txt" (provider,app_name)
-          if (File.exists(filepath)) return String(File(filepath)).trimmed
+          info = PackageInfo( name )
         else
-          local listing = File.listing( MORLOCK_HOME/"packages/*/$"(app_name), &folders )
+          local listing = File.listing( HOME/"packages/*/$"(name), &folders )
           which (listing.count)
             case 0
-              provider = app_name
+              info = PackageInfo( name )
             case 1
-              provider = File.filename(File.folder(listing.first))
+              local provider = File.filename(File.folder(listing.first))
+              info = PackageInfo( provider/name )
             others
               use builder = StringBuilder.pool
-                builder.println "Ambiguous app name '$' matches mulitple installed packages:"(app_name)
-                builder.println "  $/$"(File.filename(File.folder(forEach in listing)),app_name)
+                builder.println "Ambiguous app name '$' matches mulitple installed packages:"(name)
+                builder.println "  $/$"(File.filename(File.folder(forEach in listing)),name)
                 throw error( builder )
               endUse
           endWhich
         endIf
 
-        local filepath = MORLOCK_HOME/"packages/$/$/origin.txt" (provider,app_name)
-        if (File.exists(filepath)) return String(File(filepath)).trimmed
-
-        # Otherwise assume github and transform name into github URL
-        return "https://github.com/$/$" (provider,app_name)
-
       endIf
+
+      return info
 
       #{
 
@@ -400,19 +326,150 @@ class Morlock
 
     method print_usage
       println @|USAGE
-               |  morlock <COMMAND>
+               |  morlock COMMAND
                |
                |PRIMARY COMMANDS
                |  help, --help, -h, -?
                |    Show this help text.
                |
-               |  install <provider>/<app_name>
+               |  install provider/app_name
                |
-               |  uninstall <provider>/<app_name>
+               |  uninstall provider/app_name
                |
                |SECONDARY COMMANDS
                |  shellenv
                |    Prints out the shell commands that should be executed by your shell configuration.
                |    For example, in ~/.zprofile: eval "$(/opt/morlock/bin/morlock shellenv)"
                |
+endClass
+
+class PackageInfo
+  PROPERTIES
+    name     : String  # abepralle/rogue
+    provider : String  # abepralle
+    app_name : String  # rogue
+    version  : String  # null, 1.0, 1.0.0, etc.
+    host     : String  # github.com
+    folder   : String  # /opt/morlock/packages/abepralle/rogue
+    filepath : String  # /opt/morlock/packages/abepralle/rogue/rogue.rogue
+    url      : String  # https://raw.githubusercontent.com/abepralle/rogue/master/Build.rogue
+    using_local_script : Logical  # prevents pinging repo for updates
+
+  METHODS
+    method init( url )
+      if (url.contains('@'))
+        version = url.after_last('@')
+        url .= before_last('@')
+      endIf
+
+      if (url.contains("://"))
+        local parts = url.extract_strings( "$://$/$" )
+        if (not parts or not url.ends_with(".rogue",&ignore_case))
+          local sample = "https://raw.githubusercontent.com/account/repo/main/morlock/account/app_name.rogue"
+          throw Error( ''Invalid URL "$" - expected e.g. "$".'' (url,sample) )
+        endIf
+
+        # protocol = parts[0]
+        host       = parts[1]
+        local path = parts[2]
+
+        app_name = File.filename(path).before_last('.')
+        if (path.contains('/'))
+          provider = path.before_first('/')
+        else
+          provider = app_name
+        endIf
+
+      else
+        which (url.count('/'))
+          case 0
+            provider = url
+            app_name = url
+            url = null
+          case 1
+            provider = url.before_first('/')
+            app_name = url.after_first('/')
+            url = null
+          case 2
+            # Assume a shorthand URL
+            # - host/account/repo
+            # - host/provider/app-name
+            # - github.com/abepralle/rogue
+            local parts = url.split('/')
+            host     = parts[0]
+            provider = parts[1]
+            app_name = parts[2]
+            url  = null
+          others
+            # Assume a URL that's missing the https:// protocol
+            init( "https://"+url )
+            return
+        endWhich
+
+      endIf
+
+      name = provider/app_name
+      folder = "$/packages/$/$" (Morlock.HOME,provider,app_name)
+      filepath = "$/$.rogue" (folder,app_name)
+
+      if (not url)
+        local url_filepath = folder/"url.txt"
+        if (File.exists(url_filepath))
+          url = String(File(url_filepath)).trimmed
+        endIf
+      endIf
+
+      if (host)
+        which (host)
+          case "github": host = "github.com"
+        endWhich
+      else
+        if (url) host = url.after_any("://").before_first('/')
+        else     host = "github.com"
+      endIf
+
+    method fetch_latest_script
+      if (not url and not using_local_script)
+        which (host)
+          case "github.com"
+            # Use the GitHub API to determine the default branch for the repo
+            println "Using GitHub API to determine default branch of '$/$'."(provider,app_name)
+            local cmd = ''curl -H "Accept: application/vnd.github.v3+json" ''
+            cmd += "https://api.github.com/repos/$/$"(provider,app_name)
+            println cmd
+            local result = Process.run( cmd, &env )
+            if (not result.success)
+              throw Error( "Unable to determine default branch of 'github.com/$/$'."(provider,app_name) )
+            endIf
+            local data = JSON.parse( result->String )
+            if (not data//id and data//message)
+              throw Error( "Repo does not exist: github.com/$/$"(provider,app_name) )
+            endIf
+
+            local branch = data//default_branch->String
+            if (not String.exists(branch)) branch = "main"
+
+            url = "https://raw.githubusercontent.com/$/$/$/morlock/$/$.rogue"(provider,app_name,branch,provider,app_name)
+            trace url
+            trace "TODO"
+          others
+            throw Error( "Morlock does not know how to construct $ URLs."(host) )
+        endWhich
+      endIf
+
+
+    method description->String
+      use builder = StringBuilder.pool
+        builder.println "name:"+name
+        builder.println "host:"+host
+        builder.println "provider:"+provider
+        builder.println "app_name:"+app_name
+        builder.println "version:"+version
+        builder.println "url:"+url
+        builder.println "folder:"+folder
+        builder.println "filepath:"+filepath
+        builder.println "using_local_script:"+using_local_script
+        return builder->String
+      endUse
+
 endClass
