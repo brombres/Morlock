@@ -5,7 +5,7 @@ try
     if (type.instance_of(<<Package>>) and type is not <<Package>>)
       local package = type.create_object<<Package>>
       package.init( System.command_line_arguments.cloned )
-      package.handle_install
+      package.handle_action
     endIf
   endForEach
 
@@ -22,8 +22,8 @@ endTry
 
 class Package
   PROPERTIES
+    action           : String
     app_name         : String
-
     version          : String
     url              : String
     morlock_home     : String
@@ -41,6 +41,7 @@ class Package
     method init( args:String[] )
       require args.count
       properties = JSON.parse( args.first )
+      action = properties//action
       app_name = properties//app_name
       morlock_home = properties//morlock_home
       launcher_folder = morlock_home/"bin"
@@ -102,6 +103,14 @@ class Package
       if (0 != System.run(cmd))
         throw error( "Error executing:\n"+cmd )
       endIf
+
+    method handle_action
+      which (action)
+        case "install"
+          handle_install
+        others
+          println ''WARNING: morlock script $.rogue does not support action "$".''(app_name,action)
+      endWhich
 
     method handle_install
       println "Installing $ v$" (app_name,version)
@@ -201,6 +210,8 @@ class Package
           if (not System.is_windows and url.ends_with(".tar.gz",&ignore_case)) escapeForEach
         endIf
       endForEach
+
+    method uninstall
 
     method unpack
       if (not archive_filename or not File.exists(archive_filename))

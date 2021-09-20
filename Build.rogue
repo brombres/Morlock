@@ -34,7 +34,7 @@ endRoutine
 
 routine rogo_default
   rogo_build
-  rogo_install_launcher  # Uncomment to automatically install a /usr/local/bin/morlock launcher
+  #rogo_install_launcher  # Uncomment to automatically install a /usr/local/bin/morlock launcher
   rogo_run
 endRoutine
 
