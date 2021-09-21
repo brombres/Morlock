@@ -61,24 +61,6 @@ class Morlock
           throw error( "Unrecognized morlock command '$'."(command//action) )
       endWhich
 
-      #{
-      local shellenv = HOME/"shellenv"
-      if (not File.exists(shellenv))
-        File.save( shellenv, ''echo export PATH="$/bin${PATH+:$PATH}";''(HOME,'$','$') )
-        execute( "chmod u+x $" (shellenv) )
-      endIf
-
-      create_folder( HOME/"packages/abepralle/hello-world" )
-      local from_file = "Morlock/hello-world.rogue"
-      local to_file   = HOME/"packages/abepralle/hello-world/hello-world.rogue"
-      if (File.is_different_than(from_file,to_file))
-        println "> Copy $ -> $" (from_file,to_file)
-        File.copy( from_file, to_file )
-      endIf
-
-      install( "abepralle", "hello-world" )
-      }#
-
     method configure_morlock
       create_folder( HOME, &chown )
       create_folder( HOME/"bin" )
@@ -119,10 +101,28 @@ class Morlock
 
       try
         block build_folder=File.esc(build_folder), script_args=script_args.to_json.to_escaped_ascii('"')
-          local cmd = "roguec $ Source/Package.rogue --essential --api --compile --output=$/script" ...
-          (info.filepath,build_folder)
-          execute cmd
-          execute 'cd $ && ./script "$"' (build_folder,script_args)
+          local exe_filepath = info.folder/info.app_name
+          local crc32_filepath = info.folder/"source_crc32.txt"
+          local crc32 : Int32
+          contingent
+            # Recompile?
+            crc32 = File.crc32(info.filepath) ~ File.crc32("Source/Package.rogue")
+            sufficient (not File.exists(crc32_filepath))
+
+            sufficient (crc32->String != String(File(crc32_filepath)).trimmed)
+            escapeContingent
+
+          satisfied
+            trace
+            local cmd = "roguec $ Source/Package.rogue --essential --api --compile --output=$/$" ...
+              (info.filepath,build_folder,info.app_name)
+            execute cmd
+            File.copy( build_folder/info.app_name, info.folder )
+            execute( "chmod u+x $" (File.esc(exe_filepath)) )
+            File.save( crc32_filepath, crc32->String )
+          endContingent
+
+          execute 'cd $ && $ "$"' (build_folder,exe_filepath,script_args)
         endBlock
       catch (err:Error)
         File.delete( build_folder )
