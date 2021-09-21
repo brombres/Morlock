@@ -41,6 +41,9 @@ class Morlock
       which (command//action)
         case "install"
           local info = resolve_package( command//args.first, &allow_local_script )
+          if (info.version and info.installed_versions.contains(info.version))
+            throw error( "$ version $ is already installed."(info.name,info.version) )
+          endIf
           info.fetch_latest_script
           run_script( "install", info )
 
@@ -260,6 +263,7 @@ class PackageInfo
     filepath : String  # /opt/morlock/packages/abepralle/rogo/rogo.rogue, /opt/morlock/packages/provider/app_name.rogue
     url      : String  # https://raw.githubusercontent.com/abepralle/rogo/master/morlock/abepralle/rogo.rogue
                        # protocol://domain/provider/repo/master/morlock/provider/app_name.rogue
+    installed_versions : String[]
     using_local_script : Logical  # prevents pinging repo for updates
 
   METHODS
@@ -348,6 +352,8 @@ class PackageInfo
         if (url) host = url.after_any("://").before_first('/')
         else     host = "github.com"
       endIf
+
+      installed_versions = which{ File.exists(folder):File.listing(folder,&folders,&omit_path) || String[] }
 
     method fetch_latest_script
       if (not using_local_script)

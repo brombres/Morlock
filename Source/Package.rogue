@@ -111,13 +111,22 @@ class Package
       endWhich
 
     method handle_install
-      println "-" * Console.width.or_smaller(80)
-      println "Installing $ v$" (app_name,version)
-      println "-" * Console.width.or_smaller(80)
-      println "Creating install folder"
-      create_folder( install_folder )
-      create_folder( bin_folder )
-      install
+      if (File.exists(install_folder))
+        throw error( "$/$ version $ is already installed."(provider,app_name,version) )
+      endIf
+
+      try
+        println "-" * Console.width.or_smaller(80)
+        println "Installing $ v$" (app_name,version)
+        println "-" * Console.width.or_smaller(80)
+        println "Creating install folder"
+        create_folder( install_folder )
+        create_folder( bin_folder )
+        install
+      catch (err:Error)
+        File.delete( install_folder )
+        throw err
+      endTry
 
     method install
       throw error( "install() must overridden." )
