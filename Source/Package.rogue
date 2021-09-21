@@ -9,13 +9,8 @@ try
     endIf
   endForEach
 
-catch (err:Error)
-  local w = Console.width.or_smaller(80)
-  local hr = "=" * w
-  Console.error.println hr
-  Console.error.println "ERROR\n  "
-  Console.error.println err->String.indented(2)
-  Console.error.println hr
+catch (err:PackageError)
+  Console.error.println err
   System.exit 1
 
 endTry
@@ -23,6 +18,7 @@ endTry
 class Package
   PROPERTIES
     action           : String
+    provider         : String
     app_name         : String
     version          : String
     url              : String
@@ -42,11 +38,13 @@ class Package
       require args.count
       properties = JSON.parse( args.first )
       action = properties//action
+      provider = properties//provider
       app_name = properties//app_name
       morlock_home = properties//morlock_home
       launcher_folder = morlock_home/"bin"
 
       init
+      if (properties//version) version = properties//version
       select_version
       install_folder = "$/$" (properties//package_folder,version)
       bin_folder = install_folder/"bin"
@@ -96,7 +94,7 @@ class Package
       return archive_filename
 
     method error( message:String )->Error
-      return Error( "[$] $"(app_name,message) )
+      return PackageError( provider, app_name, message )
 
     method execute( cmd:String )
       println "> " + cmd
@@ -113,7 +111,9 @@ class Package
       endWhich
 
     method handle_install
+      println "-" * Console.width.or_smaller(80)
       println "Installing $ v$" (app_name,version)
+      println "-" * Console.width.or_smaller(80)
       println "Creating install folder"
       create_folder( install_folder )
       create_folder( bin_folder )
@@ -178,17 +178,32 @@ class Package
 
       releases.add @{ :version, :url, :platforms }
 
-    method select_version( version=null )
+    method select_version
       if (releases.is_empty) throw error( "No releases are available." )
+
+      local platform = which{ System.is_windows:'w' || System.is_macos:'m' || 'l' }
 
       if (String.exists(version))
         local best = Best<<String>>( (a,b) => VersionNumber(a) > b )
         forEach (release in releases)
           local v = release//version->String
-          trace version, v, VersionNumber(version).is_compatible_with(v)
           if (VersionNumber(version).is_compatible_with(v)) best.consider( v )
         endForEach
-        if (not best.exists) throw error( "No such release '$'."(version) )
+        if (not best.exists)
+          use builder = StringBuilder.pool
+            builder.println "No release is compatible with requested version '$'. Available versions:" (version)
+            local compatible = @{}
+            forEach (release in releases)
+              if (release//platforms->String.contains(platform))
+                compatible[ release//version ] = release//version
+              endIf
+            endForEach
+            block compatible = compatible.to_list<<String>>.sort( (a,b) => VersionNumber(a) > b )
+              builder.println "  " + (forEach in compatible)
+            endBlock
+            throw error( builder )
+          endUse
+        endIf
         version = best.value
 
       else
@@ -203,7 +218,6 @@ class Package
 
       # Now pick the best URL with the given version number
       url = null
-      local platform = which{ System.is_windows:'w' || System.is_macos:'m' || 'l' }
       forEach (release in releases)
         if (VersionNumber(release//version) == version and release//platforms->String.contains(platform))
           url = release//url
@@ -227,64 +241,17 @@ class Package
       endIf
 endClass
 
-#{
-class Package
-  PROPERTIES
-    package  : String
-      # E.g. https://github.com/user/repo/.../app      [or]
-      #          git@github.com:user/repo.git/.../app
-    repo     : String
-      # E.g. https://github.com/user/repo
-      #          git@github.com:user/repo.git
-    app      : String
-      # E.g. .../app
-
-    homepage : String
-    version  : String
-    url      : String
-    sha256   : String
-
+class PackageError( provider:String, app_name:String, message ) : Error
   METHODS
-    method init( repo, app )
-      package = repo / app
-      #{
-      # name -> https://github.com/name/name/name
-      #   https://github.com/user/repo/.../package -> [https://github.com/user/repo, .../package]
-      contingent
-        sufficient (package.contains("://"))            # http(s)://...
-        sufficient (package.matches_pattern("*@*.*:*")) # git@github.com:...
-        which (package.count('/'))
-          case 0
-            # 'repo' -> 'https://github.com/repo/repo' 'PackMan/repo.rogue'
-            # User "repo", repository "repo", project "repo"
-            package = "https://github.com/$/$/$" (package,package,package)
-
-          case 1
-            # 'user/repo' -> 'https://github.com/user/repo/repo'
-            #             -> 'https://github.com/user/repo', 'PackMan/repo.rogue'
-            local user = package.before_first( '/' )
-            local repo = package.after_first( '/' )
-            package = "https://github.com/$/$/$" (user,repo,repo)
-
-          others
-            # 'user/repo/[.../]package
-            local user = package.before_first( '/' )
-            package .= after_first( '/' )
-            local repo = package.before_first( '/' )
-            local package = package.after_first( '/' )
-            package = "https://github.com/$/$/$" (user,repo,package)
-        endWhich
-      endContingent
-      repo = package
-      }#
-
-    method display
-      @trace package
-      @trace repo
-      @trace app
-      @trace homepage
-      @trace version
-      @trace url
-      @trace sha256
+    method description->String
+      use builder = StringBuilder.pool
+        local w = message.longest_line.or_larger(80).or_smaller( Console.width )
+        local hr = "=" * w
+        builder.println hr
+        builder.println "ERROR [$/$]\n" (provider,app_name)
+        builder.println message
+        builder.println hr
+        return builder
+      endUse
 endClass
-}#
+
