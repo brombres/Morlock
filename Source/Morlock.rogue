@@ -119,20 +119,21 @@ class Morlock
 
       try
         block script_args = script_args.to_json.to_escaped_ascii('"')
+          local package_filepath = "/opt/morlock/packages/morlock/Source/Package.rogue"
           local exe_filepath = info.folder/info.app_name
           local crc32_filepath = info.folder/"source_crc32.txt"
           local crc32 : Int32
           contingent
             # Recompile?
-            crc32 = File.crc32(info.filepath) ~ File.crc32("Source/Package.rogue")
+            crc32 = File.crc32(info.filepath) ~ File.crc32(package_filepath)
             necessary (File.exists(exe_filepath))
             necessary (File.exists(crc32_filepath))
             necessary (crc32->String == String(File(crc32_filepath)).trimmed)
 
           unsatisfied
             build_folder = create_build_folder(info)
-            local cmd = "roguec $ Source/Package.rogue --essential --api --compile --output=$/$" ...
-                (info.filepath,File.esc(build_folder),info.app_name)
+            local cmd = "roguec $ $ --essential --api --compile --output=$/$" ...
+              (info.filepath, package_filepath, File.esc(build_folder), info.app_name)
             execute cmd
             File.delete( exe_filepath )
             File.copy( build_folder/info.app_name, exe_filepath, &verbose )

@@ -61,6 +61,10 @@ routine rogo_build
       endIf
     endIf
   endBlock
+
+  local output_source_folder = "/opt/morlock/packages/morlock/Source"
+  File.create_folder( output_source_folder )
+  File.copy( "Source/Package.rogue", output_source_folder, &if_different, &verbose )
 endRoutine
 
 routine rogo_run
