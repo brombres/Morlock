@@ -151,6 +151,22 @@ class Package
     method install
       throw error( "install() must overridden." )
 
+    method install_products( default=null:String, windows=null:String, macos=null:String, linux=null:String, &link=true )
+      local pattern : String
+      if (System.is_macos)       pattern = which{ macos || default }
+      elseIf (System.is_linux)   pattern = which{ linux || default }
+      elseIf (System.is_windows) pattern = which{ windows || default }
+      else                       pattern = default
+
+      if (not pattern) throw error( "No filepath or pattern given for $."(System.os) )
+
+      pattern = pattern.replacing( "$(OS)", System.os )
+
+      local exe_list = File.listing( archive_folder/pattern )
+      if (exe_list.is_empty) throw error( "Cannot locate build product." )
+      copy_executable( forEach in exe_list )
+      if (link) this.link
+
     method link
       local exe_list = File.listing( bin_folder/"*" )
       forEach (exe in exe_list)

@@ -8,12 +8,7 @@ class HelloWorld : Package
       download
       unpack
       build
-
-      local ext = which{ System.is_windows:".exe" || "-$"(System.os) }
-      local exe_list = File.listing( archive_folder/"Build/*$"(ext) )
-      if (exe_list.is_empty) error( "Cannot locate build product." )
-      copy_executable( exe_list.first )
-      link
+      install_products( "Build/*-$(OS)", &windows="Build/*.exe" )
 
 endClass
 
