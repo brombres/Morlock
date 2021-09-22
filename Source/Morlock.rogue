@@ -55,7 +55,14 @@ class Morlock
           endIf
 
         case "uninstall"
-
+          local info = resolve_package( command//args.first )
+          if (info.version and not info.installed_versions.contains(info.version))
+            throw error( "$ version $ is not installed."(info.name,info.version) )
+          endIf
+          if (not File.exists(info.folder))
+            throw error( "$ is not installed."(info.name) )
+          endIf
+          run_script( "uninstall", info )
 
         others
           throw error( "Unrecognized morlock command '$'."(command//action) )
@@ -66,6 +73,15 @@ class Morlock
       create_folder( HOME/"bin" )
       create_folder( HOME/"build" )
       create_folder( HOME/"packages" )
+
+    method create_build_folder( info:PackageInfo )->String
+      local build_folder = "$/$/$/$" (HOME,"build",info.provider,info.app_name)
+      if (not File.is_folder(build_folder))
+        println "Creating " + build_folder
+        File.delete( build_folder )
+        File.create_folder( build_folder )
+      endIf
+      return build_folder
 
     method create_folder( folder:String, &chown )
       if (not File.exists(folder))
@@ -86,46 +102,46 @@ class Morlock
       println "-" * Console.width.or_smaller(80)
 
     method run_script( action:String, info:PackageInfo )
-      local build_folder = "$/$/$/$" (HOME,"build",info.provider,info.app_name)
-
-      if (not File.is_folder(build_folder))
-        println "Creating " + build_folder
-        File.delete( build_folder )
-        File.create_folder( build_folder )
+      local build_folder : String
+      if (action == "install")
+        build_folder = create_build_folder(info)
       endIf
-
-      File.copy( info.filepath, build_folder, &verbose )
 
       local script_args = @{ :action, provider:info.provider, app_name:info.app_name, version:info.version,
                              package_folder:info.folder, morlock_home:HOME }
 
       try
-        block build_folder=File.esc(build_folder), script_args=script_args.to_json.to_escaped_ascii('"')
+        block script_args = script_args.to_json.to_escaped_ascii('"')
           local exe_filepath = info.folder/info.app_name
           local crc32_filepath = info.folder/"source_crc32.txt"
           local crc32 : Int32
           contingent
             # Recompile?
             crc32 = File.crc32(info.filepath) ~ File.crc32("Source/Package.rogue")
-            sufficient (not File.exists(crc32_filepath))
+            necessary (File.exists(exe_filepath))
+            necessary (File.exists(crc32_filepath))
+            necessary (crc32->String == String(File(crc32_filepath)).trimmed)
 
-            sufficient (crc32->String != String(File(crc32_filepath)).trimmed)
-            escapeContingent
-
-          satisfied
-            trace
+          unsatisfied
+            build_folder = create_build_folder(info)
             local cmd = "roguec $ Source/Package.rogue --essential --api --compile --output=$/$" ...
-              (info.filepath,build_folder,info.app_name)
+                (info.filepath,File.esc(build_folder),info.app_name)
             execute cmd
-            File.copy( build_folder/info.app_name, info.folder )
+            File.delete( exe_filepath )
+            File.copy( build_folder/info.app_name, exe_filepath, &verbose )
             execute( "chmod u+x $" (File.esc(exe_filepath)) )
             File.save( crc32_filepath, crc32->String )
+
           endContingent
 
-          execute 'cd $ && $ "$"' (build_folder,exe_filepath,script_args)
+          if (action == "install")
+            execute 'cd $ && $ "$"' (File.esc(build_folder),File.esc(exe_filepath),script_args)
+          else
+            execute 'cd $ && $ "$"' (File.esc(info.folder),File.esc(exe_filepath),script_args)
+          endIf
         endBlock
       catch (err:Error)
-        File.delete( build_folder )
+        if (build_folder) File.delete( build_folder )
         System.exit 1
       endTry
 

@@ -17,18 +17,20 @@ endTry
 
 class Package
   PROPERTIES
-    action           : String
-    provider         : String
-    app_name         : String
-    version          : String
-    url              : String
-    morlock_home     : String
-    launcher_folder  : String
-    install_folder   : String
-    bin_folder       : String
-    archive_filename : String
-    archive_folder   : String
-    is_unpacked      : String
+    action            : String
+    name              : String
+    provider          : String
+    app_name          : String
+    specified_version : String
+    version           : String
+    url               : String
+    morlock_home      : String
+    launcher_folder   : String
+    install_folder    : String
+    bin_folder        : String
+    archive_filename  : String
+    archive_folder    : String
+    is_unpacked       : String
 
     releases         = @[]
     properties       : Value
@@ -40,11 +42,15 @@ class Package
       action = properties//action
       provider = properties//provider
       app_name = properties//app_name
+      name = provider/app_name
       morlock_home = properties//morlock_home
       launcher_folder = morlock_home/"bin"
 
       init
-      if (properties//version) version = properties//version
+      if (properties//version)
+        specified_version = properties//version
+        version = specified_version
+      endIf
       select_version
       install_folder = "$/$" (properties//package_folder,version)
       bin_folder = install_folder/"bin"
@@ -106,13 +112,27 @@ class Package
       which (action)
         case "install"
           handle_install
+        case "uninstall"
+          if (File.exists(install_folder))
+            header "Uninstalling $ version $"(name,version)
+            File.delete( install_folder )
+          elseIf (specified_version)
+            throw error( "$ version $ is not installed." (name,version) )
+          else
+            throw error( "$ is not installed." (name) )
+          endIf
         others
           println ''WARNING: morlock script $.rogue does not support action "$".''(app_name,action)
       endWhich
 
+    method header( message:String )
+      println "-" * Console.width.or_smaller(80)
+      println message
+      println "-" * Console.width.or_smaller(80)
+
     method handle_install
       if (File.exists(install_folder))
-        throw error( "$/$ version $ is already installed."(provider,app_name,version) )
+        throw error( "$ version $ is already installed."(name,version) )
       endIf
 
       try
@@ -135,10 +155,9 @@ class Package
       local exe_list = File.listing( bin_folder/"*" )
       forEach (exe in exe_list)
         local launcher = launcher_folder/File.filename(exe)
-        if (not File.exists(launcher))
-          local cmd = "ln -s $ $" (exe,launcher)
-          execute cmd
-        endIf
+        File.delete( launcher )
+        local cmd = "ln -s $ $" (exe,launcher)
+        execute cmd
       endForEach
 
     method release( url:String, platforms=null:String, version=null:String )
