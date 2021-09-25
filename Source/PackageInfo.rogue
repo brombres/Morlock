@@ -113,7 +113,7 @@ class PackageInfo
               # capitalization of the Morlock folder.
               local cmd = ''curl -H "Accept: application/vnd.github.v3+json" ''
               cmd += "https://api.github.com/repos/$/$/contents"(provider,repo)
-              println "> " + cmd
+              #println "> " + cmd
               local result = Process.run( cmd, &env )
               if (not result.success)
                 throw Error( "Unable to list default branch of 'github.com/$/$'."(provider,repo) )
@@ -132,7 +132,7 @@ class PackageInfo
               local branch = folder_info//url->String.after_last('?').after_last("ref=").before_first('&')
               if (not String.exists(branch)) branch = "main"
 
-              url = "https://raw.githubusercontent.com/$/$/$/$/$/$.rogue"(provider,repo,branch,folder_info//name,provider,app_name)
+              url = "https://raw.githubusercontent.com/$/$/$/$/$.rogue"(provider,repo,branch,folder_info//name,app_name)
 
             others
               throw Error( "Morlock does not know how to construct $ URLs."(host) )
@@ -145,7 +145,7 @@ class PackageInfo
           File.create_folder( folder )
         endIf
 
-        execute "curl -LfsS $ -o $" (url,filepath)
+        execute( "curl -LfsS $ -o $" (url,filepath), &bg )
         File.save( folder/"url.txt", url )
       endIf
 

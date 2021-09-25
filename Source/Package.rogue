@@ -39,10 +39,21 @@ class Package
     method init( args:String[] )
       require args.count
       properties = JSON.parse( args.first )
+
+      if (not name or name.count('/')>1)
+        throw PackageError(
+          File.filename(properties//script_filepath),
+          ''Package name must be specified as a property. For example:\n\n  PROPERTIES\n    name = "provider/$"''...
+          (File.filename(properties//script_filepath).before_last('.'))
+        )
+      endIf
+
+      if (not name.contains('/')) name = name/name
+
+      provider = name.before_first('/')
+      app_name = name.after_first('/')
+
       action = properties//action
-      provider = properties//provider
-      app_name = properties//app_name
-      name = provider/app_name
       morlock_home = properties//morlock_home
       launcher_folder = morlock_home/"bin"
 
@@ -84,7 +95,7 @@ class Package
 
       println "Copying $ -> $" (src_filepath,dest_filepath)
       File.copy( src_filepath, dest_filepath )
-      execute( "chmod u+x $" (File.esc(dest_filepath)) )
+      execute( "chmod u+x $" (File.esc(dest_filepath)), &bg )
 
     method create_folder( folder:String )
       println "  " + folder
@@ -94,16 +105,16 @@ class Package
       endIf
 
     method download->String
-      execute "curl -LfsSO " + url
+      execute( "curl -LfsSO " + url, &bg )
       archive_filename = File.filename(url)
       if (not File.exists(archive_filename)) throw error( "Error downloading " + url )
       return archive_filename
 
     method error( message:String )->Error
-      return PackageError( provider, app_name, message )
+      return PackageError( provider/app_name, message )
 
-    method execute( cmd:String )
-      println "> " + cmd
+    method execute( cmd:String, &bg )
+      if (not bg )println "> " + cmd
       if (0 != System.run(cmd))
         throw error( "Error executing:\n"+cmd )
       endIf
@@ -173,7 +184,7 @@ class Package
         local launcher = launcher_folder/File.filename(exe)
         File.delete( launcher )
         local cmd = "ln -s $ $" (exe,launcher)
-        execute cmd
+        execute( cmd, &bg )
       endForEach
 
     method release( url:String, platforms=null:String, version=null:String )
@@ -242,7 +253,7 @@ class Package
                 compatible[ release//version ] = release//version
               endIf
             endForEach
-            block compatible = compatible.to_list<<String>>.sort( (a,b) => VersionNumber(a) > b )
+            block compatible = compatible.to_list<<String>>.[ sort( (a,b) => VersionNumber(a) > b ) ]
               builder.println "  " + (forEach in compatible)
             endBlock
             throw error( builder )
@@ -285,14 +296,14 @@ class Package
       endIf
 endClass
 
-class PackageError( provider:String, app_name:String, message ) : Error
+class PackageError( package_name:String, message ) : Error
   METHODS
     method description->String
       use builder = StringBuilder.pool
         local w = message.longest_line.or_larger(80).or_smaller( Console.width )
         local hr = "=" * w
         builder.println hr
-        builder.println "ERROR [$/$]\n" (provider,app_name)
+        builder.println "ERROR [$]\n" (package_name)
         builder.println message
         builder.println hr
         return builder

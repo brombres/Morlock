@@ -54,13 +54,6 @@ class Morlock
           info.fetch_latest_script
           run_script( "install", info )
 
-        case "shellenv"
-          local morlock_bin = HOME/"bin"
-          if (not System.environment//PATH.contains(morlock_bin))
-            print   ''export PATH="$'' (morlock_bin)
-            println ''${PATH+:$PATH}";''
-          endIf
-
         case "uninstall"
           local info = resolve_package( command//args.first )
           if (info.version and not info.installed_versions.contains(info.version))
@@ -92,11 +85,11 @@ class Morlock
 
     method create_folder( folder:String, &chown )
       if (not File.exists(folder))
-        execute( "mkdir -p "+folder, &allow_sudo )
+        execute( "mkdir -p "+folder, &allow_sudo, &bg )
 
         if (chown)
           local user = System.environment//USER
-          execute( "chown $ $" (user,folder), &allow_sudo )
+          execute( "chown $ $" (user,folder), &allow_sudo, &bg )
         endIf
       endIf
 
@@ -114,8 +107,9 @@ class Morlock
         build_folder = create_build_folder(info)
       endIf
 
-      local script_args = @{ :action, provider:info.provider, app_name:info.app_name, version:info.version,
-                             package_folder:info.folder, morlock_home:HOME }
+      local script_args = @{ :action, version:info.version,
+                             package_folder:info.folder, morlock_home:HOME,
+                             script_filepath:info.filepath }
 
       try
         block script_args = script_args.to_json.to_escaped_ascii('"')
@@ -137,15 +131,15 @@ class Morlock
             execute cmd
             File.delete( exe_filepath )
             File.copy( build_folder/info.app_name, exe_filepath, &verbose )
-            execute( "chmod u+x $" (File.esc(exe_filepath)) )
+            execute( "chmod u+x $" (File.esc(exe_filepath)), &bg )
             File.save( crc32_filepath, crc32->String )
 
           endContingent
 
           if (action == "install")
-            execute 'cd $ && $ "$"' (File.esc(build_folder),File.esc(exe_filepath),script_args)
+            execute( 'cd $ && $ "$"' (File.esc(build_folder),File.esc(exe_filepath),script_args), &bg )
           else
-            execute 'cd $ && $ "$"' (File.esc(info.folder),File.esc(exe_filepath),script_args)
+            execute( 'cd $ && $ "$"' (File.esc(info.folder),File.esc(exe_filepath),script_args), &bg )
           endIf
         endBlock
       catch (err:Error)
@@ -165,49 +159,45 @@ class Morlock
       if (name.contains("://"))
         info = PackageInfo( name )
 
-      elseIf (File.exists(name))
+      elseIf (File.exists(name) and not File.is_folder(name))
         # Local script for install.
         local filepath = name
-        contingent
-          sufficient (not File.is_folder(filepath))
 
-          filepath = "$/$.rogue" (name,File.filename(name))
-          sufficient (File.exists(filepath))
+        if (not allow_local_script)
+          throw error( "A local .rogue script can only be used with 'morlock install'." )
+        endIf
 
-          local listing = File.listing( name/"*.rogue", &omit_path )
-          if (listing.count == 1)
-            filepath = name/listing.first
-            sufficient (true)
+        # Parse the package name out of the script
+        local provider, app_name : String
+        forEach (line in LineReader(File(filepath)))
+          if (line.contains("name") and line.contains_pattern(''name*=*"*"'' ))
+            local package_name = line.extract_string( ''*name*=*"$"*'' )
+            if (not package_name) escapeForEach
+            if (package_name.contains('/'))
+              provider = File.filename( File.folder(package_name) )
+              app_name = File.filename( package_name )
+            else
+              provider = package_name
+              app_name = package_name
+            endIf
+            escapeForEach
           endIf
+        endForEach
 
-          if (listing.is_empty)
-            throw error( "No morlock .rogue scripts exist in folder $"(name) )
-          else
-            throw error( "Multiple morlock .rogue scripts exist in folder $"(name) )
-          endIf
+        if (not app_name)
+          throw error( ''Failed to parse package name out of script ('name = "provider/app-name"').'' )
+        endIf
 
-        satisfied
-          if (not allow_local_script)
-            throw error( "A local .rogue script can only be used with 'morlock install'." )
-          endIf
+        info = PackageInfo( provider/app_name )
+        info.using_local_script = true
 
-          if (filepath.contains('/'))
-            local provider = File.filename( File.folder(filepath) )
-            local app_name = File.filename( filepath ).before_last('.')
-            info = PackageInfo( provider/app_name )
-          else
-            local app_name = filepath.before_last('.')
-            info = PackageInfo( app_name/app_name )
-          endIf
-          info.using_local_script = true
-
-          # Copy script into place
-          File.create_folder( info.folder )
-          File.copy( filepath, info.filepath, &if_different, &verbose )
-        endContingent
+        # Copy script into place
+        File.create_folder( info.folder )
+        File.copy( filepath, info.filepath, &if_different, &verbose )
 
       else
         # TODO: map 'name' to any "built-in" packages.
+
         if (name.contains('/'))
           info = PackageInfo( name )
         else
@@ -247,10 +237,6 @@ class Morlock
             if (argc != 1)
               throw error( "'morlock $' requires a single package name as argument."(command//action) )
             endIf
-          case "shellenv"
-            if (argc)
-              throw error( "'morlock $' does not accept arguments."(command//action) )
-            endIf
         endWhich
       endIf
 
@@ -260,7 +246,7 @@ class Morlock
       println @|USAGE
                |  morlock COMMAND
                |
-               |PRIMARY COMMANDS
+               |COMMANDS
                |  help, --help, -h, -?
                |    Show this help text.
                |
@@ -269,16 +255,10 @@ class Morlock
                |  reinstall provider/app_name
                |
                |  uninstall provider/app_name
-               |
-               |SECONDARY COMMANDS
-               |  shellenv
-               |    Prints out the shell commands that should be executed by your shell configuration.
-               |    For example, in ~/.zprofile: eval "$(/opt/morlock/bin/morlock shellenv)"
-               |
 endClass
 
-routine execute( cmd:String, &suppress_error, &allow_sudo )->Logical
-  println "> " + cmd
+routine execute( cmd:String, &suppress_error, &allow_sudo, &bg )->Logical
+  if (not bg) println "> " + cmd
   if (0 == System.run(cmd)) return true
 
   if (allow_sudo)

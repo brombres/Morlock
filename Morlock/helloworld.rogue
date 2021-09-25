@@ -1,4 +1,7 @@
 class HelloWorld : Package
+  PROPERTIES
+    name = "abepralle/helloworld"
+
   METHODS
     method init
       release "https://raw.githubusercontent.com/AbePralle/PackMan/main/Demos/Releases/hello-world-1.0.tar.gz"
