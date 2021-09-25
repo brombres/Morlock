@@ -1,0 +1,108 @@
+#================================================================================
+# InstallMorlock.rogue
+# September 24, 2021
+#================================================================================
+
+$requireRogue "1.8.8"
+
+uses Utility/CommandLineParser
+uses Utility/Zip
+
+try
+  InstallMorlock( System.command_line_arguments )
+catch (error:Error)
+  local w = Console.width.or_smaller( 80 )
+  Console.error.println "="*w
+  Console.error.println "ERROR"
+  Console.error.println error->String.word_wrapped(w-2).indented(2)
+  Console.error.println "="*w
+  System.exit 1
+endTry
+
+class InstallMorlock
+  PROPERTIES
+    home : String
+
+  METHODS
+    method init( args:String[] )
+      # Parse args
+      local command = parse_args( args )
+
+      if (command//options//help or command//args.count)
+        print_usage
+        System.exit 0
+      endIf
+
+      home = command//options["home-folder"]
+
+      # Windows: make sure we're running from a developer command prompt or PowerShell with
+      # command-line C++ support.
+      if (System.is_windows)
+        if (Process.run("cl").exit_code != 0)
+          throw Error( "This command must be run from a Visual Studio Developer Command Prompt or Developer PowerShell with a command line C++ compiler." )
+        endIf
+      endIf
+
+      # Create the Morlock home folder
+      create_folder( home )
+
+      # Unix: chown the Morlock home folder
+      if (System.is_macos)
+        local cmd = "chown $:admin $" (System.environment//USER,File.esc(home))
+        if (0 != System.run(cmd))
+          println "Retrying with sudo..."
+          execute( "sudo " + cmd, "Unable to chown Morlock home folder: "+home )
+        endIf
+      endIf
+
+      # Create primary subfolders
+      create_folder( home/"bin" )
+      create_folder( home/"build" )
+      create_folder( home/"packages" )
+
+    method create_folder( path:String )
+      if (not File.is_folder(path))
+        if (not File.create_folder(path))
+          local error_message = "Unable to create folder: "+path
+          if (System.is_windows) throw Error(error_message)
+          local cmd = "sudo mkdir -p $" (File.esc(path))
+          execute( cmd, error_message )
+        endIf
+      endIf
+
+    method execute( cmd:String, error_message=null:String, &suppress_error )->Logical
+      println "> " + cmd
+      if (0 == System.run(cmd)) return true
+      if (suppress_error) return false
+      if (not error_message) error_message = "Error executing:\n"+cmd
+      throw Error( error_message )
+
+    method parse_args( args:String[] )->Value
+      local default_home_folder : String
+      if (System.is_windows)
+        default_home_folder = System.environment//HOMEPATH/"AppData/Local/Morlock"
+      else
+        default_home_folder = "/opt/morlock"
+      endIf
+
+      local command = CommandLineParser().
+      [
+        option( "--help",         &aliases=["-h","-?"] )
+        option( "--home-folder=", &alias="-f", &default=default_home_folder )
+      ].parse( args )
+      return command
+
+    method print_usage
+      println @|USAGE
+               |  installmorlock [OPTIONS]
+               |
+               |OPTIONS
+               |  --help, -h, -?
+               |    Show this help text.
+               |
+               |  --home-folder="path", -f "path"
+               |    Defaults
+               |      Windows: %HOMEPATH%\AppData\Local\Morlock
+               |      Unix:    /opt/morlock
+endClass
+
