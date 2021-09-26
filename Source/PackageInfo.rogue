@@ -3,7 +3,7 @@ class PackageInfo
     name     : String  # abepralle/rogo, provider/app_name
     provider : String  # abepralle
     app_name : String  # rogo
-    repo     : String  # repo
+    repo     : String  # rogo
     version  : String  # null, 1.0, 1.0.0, etc.
     host     : String  # github.com
     folder   : String  # /opt/morlock/packages/abepralle/rogo,            /opt/morlock/packages/provider/app_name
@@ -12,9 +12,10 @@ class PackageInfo
                        # protocol://domain/provider/repo/master/morlock/provider/app_name.rogue
     installed_versions : String[]
     using_local_script : Logical  # prevents pinging repo for updates
+    morlock_home       : String   # Usually /opt/morlock or %HOMEPATH%\AppData\Local\Morlock
 
   METHODS
-    method init( url )
+    method init( morlock_home, url )
       if (url.contains('@'))
         version = url.after_last('@')
         url .= before_last('@')
@@ -22,9 +23,15 @@ class PackageInfo
 
       if (url.contains("://"))
         local parts = url.extract_strings( "$://$/$" )
-        if (not parts or not url.ends_with(".rogue",&ignore_case))
-          local sample = "https://raw.githubusercontent.com/account/repo/main/morlock/account/app_name.rogue"
+        if (not parts)
+          local sample = "https://github.com/account/repo or https://raw.githubusercontent.com/account/repo/main/morlock/account/app_name.rogue"
           throw Error( ''Invalid URL "$" - expected e.g. "$".'' (url,sample) )
+        endIf
+
+        if (not url.ends_with(".rogue",&ignore_case))
+          # URL was good enough to get started but is not the URL of a script.
+          # Reconstruct URL later.
+          url = null
         endIf
 
         # protocol = parts[0]
@@ -73,7 +80,7 @@ class PackageInfo
             url  = null
           others
             # Assume a URL that's missing the https:// protocol
-            init( "https://"+url )
+            init( morlock_home, "https://"+url )
             return
         endWhich
 
@@ -81,7 +88,7 @@ class PackageInfo
 
       if (not repo) repo = app_name
       name = provider/app_name
-      folder = "$/packages/$/$" (Morlock.HOME,provider,app_name)
+      folder = "$/packages/$/$" (morlock_home,provider,app_name)
       filepath = "$/$.rogue" (folder,app_name)
 
       if (not url)
@@ -163,6 +170,18 @@ class PackageInfo
         builder.println "using_local_script:"+using_local_script
         return builder->String
       endUse
+
+    method execute( cmd:String, &suppress_error, &allow_sudo, &bg )->Logical
+      if (not bg) println "> " + cmd
+      if (0 == System.run(cmd)) return true
+
+      if (allow_sudo)
+        println "Error executing '$'; retrying with 'sudo'."(cmd)
+        return execute( "sudo "+cmd, &=suppress_error )
+      endIf
+
+      if (suppress_error) return false
+      throw Error( "Error executing:\n$"(cmd) )
 
 endClass
 

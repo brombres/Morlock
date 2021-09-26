@@ -108,26 +108,28 @@ class Morlock
       endIf
 
       local script_args = @{ :action, version:info.version,
-                             package_folder:info.folder, morlock_home:HOME,
-                             script_filepath:info.filepath }
+                             morlock_home:HOME,
+                             script_filepath:info.filepath,
+                             host:info.host, repo:info.repo }
 
       try
         block script_args = script_args.to_json.to_escaped_ascii('"')
+          local launcher_filepath = "/opt/morlock/packages/morlock/Source/ScriptLauncher.rogue"
           local package_filepath = "/opt/morlock/packages/morlock/Source/Package.rogue"
           local exe_filepath = info.folder/info.app_name
           local crc32_filepath = info.folder/"source_crc32.txt"
           local crc32 : Int32
           contingent
             # Recompile?
-            crc32 = File.crc32(info.filepath) ~ File.crc32(package_filepath)
+            crc32 = File.crc32(info.filepath) ~ File.crc32(package_filepath) ~ File.crc32(launcher_filepath)
             necessary (File.exists(exe_filepath))
             necessary (File.exists(crc32_filepath))
             necessary (crc32->String == String(File(crc32_filepath)).trimmed)
 
           unsatisfied
             build_folder = create_build_folder(info)
-            local cmd = "roguec $ $ --essential --api --compile --output=$/$" ...
-              (info.filepath, package_filepath, File.esc(build_folder), info.app_name)
+            local cmd = "roguec $ $ $ --essential --api --compile --output=$/$" ...
+              (info.filepath, launcher_filepath, package_filepath, File.esc(build_folder), info.app_name)
             execute cmd
             File.delete( exe_filepath )
             File.copy( build_folder/info.app_name, exe_filepath, &verbose )
@@ -157,7 +159,7 @@ class Morlock
       endIf
 
       if (name.contains("://"))
-        info = PackageInfo( name )
+        info = PackageInfo( HOME, name )
 
       elseIf (File.exists(name) and not File.is_folder(name))
         # Local script for install.
@@ -188,7 +190,7 @@ class Morlock
           throw error( ''Failed to parse package name out of script ('name = "provider/app-name"').'' )
         endIf
 
-        info = PackageInfo( provider/app_name )
+        info = PackageInfo( HOME, provider/app_name )
         info.using_local_script = true
 
         # Copy script into place
@@ -199,15 +201,15 @@ class Morlock
         # TODO: map 'name' to any "built-in" packages.
 
         if (name.contains('/'))
-          info = PackageInfo( name )
+          info = PackageInfo( HOME, name )
         else
           local listing = File.listing( HOME/"packages/*/$"(name), &folders )
           which (listing.count)
             case 0
-              info = PackageInfo( name )
+              info = PackageInfo( HOME, name )
             case 1
               local provider = File.filename(File.folder(listing.first))
-              info = PackageInfo( provider/name )
+              info = PackageInfo( HOME, provider/name )
             others
               use builder = StringBuilder.pool
                 builder.println "Ambiguous app name '$' matches mulitple installed packages:"(name)

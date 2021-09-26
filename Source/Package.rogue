@@ -1,25 +1,12 @@
 uses Utility/Best
 
-try
-  forEach (type in TypeInfo.iterator)
-    if (type.instance_of(<<Package>>) and type is not <<Package>>)
-      local package = type.create_object<<Package>>
-      package.init( System.command_line_arguments.cloned )
-      package.handle_action
-    endIf
-  endForEach
-
-catch (err:PackageError)
-  Console.error.println err
-  System.exit 1
-
-endTry
-
 class Package
   PROPERTIES
     action            : String
     name              : String
+    host              : String
     provider          : String
+    repo              : String
     app_name          : String
     specified_version : String
     version           : String
@@ -38,8 +25,17 @@ class Package
   METHODS
     method init( args:String[] )
       require args.count
-      properties = JSON.parse( args.first )
+      init( JSON.parse(args.first) )
 
+    method init( name, properties:Value )
+      init( properties )
+
+    method init( morlock_home, url:String )
+      local info = PackageInfo( morlock_home, url )
+      name = info.name
+      init( @{version:info.version, script_filepath:info.filepath, host:info.host, repo:info.repo} )
+
+    method init( properties )
       if (not name or name.count('/')>1)
         throw PackageError(
           File.filename(properties//script_filepath),
@@ -55,16 +51,16 @@ class Package
 
       action = properties//action
       morlock_home = properties//morlock_home
+      host = properties//host
+      repo = properties//repo
       launcher_folder = morlock_home/"bin"
 
-      init
       if (properties//version)
         specified_version = properties//version
         version = specified_version
       endIf
-      select_version
-      install_folder = "$/$" (properties//package_folder,version)
-      bin_folder = install_folder/"bin"
+
+      init
 
     method init
       noAction
@@ -105,8 +101,7 @@ class Package
       endIf
 
     method download->String
-      execute( "curl -LfsSO " + url, &bg )
-      archive_filename = File.filename(url)
+      execute( "curl -LfsS $ -o $" (url,archive_filename), &bg )
       if (not File.exists(archive_filename)) throw error( "Error downloading " + url )
       return archive_filename
 
@@ -118,6 +113,19 @@ class Package
       if (0 != System.run(cmd))
         throw error( "Error executing:\n"+cmd )
       endIf
+
+    method filename_for_url( url:String )->String
+      local filename = File.filename(url)
+      contingent
+        local ext = File.extension(filename)
+        sufficient (ext.equals("zip",&ignore_case))
+        sufficient (ext.equals("tar",&ignore_case))
+        sufficient (ext.equals("gz",&ignore_case))
+        if (url.contains("tarball"))     filename += ".tar.gz"
+        elseIf (url.contains("zipball")) filename += ".zip"
+        else                             throw Error( "Unrecognized archive format: " + filename )
+      endContingent
+      return filename
 
     method handle_action
       which (action)
@@ -187,7 +195,7 @@ class Package
         execute( cmd, &bg )
       endForEach
 
-    method release( url:String, platforms=null:String, version=null:String )
+    method release( url:String, platforms=Platforms():Platforms, version=null:String )
       # Registers a release with .tar.gz/.zip URL and version number.
       #
       # platforms
@@ -199,11 +207,6 @@ class Package
       # version
       #   In the format "1", "1.0", "1.0.0", etc. Will be inferred from url
       #   if unspecified.
-      if (not platforms)
-        local lc = url.to_lowercase
-        platforms = which { lc.ends_with(".tar.gz"):"ml" || "wml" }
-      endIf
-
       if (not version)
         local lc = url.to_lowercase
         local span = lc.locate_pattern("v$(I)")
@@ -231,7 +234,31 @@ class Package
         endUse
       endIf
 
-      releases.add @{ :version, :url, :platforms }
+      releases.add @{ :version, :url, platforms:platforms->String, filename:filename_for_url(url) }
+
+    method scan_repo_releases( min_version=null:String, max_version=null:String, platforms=null:Platforms )
+      local url = "https://api.github.com/repos/$/$/releases"(provider,repo)
+      local cmd = ''curl -fsSL -H "Accept: application/vnd.github.v3+json" '' + url
+
+      local process = Process.run( cmd )
+      if (not process.success) throw Error( "Download failed: " + url )
+
+      local info = JSON.parse( process.output_string )
+      forEach (release_info in info)
+        local v = VersionNumber( release_info//tag_name->String.after_any("v") )
+        contingent
+          if (specified_version)
+            sufficient (v == specified_version)
+          else
+            if (min_version and v < min_version) nextIteration
+            if (max_version and v > max_version) nextIteration
+          endIf
+        satisfied
+          release( release_info//tarball_url, which{platforms||Platforms.unix}, v )
+          release( release_info//zipball_url, which{platforms||Platforms.unix+Platforms.windows}, v )
+          if (specified_version and v == specified_version) escapeForEach
+        endContingent
+      endForEach
 
     method select_version
       if (releases.is_empty) throw error( "No releases are available." )
@@ -276,16 +303,17 @@ class Package
       forEach (release in releases)
         if (VersionNumber(release//version) == version and release//platforms->String.contains(platform))
           url = release//url
+          archive_filename = release//filename
           if (not System.is_windows and url.ends_with(".tar.gz",&ignore_case)) escapeForEach
         endIf
       endForEach
 
+      install_folder = "$/packages/$/$/$" (morlock_home,provider,app_name,version)
+      bin_folder = install_folder/"bin"
+
     method uninstall
 
     method unpack
-      if (not archive_filename or not File.exists(archive_filename))
-        download
-      endIf
       if (archive_filename.ends_with(".zip",&ignore_case))
         throw error( "TODO: unpack ZIP." )
       elseIf (archive_filename.ends_with(".tar.gz"))
@@ -308,5 +336,58 @@ class PackageError( package_name:String, message ) : Error
         builder.println hr
         return builder
       endUse
+endClass
+
+class Platforms
+  GLOBAL METHODS
+    method linux->Platforms
+      return Platforms( "l" )
+
+    method macos->Platforms
+      return Platforms( "m" )
+
+    method unix->Platforms
+      return Platforms( "ml" )
+
+    method windows->Platforms
+      return Platforms( "w" )
+
+  PROPERTIES
+    combined : String
+
+  METHODS
+    method init( combined=null, &windows, &macos, &linux )
+      if (not combined) combined = ""
+      if (windows and not combined.contains('w')) combined += 'w'
+      if (macos and not combined.contains('m')) combined += 'm'
+      if (linux and not combined.contains('l')) combined += 'l'
+
+    method includes_linux->Logical
+      return combined.contains('l')
+
+    method includes_macos->Logical
+      return combined.contains('m')
+
+    method includes_unix->Logical
+      return includes_macos or includes_linux
+
+    method includes_windows->Logical
+      return combined.contains('w')
+
+    method is_defined->Logical
+      return (combined.count > 0)
+
+    method operator+( other:Platforms )->Platforms
+      return this | other
+
+    method operator|( other:Platforms )->Platforms
+      local combo = combined
+      forEach (ch in other.combined)
+        if (not combo.contains(ch)) combo += ch
+      endForEach
+      return Platforms(combo)
+
+    method to->String
+      return combined
 endClass
 

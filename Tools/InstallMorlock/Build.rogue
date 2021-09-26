@@ -38,7 +38,8 @@ routine rogo_default
 endRoutine
 
 routine rogo_build
-  local source_files = Files( "Source", "**/*.rogue" )
+  local source_files = Files( "../..", "Source/**/*.rogue" )
+  source_files.add( "Tools/InstallMorlock/Source/**/*.rogue" )
   if (source_files.any_newer_than(exe_filepath))
     local cpp_filepath = "Build/$-$.cpp" (Build.PROJECT,System.os)
     if (source_files.any_newer_than(cpp_filepath))

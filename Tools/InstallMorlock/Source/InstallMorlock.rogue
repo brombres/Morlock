@@ -5,6 +5,9 @@
 
 $requireRogue "1.8.8"
 
+$include "../../../Source/Package.rogue"
+$include "../../../Source/PackageInfo.rogue"
+
 uses Utility/CommandLineParser
 uses Utility/Zip
 
@@ -60,6 +63,19 @@ class InstallMorlock
       create_folder( home/"build" )
       create_folder( home/"packages" )
 
+      #local value = fetch_github_value( "https://api.github.com/repos/abepralle/rogue/releases" )
+      #println value.to_json(&formatted)
+      #local bytes = download_bytes( "https://api.github.com/repos/AbePralle/Rogue/zipball/1.8.4" )
+      #File.save( "Test.zip", bytes )
+      #trace bytes.count
+      local package = Package( home, "https://github.com/abepralle/rogue" )
+      package.scan_repo_releases
+      println (forEach in package.releases)
+      package.select_version
+      trace package.version
+      package.download
+      #( min_version=null:String, max_version=null:String, platforms=null:String, &windows, &mac, &linux )
+
     method create_folder( path:String )
       if (not File.is_folder(path))
         if (not File.create_folder(path))
@@ -70,12 +86,21 @@ class InstallMorlock
         endIf
       endIf
 
-    method execute( cmd:String, error_message=null:String, &suppress_error )->Logical
-      println "> " + cmd
+    method execute( cmd:String, error_message=null:String, &suppress_error, &bg )->Logical
+      if (not bg) println "> " + cmd
       if (0 == System.run(cmd)) return true
       if (suppress_error) return false
       if (not error_message) error_message = "Error executing:\n"+cmd
       throw Error( error_message )
+
+    method fetch_github_value( command:String )->Value
+      local bytes = download_bytes( ''-H "Accept: application/vnd.github.v3+json" '' + command )
+      return JSON.parse( String(bytes) )
+
+    method download_bytes( url:String )->Byte[]
+      local process = Process.run( "curl -fsSL "+url )
+      if (not process.success) throw Error( "Download failed: " + url )
+      return process.output_bytes
 
     method parse_args( args:String[] )->Value
       local default_home_folder : String

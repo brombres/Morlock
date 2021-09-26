@@ -1,0 +1,16 @@
+try
+  forEach (type in TypeInfo.iterator)
+    if (type.instance_of(<<Package>>) and type is not <<Package>>)
+      local package = type.create_object<<Package>>
+      package.init( System.command_line_arguments.cloned )
+      package.select_version
+      package.handle_action
+    endIf
+  endForEach
+
+catch (err:PackageError)
+  Console.error.println err
+  System.exit 1
+
+endTry
+
