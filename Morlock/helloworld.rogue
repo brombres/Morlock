@@ -11,7 +11,7 @@ class HelloWorld : Package
       download
       unpack
       build
-      install_products( "Build/*-$(OS)", &windows="Build/*.exe" )
+      install_executable( "Build/*-$(OS)", &windows="Build/*.exe" )
 
 endClass
 

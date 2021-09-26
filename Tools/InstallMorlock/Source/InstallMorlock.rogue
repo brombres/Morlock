@@ -62,19 +62,15 @@ class InstallMorlock
       create_folder( home/"bin" )
       create_folder( home/"build" )
       create_folder( home/"packages" )
-
       #local value = fetch_github_value( "https://api.github.com/repos/abepralle/rogue/releases" )
       #println value.to_json(&formatted)
       #local bytes = download_bytes( "https://api.github.com/repos/AbePralle/Rogue/zipball/1.8.4" )
       #File.save( "Test.zip", bytes )
       #trace bytes.count
-      local package = Package( home, "https://github.com/abepralle/rogue" )
-      package.scan_repo_releases
-      println (forEach in package.releases)
-      package.select_version
-      trace package.version
-      package.download
-      #( min_version=null:String, max_version=null:String, platforms=null:String, &windows, &mac, &linux )
+
+      install_rogue
+      install_rogo
+      install_morlock
 
     method create_folder( path:String )
       if (not File.is_folder(path))
@@ -93,6 +89,7 @@ class InstallMorlock
       if (not error_message) error_message = "Error executing:\n"+cmd
       throw Error( error_message )
 
+      #{
     method fetch_github_value( command:String )->Value
       local bytes = download_bytes( ''-H "Accept: application/vnd.github.v3+json" '' + command )
       return JSON.parse( String(bytes) )
@@ -101,6 +98,49 @@ class InstallMorlock
       local process = Process.run( "curl -fsSL "+url )
       if (not process.success) throw Error( "Download failed: " + url )
       return process.output_bytes
+      }#
+
+    method install_morlock
+      trace "TODO"
+
+    method install_rogo
+      trace "TODO"
+
+    method install_rogue
+      local package = Package( home, "https://github.com/abepralle/rogue" )
+      package.scan_repo_releases
+      package.select_version
+      if (File.exists(package.install_folder))
+        println "$ v$ is already installed." (package.name,package.version)
+        return
+      endIf
+
+      local build_folder = home/"build/abepralle/rogue"
+      create_folder( build_folder )
+
+      #package.archive_filename = build_folder/package.archive_filename
+
+      #package.download
+      #package.unpack( build_folder )
+
+      local archive_folder : String
+      forEach (folder in File.listing(build_folder,&folders))
+        if (File.exists(folder/"Makefile"))
+          archive_folder = folder
+          escapeForEach
+        endIf
+      endForEach
+      if (not archive_folder) throw Error( "Failed to find extracted source folder in: "+build_folder )
+      package.archive_folder = archive_folder
+
+      local install_folder   = package.install_folder
+      local libraries_folder = install_folder
+      create_folder( libraries_folder )
+      execute( "(cd $ && make build LIBRARIES_FOLDER=$)" (File.esc(archive_folder),File.esc(install_folder)) )
+
+      package.install_executable( &dest_filename="roguec" )
+
+      #( min_version=null:String, max_version=null:String, platforms=null:String, &windows, &mac, &linux )
 
     method parse_args( args:String[] )->Value
       local default_home_folder : String

@@ -107,10 +107,8 @@ class Morlock
         build_folder = create_build_folder(info)
       endIf
 
-      local script_args = @{ :action, version:info.version,
-                             morlock_home:HOME,
-                             script_filepath:info.filepath,
-                             host:info.host, repo:info.repo }
+      local script_args = info.package_args
+      script_args//action = action
 
       try
         block script_args = script_args.to_json.to_escaped_ascii('"')

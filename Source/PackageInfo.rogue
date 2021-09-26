@@ -183,5 +183,7 @@ class PackageInfo
       if (suppress_error) return false
       throw Error( "Error executing:\n$"(cmd) )
 
+    method package_args->Value
+      return @{ :morlock_home, :version, script_filepath:filepath, :host, :repo }
 endClass
 

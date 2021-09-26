@@ -33,7 +33,7 @@ class Package
     method init( morlock_home, url:String )
       local info = PackageInfo( morlock_home, url )
       name = info.name
-      init( @{version:info.version, script_filepath:info.filepath, host:info.host, repo:info.repo} )
+      init( info.package_args )
 
     method init( properties )
       if (not name or name.count('/')>1)
@@ -87,6 +87,8 @@ class Package
 
     method copy_executable( src_filepath:String, dest_filename=null:String )
       if (not dest_filename) dest_filename = app_name
+
+      create_folder( bin_folder )
       local dest_filepath = bin_folder/dest_filename
 
       println "Copying $ -> $" (src_filepath,dest_filepath)
@@ -101,6 +103,7 @@ class Package
       endIf
 
     method download->String
+      println "Downloading $ v$" (name,version)
       execute( "curl -LfsS $ -o $" (url,archive_filename), &bg )
       if (not File.exists(archive_filename)) throw error( "Error downloading " + url )
       return archive_filename
@@ -170,20 +173,37 @@ class Package
     method install
       throw error( "install() must overridden." )
 
-    method install_products( default=null:String, windows=null:String, macos=null:String, linux=null:String, &link=true )
+    method install_executable( default=null:String, windows=null:String, macos=null:String, linux=null:String,
+        dest_filename=null:String, &link=true )
       local pattern : String
       if (System.is_macos)       pattern = which{ macos || default }
       elseIf (System.is_linux)   pattern = which{ linux || default }
       elseIf (System.is_windows) pattern = which{ windows || default }
       else                       pattern = default
 
+      if (not pattern)
+        if (File.is_folder("Build"))   pattern = "Build/*"
+        elseIf (File.is_folder("bin")) pattern = "bin/*"
+      endIf
+
       if (not pattern) throw error( "No filepath or pattern given for $."(System.os) )
 
       pattern = pattern.replacing( "$(OS)", System.os )
 
       local exe_list = File.listing( archive_folder/pattern )
-      if (exe_list.is_empty) throw error( "Cannot locate build product." )
-      copy_executable( forEach in exe_list )
+      contingent
+        sufficient (exe_list.count == 1)
+        if (System.is_windows)
+          exe_list.keep( (f)=>f.ends_with(".exe",&ignore_case) )
+        else
+          exe_list.keep( (f)=>f.ends_with(System.os,&ignore_case) )
+        endIf
+        sufficient (exe_list.count == 1)
+
+        throw error( "Cannot locate executable build product." )
+      endContingent
+
+      copy_executable( forEach in exe_list, dest_filename )
       if (link) this.link
 
     method link
@@ -304,7 +324,10 @@ class Package
         if (VersionNumber(release//version) == version and release//platforms->String.contains(platform))
           url = release//url
           archive_filename = release//filename
-          if (not System.is_windows and url.ends_with(".tar.gz",&ignore_case)) escapeForEach
+          if (not System.is_windows)
+            if (url.ends_with(".tar.gz",&ignore_case)) escapeForEach
+            if (url.contains("tarball")) escapeForEach
+          endIf
         endIf
       endForEach
 
@@ -313,11 +336,15 @@ class Package
 
     method uninstall
 
-    method unpack
+    method unpack( destination_folder=".":String )
+      if (not File.exists(archive_filename))
+        throw error( "[INTERNAL] Must call download() before unpack()." )
+      endIf
+
       if (archive_filename.ends_with(".zip",&ignore_case))
         throw error( "TODO: unpack ZIP." )
       elseIf (archive_filename.ends_with(".tar.gz"))
-        execute "tar -xvf " + archive_filename
+        execute "tar -C $ -xvf $" (File.esc(destination_folder),File.esc(archive_filename))
         is_unpacked = true
       else
         throw error( "Cannot unpack() file type '.$'; write custom install() code to handle it." )
