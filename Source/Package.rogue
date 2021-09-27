@@ -153,7 +153,7 @@ class Package
       println "-" * Console.width.or_smaller(80)
 
     method handle_install
-      if (File.exists(install_folder))
+      if (File.exists(install_folder) and File.listing(install_folder).count > 0)
         throw error( "$ version $ is already installed."(name,version) )
       endIf
 
@@ -196,7 +196,12 @@ class Package
         if (System.is_windows)
           exe_list.keep( (f)=>f.ends_with(".exe",&ignore_case) )
         else
-          exe_list.keep( (f)=>f.ends_with(System.os,&ignore_case) )
+          if (exe_list.find( (f)=>f.ends_with(System.os,&ignore_case) ))
+            exe_list.keep( (f)=>f.ends_with(System.os,&ignore_case) )
+          elseIf
+            exe_list.find( (f) with (app_name) => File.filename(f) == app_name )
+            exe_list.keep( (f) with (app_name) => File.filename(f) == app_name )
+          endIf
         endIf
         sufficient (exe_list.count == 1)
 

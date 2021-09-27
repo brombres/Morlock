@@ -104,13 +104,46 @@ class InstallMorlock
       trace "TODO"
 
     method install_rogo
-      trace "TODO"
+      local package = Package( home, "https://github.com/abepralle/rogo" )
+      package.scan_repo_releases
+      package.select_version
+      if (File.exists(package.install_folder) and not File.listing(package.install_folder).is_empty)
+        println "$ v$ is already installed." (package.name,package.version)
+        return
+      endIf
+
+      local build_folder = home/"build/abepralle/rogo"
+      create_folder( build_folder )
+
+      package.archive_filename = build_folder/package.archive_filename
+      package.archive_filename = build_folder/"Rogo-1.1.tar.gz" # FIXME
+      trace package.archive_filename
+
+      #package.download #FIXME
+      package.unpack( build_folder )
+
+      local archive_folder : String
+      forEach (folder in File.listing(build_folder,&folders))
+        if (File.exists(folder/"Makefile"))
+          archive_folder = folder
+          escapeForEach
+        endIf
+      endForEach
+      if (not archive_folder) throw Error( "Failed to find extracted source folder in: "+build_folder )
+      package.archive_folder = archive_folder
+
+      local install_folder   = package.install_folder
+      local libraries_folder = install_folder
+      create_folder( libraries_folder )
+      execute( "(cd $ && make build)" (File.esc(archive_folder)) )
+
+      package.install_executable
 
     method install_rogue
       local package = Package( home, "https://github.com/abepralle/rogue" )
       package.scan_repo_releases
       package.select_version
-      if (File.exists(package.install_folder))
+      if (File.exists(package.install_folder) and not File.listing(package.install_folder).is_empty)
         println "$ v$ is already installed." (package.name,package.version)
         return
       endIf
@@ -118,8 +151,9 @@ class InstallMorlock
       local build_folder = home/"build/abepralle/rogue"
       create_folder( build_folder )
 
-      #package.archive_filename = build_folder/package.archive_filename
+      package.archive_filename = build_folder/package.archive_filename
 
+      #FIXME
       #package.download
       #package.unpack( build_folder )
 
@@ -139,8 +173,6 @@ class InstallMorlock
       execute( "(cd $ && make build LIBRARIES_FOLDER=$)" (File.esc(archive_folder),File.esc(install_folder)) )
 
       package.install_executable( &dest_filename="roguec" )
-
-      #( min_version=null:String, max_version=null:String, platforms=null:String, &windows, &mac, &linux )
 
     method parse_args( args:String[] )->Value
       local default_home_folder : String
