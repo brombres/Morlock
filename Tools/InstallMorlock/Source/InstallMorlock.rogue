@@ -152,14 +152,16 @@ class InstallMorlock
       create_folder( build_folder )
 
       package.archive_filename = build_folder/package.archive_filename
+      package.archive_filename = build_folder/"Rogo.zip" # FIXME
 
       #FIXME
       #package.download
-      #package.unpack( build_folder )
+      package.unpack( build_folder )
 
       local archive_folder : String
+      local makefile = which{ System.is_windows:"make.bat" || "Makefile" }
       forEach (folder in File.listing(build_folder,&folders))
-        if (File.exists(folder/"Makefile"))
+        if (File.exists(folder/makefile))
           archive_folder = folder
           escapeForEach
         endIf
@@ -170,7 +172,12 @@ class InstallMorlock
       local install_folder   = package.install_folder
       local libraries_folder = install_folder
       create_folder( libraries_folder )
-      execute( "(cd $ && make build LIBRARIES_FOLDER=$)" (File.esc(archive_folder),File.esc(install_folder)) )
+      if (System.is_windows)
+        execute( "cd $ && make build" (File.esc(archive_folder)) )
+        execute( "xcopy /I /S /Q /Y Source\\Libraries $" (File.esc(install_folder)) )
+      else
+        execute( "(cd $ && make build LIBRARIES_FOLDER=$)" (File.esc(archive_folder),File.esc(install_folder)) )
+      endIf
 
       package.install_executable( &dest_filename="roguec" )
 

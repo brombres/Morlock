@@ -11,14 +11,13 @@ augment Build
   # You can create a Local.settings file with overrides for these values, e.g.:
   # LAUNCHER_FOLDER = "~/bin"
   PROPERTIES
+    RELEASE_MODE      = false
     PROJECT           = "Morlock"
     LAUNCHER_NAME     = "morlock"
     LAUNCHER_FOLDER   = "/usr/local/bin"
-    ROGUEC_FLAGS      = "--debug"
-    CPP_FLAGS_UNIX    = "-O0"
-                        # -O3 to optimize
-    CPP_FLAGS_WINDOWS = "/Od"
-                        # /Ob2ity /GF /Gy to optimize
+    ROGUEC_FLAGS      = ""
+    CPP_FLAGS_UNIX    = ""
+    CPP_FLAGS_WINDOWS = ""
 endAugment
 
 routine exe_filepath->String
@@ -34,45 +33,62 @@ endRoutine
 
 routine rogo_default
   rogo_build
-  #rogo_install_launcher  # Uncomment to automatically install a /usr/local/bin/morlock launcher
+  #rogo_install  # Uncomment to automatically install a /usr/local/bin/morlock launcher
   rogo_run
 endRoutine
 
 routine rogo_build
-  block exe_filepath
-    local source_files = Files( "Source", "**/*.rogue" )
-    local src_filepath = "Source/$.rogue" (Build.PROJECT)
-    if (source_files.any_newer_than(exe_filepath))
-      local cpp_filepath = "Build/$-$.cpp" (Build.PROJECT,System.os)
-      if (source_files.any_newer_than(cpp_filepath))
-        execute "roguec $ $ --main --output=$ --target=Console,C++,$"...
-                (File.esc(src_filepath),Build.ROGUEC_FLAGS,File.esc(cpp_filepath),System.os)
-      endIf
-      if (System.is_windows)
-        local libs = ""
-        local cc = "cl $ /EHsc /nologo $ /Fe$ $" (Build.CPP_FLAGS_WINDOWS,File.esc(cpp_filepath),File.esc(exe_filepath),libs)
-        #cc += " /link /LTCG"   # uncomment this if there are errors linking libraries
-        execute cc
-      else
-        local libs = ""
-        local cc = "c++ -Wall -std=gnu++11 -fno-strict-aliasing -Wno-invalid-offsetof $ $ -o $$"...
-          (Build.CPP_FLAGS_UNIX,File.esc(cpp_filepath),File.esc(exe_filepath),libs)
-        execute cc
-      endIf
+  local source_files = Files( "Source", "**/*.rogue" )
+  if (source_files.any_newer_than(exe_filepath))
+    local cpp_filepath = "Build/$-$.cpp" (Build.PROJECT,System.os)
+    if (source_files.any_newer_than(cpp_filepath))
+      compile_rogue
     endIf
-  endBlock
+    compile_cpp
+  endIf
+endRoutine
 
-  local output_source_folder = "/opt/morlock/packages/morlock/Source"
-  File.create_folder( output_source_folder )
-  File.copy( "Source/Package.rogue", output_source_folder, &if_different, &verbose )
-  File.copy( "Source/ScriptLauncher.rogue", output_source_folder, &if_different, &verbose )
+routine rogo_rebuild
+  compile_rogue
+  compile_cpp
+endRoutine
+
+routine compile_rogue
+  local src_filepath = "Source/$.rogue" (Build.PROJECT)
+  local cpp_filepath = "Build/$-$.cpp" (Build.PROJECT,System.os)
+  local flags = Build.ROGUEC_FLAGS
+  if (flags != "") flags += " "
+  flags += which{ Build.RELEASE_MODE:"--release" || "--debug" }
+  execute "roguec $ $ --main --output=$ --target=Console,C++,$"...
+          (File.esc(src_filepath),flags,File.esc(cpp_filepath),System.os)
+endRoutine
+
+routine compile_cpp
+  local cpp_filepath = "Build/$-$.cpp" (Build.PROJECT,System.os)
+  if (System.is_windows)
+    local libs = ""
+    local flags = Build.CPP_FLAGS_WINDOWS
+    if (flags != "") flags += " "
+    flags += which{ Build.RELEASE_MODE:"/Ob2ity /GF /Gy" || "/Od" }
+    local cc = "cl $ /EHsc /nologo $ /Fe$ $" (flags,File.esc(cpp_filepath),File.esc(exe_filepath),libs)
+    #cc += " /link /LTCG"   # uncomment this if there are errors linking libraries
+    execute cc
+  else
+    local libs = ""
+    local flags = Build.CPP_FLAGS_UNIX
+    if (flags != "") flags += " "
+    flags += which{ Build.RELEASE_MODE:"-O3" || "-O0" }
+    local cc = "c++ -Wall -std=gnu++11 -fno-strict-aliasing -Wno-invalid-offsetof $ $ -o $$"...
+      (flags,File.esc(cpp_filepath),File.esc(exe_filepath),libs)
+    execute cc
+  endIf
 endRoutine
 
 routine rogo_run
   execute File.esc( exe_filepath )
 endRoutine
 
-routine rogo_install_launcher
+routine rogo_install
   local exe_filepath = File.abs( exe_filepath )
   if (System.is_windows)
     local exe_folder = File.conventional_filepath( File.folder(exe_filepath) )
@@ -113,7 +129,7 @@ routine rogo_install_launcher
   endIf
 endRoutine
 
-routine rogo_clean
+routine rogo_uninstall
   verbose_delete( "Build" )
   if (not System.is_windows) verbose_delete( "$/$"(launcher_folder,Build.LAUNCHER_NAME) )
 endRoutine
@@ -129,12 +145,16 @@ routine verbose_delete( filepath:String )
   endIf
 endRoutine
 
-routine execute( commands:String, &suppress_error )->Logical
+routine execute( commands:String, error_message=null:String, &suppress_error )->Logical
   forEach (cmd in LineReader(commands))
     print( "> " ).println( cmd )
-    if (System.run(cmd) != 0)
-      if (suppress_error) return false
-      else                throw Error( "Build failed." )
+    if (0 != System.run(cmd))
+      if (suppress_error)
+        return false
+      else
+        if (not error_message) error_message = "Build failed."
+        throw Error( error_message )
+      endIf
     endIf
   endForEach
   return true
