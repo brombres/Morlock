@@ -227,7 +227,7 @@ class Morlock [singleton]
 
     method parse_args( args:String[] )->String[]
       if (System.is_windows)
-        HOME = "%HOMEDRIVE%/%HOMEPATH%/AppData/Local/Morlock"
+        HOME = "%HOMEDRIVE%%HOMEPATH%/AppData/Local/Morlock"
       else
         HOME = "/opt/morlock"
       endIf
@@ -278,7 +278,7 @@ class Morlock [singleton]
                |  init [home=<folder>]
                |    Initializes Morlock using the specified home folder. Default:
       if (System.is_windows)
-        println @|    %HOMEPATH%\AppData\Local\Morlock
+        println "    $"(File.expand_path("%HOMEDRIVE%%HOMEPATH%\\AppData\\Local\\Morlock"))
       else
         println @|    /opt/morlock
       endIf

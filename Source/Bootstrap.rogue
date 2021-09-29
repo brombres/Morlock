@@ -39,21 +39,22 @@ class Bootstrap [singleton]
       contingent
         local path = System.env//PATH
         necessary (path)
-        necessary (path.split(':').contains(binpath))
+        local separator = which{ System.is_windows:';' || ':' }
+        necessary (path.split(separator).contains(binpath))
 
       unsatisfied
         print_installing_header
         Morlock.header
-        println "Add the following folder to your system PATH and then re-run Morlock:"
+        println "Add the following folder to your system PATH:"
         println binpath
         println
         if (System.is_windows)
-          println "On Windows:"
-          println ''- Search for "env" and run "Edit the system environment variables".''
-          println ''- Click "Environment Variables..." near the bottom.''
-          println ''- Add or edit "Path" in the top "User variables" section.''
-          println ''- Add the Morlock "bin" folder to the path:''
+          println ''1. Start > Search for "env" > run "Edit the system environment variables".''
+          println ''2. Click "Environment Variables..." near the bottom.''
+          println ''3. Add or edit "Path" in the top "User variables" section.''
+          println ''4. Add the Morlock "bin" folder to the path:''
           println ''  '' + binpath
+          println ''5. Close and re-open the command prompt and re-run 'morlock.exe'.''
         else
           local shell = System.env//SHELL
           contingent
