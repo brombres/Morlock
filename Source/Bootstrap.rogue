@@ -37,15 +37,19 @@ class Bootstrap [singleton]
       # Make sure Morlock.HOME/bin is on the system PATH before proceeding.
       local binpath = File.conventional_filepath( Morlock.HOME/"bin" )
       contingent
-        local path = System.env//PATH
-        necessary (path)
+        local path_name = System.env.names.find( (name)=>name.equals("path",&ignore_case) )
+        necessary (path_name.exists)
+        local paths = System.env[path_name.value]
+        necessary (paths)
         local separator = which{ System.is_windows:';' || ':' }
-        necessary (path.split(separator).contains(binpath))
+        necessary (paths.split(separator).find(
+          (path) with (binpath) => path.equals(binpath,&ignore_case) ).exists
+        )
 
       unsatisfied
         print_installing_header
         Morlock.header
-        println "Add the following folder to your system PATH:"
+        println "Add the following folder to your system Path:"
         println binpath
         println
         if (System.is_windows)
@@ -201,12 +205,14 @@ class Bootstrap [singleton]
       Morlock.header( "Compiling roguec - this may take a while..." )
       if (System.is_windows)
         execute( "cd $ && make build" (File.esc(archive_folder)) )
-        execute( "xcopy /I /S /Q /Y Source\\Libraries $" (File.esc(install_folder)) )
+        execute( "xcopy /I /S /Q /Y $ $"...
+          (File.esc(archive_folder/"Source/Libraries"),File.esc(install_folder/"Libraries")) )
       else
         execute( "(cd $ && make build LIBRARIES_FOLDER=$)" (File.esc(archive_folder),File.esc(install_folder)) )
       endIf
 
-      package.install_executable( &dest_filename="roguec" )
+      local dest_filename = which{ System.is_windows:"roguec.exe" || "roguec" }
+      package.install_executable( &=dest_filename )
 
     method print_installing_header
       if (printed_installing_header) return

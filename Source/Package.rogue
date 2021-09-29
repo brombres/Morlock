@@ -110,7 +110,7 @@ class Package
 
     method download->String
       println "Downloading $ v$" (name,version)
-      execute( "curl -LfsS $ -o $" (url,archive_filename), &bg )
+      execute( "curl -LfsS $ -o $" (url,File.esc(archive_filename)), &bg )
       if (not File.exists(archive_filename)) throw error( "Error downloading " + url )
       return archive_filename
 
@@ -224,10 +224,15 @@ class Package
     method link
       local exe_list = File.listing( bin_folder/"*" )
       forEach (exe in exe_list)
-        local launcher = launcher_folder/File.filename(exe)
+        local launcher = launcher_folder/(File.filename(exe).before_last(".exe",&ignore_case))
+        if (System.is_windows) launcher += ".bat"
         File.delete( launcher )
-        local cmd = "ln -s $ $" (exe,launcher)
-        execute( cmd, &bg )
+        if (System.is_windows)
+          File.save( launcher, ''@$ %*''(File.esc(File.conventional_filepath(exe))) )
+        else
+          local cmd = "ln -s $ $" (exe,launcher)
+          execute( cmd, &bg )
+        endIf
       endForEach
 
     method release( url:String, platforms=Platforms():Platforms, version=null:String )

@@ -11,7 +11,7 @@ augment Build
   # You can create a Local.settings file with overrides for these values, e.g.:
   # LAUNCHER_FOLDER = "~/bin"
   PROPERTIES
-    RELEASE_MODE      = false
+    RELEASE_MODE      = true
     PROJECT           = "Morlock"
     LAUNCHER_NAME     = "morlock"
     LAUNCHER_FOLDER   = "/usr/local/bin"
@@ -38,7 +38,7 @@ routine rogo_default
 endRoutine
 
 routine rogo_build
-  local source_files = Files( "Source", "**/*.rogue" )
+  local source_files = Files( ".", "**/*.rogue" )
   if (source_files.any_newer_than(exe_filepath))
     local cpp_filepath = "Build/$-$.cpp" (Build.PROJECT,System.os)
     if (source_files.any_newer_than(cpp_filepath))

@@ -14,10 +14,7 @@ try
 catch (error:Error)
   local mesg = error->String
   local w = mesg.longest_line.or_larger(80).or_smaller( Console.width )
-  Console.error.println "="*w
-  Console.error.println "ERROR"
   Console.error.println mesg
-  Console.error.println "="*w
   System.exit 1
 endTry
 
@@ -233,35 +230,35 @@ class Morlock [singleton]
       endIf
 
       args .= cloned
-      if (args.is_empty) return args
+      if (args.count)
+        which (args.first)
+          case "init"
+            contingent
+              necessary (args.count <= 2)
 
-      which (args.first)
-        case "init"
-          contingent
-            necessary (args.count <= 2)
+              forEach (arg in args from 1)
+                local name = arg.before_first('=')
+                local value = arg.after_first('=')
+                which (name)
+                  case "home"
+                    necessary (value != "")
+                      HOME = value
+                  others
+                    necessary (false)
+                endWhich
+              endForEach
+              args.discard_from( 1 )
 
-            forEach (arg in args from 1)
-              local name = arg.before_first('=')
-              local value = arg.after_first('=')
-              which (name)
-                case "home"
-                  necessary (value != "")
-                    HOME = value
-                others
-                  necessary (false)
-              endWhich
-            endForEach
-            args.discard_from( 1 )
+            unsatisfied
+              throw error( "'morlock init' accepts a single 'home=<path>' argument." )
+            endContingent
 
-          unsatisfied
-            throw error( "'morlock init' accepts a single 'home=<path>' argument." )
-          endContingent
-
-        case "install", "reinstall"
-          if (args.count != 2)
-            throw error( "'morlock $' requires a single package name as argument."(args.first) )
-          endIf
-      endWhich
+          case "install", "reinstall"
+            if (args.count != 2)
+              throw error( "'morlock $' requires a single package name as argument."(args.first) )
+            endIf
+        endWhich
+      endIf
 
       HOME = File.expand_path( HOME )
 
