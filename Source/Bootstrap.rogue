@@ -14,11 +14,11 @@ class Bootstrap [singleton]
 
   METHODS
     method configure
-      # Windows: make sure we're running from a developer command prompt or PowerShell with
+      # Windows: make sure we're running from a developer command prompt with
       # command-line C++ support.
       if (System.is_windows)
         if (Process.run("cl").exit_code != 0)
-          throw Error( "This command must be run from a Visual Studio Developer Command Prompt or Developer PowerShell with a command line C++ compiler." )
+          throw Error( "This command must be run from a Visual Studio Developer Command Prompt with a command line C++ compiler." )
         endIf
       endIf
 
@@ -91,7 +91,9 @@ class Bootstrap [singleton]
       throw Error( error_message )
 
     method install_morlock
-      if (File.exists(Morlock.HOME/"bin/morlock")) return
+      local ext = which{ System.is_windows:".bat" || "" }
+      local bin_filepath = "$/bin/morlock$" (Morlock.HOME,ext)
+      if (File.exists(bin_filepath)) return
 
       # Can use the regular system to install the latest Morlock.
       # If the remaining code in this method executes on Windows it's probably a bootstrap
@@ -131,7 +133,9 @@ class Bootstrap [singleton]
       package.install_executable
 
     method install_rogo
-      if (File.exists(Morlock.HOME/"bin/rogo")) return
+      local ext = which{ System.is_windows:".bat" || "" }
+      local bin_filepath = "$/bin/rogo$" (Morlock.HOME,ext)
+      if (File.exists(bin_filepath)) return
 
       local package = Package( Morlock.HOME, "https://github.com/abepralle/rogo" )
       package.scan_repo_releases
@@ -168,7 +172,9 @@ class Bootstrap [singleton]
       package.install_executable
 
     method install_rogue
-      if (File.exists(Morlock.HOME/"bin/roguec")) return
+      local ext = which{ System.is_windows:".bat" || "" }
+      local bin_filepath = "$/bin/roguec$" (Morlock.HOME,ext)
+      if (File.exists(bin_filepath)) return
 
       local package = Package( Morlock.HOME, "https://github.com/abepralle/rogue" )
       package.scan_repo_releases
