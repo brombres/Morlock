@@ -5,12 +5,12 @@
 
 $requireRogue "1.8.8"
 
-uses Utility/CommandLineParser
-
+$include "Bootstrap.rogue"
+$include "Package.rogue"
 $include "PackageInfo.rogue"
 
 try
-  Morlock( System.command_line_arguments )
+  Morlock.init( System.command_line_arguments )
 catch (error:Error)
   local mesg = error->String
   local w = mesg.longest_line.or_larger(80).or_smaller( Console.width )
@@ -21,41 +21,32 @@ catch (error:Error)
   System.exit 1
 endTry
 
-class Morlock
-  DEFINITIONS
-    HOME = "/opt/morlock"
+class Morlock [singleton]
+  PROPERTIES
+    HOME : String
 
   METHODS
     method init( args:String[] )
-      local command = parse_args( args )
-      # 'command' has //options and possibly //args
+      args = parse_args( args )
 
-      if (command//options//help or not command//action or command//action == "help")
+      Bootstrap.configure
+
+      if (args.is_empty or args.first=="help")
         print_usage
         System.exit 0
       endIf
 
-      configure_morlock
-
-      which (command//action)
+      which (args[0])
         case "install"
-          local info = resolve_package( command//args.first, &allow_local_script )
+          local info = resolve_package( args[1], &allow_local_script )
           if (info.version and info.installed_versions.contains(info.version))
             throw error( "$ version $ is already installed."(info.name,info.version) )
           endIf
           info.fetch_latest_script
           run_script( "install", info )
 
-        case "reinstall"
-          local info = resolve_package( command//args.first, &allow_local_script )
-          if (info.installed_versions.count)
-            run_script( "uninstall", info )
-          endIf
-          info.fetch_latest_script
-          run_script( "install", info )
-
         case "uninstall"
-          local info = resolve_package( command//args.first )
+          local info = resolve_package( args[1] )
           if (info.version and not info.installed_versions.contains(info.version))
             throw error( "$ version $ is not installed."(info.name,info.version) )
           endIf
@@ -65,14 +56,8 @@ class Morlock
           run_script( "uninstall", info )
 
         others
-          throw error( "Unrecognized morlock command '$'."(command//action) )
+          throw error( "Unrecognized morlock command '$'."(args[0]) )
       endWhich
-
-    method configure_morlock
-      create_folder( HOME, &chown )
-      create_folder( HOME/"bin" )
-      create_folder( HOME/"build" )
-      create_folder( HOME/"packages" )
 
     method create_build_folder( info:PackageInfo )->String
       local build_folder = "$/$/$/$" (HOME,"build",info.provider,info.app_name)
@@ -83,23 +68,40 @@ class Morlock
       endIf
       return build_folder
 
-    method create_folder( folder:String, &chown )
-      if (not File.exists(folder))
-        execute( "mkdir -p "+folder, &allow_sudo, &bg )
+    method create_folder( path:String, &chown )
+      if (not File.is_folder(path))
+        if (not File.create_folder(path))
+          local error_message = "Unable to create folder: "+path
+          if (System.is_windows) throw Error(error_message)
+          local cmd = "sudo mkdir -p $" (File.esc(path))
+          execute( cmd, error_message )
+        endIf
 
-        if (chown)
-          local user = System.environment//USER
-          execute( "chown $ $" (user,folder), &allow_sudo, &bg )
+        if (not System.is_windows)
+          if (chown)
+            # chown the Morlock home folder
+            if (System.is_macos)
+              local cmd = "chown $:admin $" (System.environment//USER,File.esc(Morlock.HOME))
+              if (not Process.run(cmd,&env).success)
+                execute( "sudo " + cmd, "Unable to chown Morlock home folder: "+Morlock.HOME )
+              endIf
+            endIf
+          endIf
+
+          execute( "chmod 755 $"(File.esc(path)), &bg )
         endIf
       endIf
 
     method error( message:String )->Error
       return Error( message )
 
+    method header
+      println "-" * Console.width.or_smaller(80)
+
     method header( message:String )
-      println "-" * Console.width.or_smaller(80)
+      header
       println message
-      println "-" * Console.width.or_smaller(80)
+      header
 
     method run_script( action:String, info:PackageInfo )
       local build_folder : String
@@ -131,7 +133,7 @@ class Morlock
             execute cmd
             File.delete( exe_filepath )
             File.copy( build_folder/info.app_name, exe_filepath, &verbose )
-            execute( "chmod u+x $" (File.esc(exe_filepath)), &bg )
+            if (not System.is_windows) execute( "chmod u+x $" (File.esc(exe_filepath)), &bg )
             File.save( crc32_filepath, crc32->String )
 
           endContingent
@@ -223,38 +225,73 @@ class Morlock
 
       return info
 
-    method parse_args( args:String[] )->Value
-      local command = CommandLineParser().
-      [
-        option( "--help", &aliases=["-h","-?"] )
-      ].parse( args )
-
-      if (command//args.count)
-        command//action = command//args.remove_at(0)
-        local argc = command//args.count
-        which (command//action)
-          case "install", "uninstall", "reinstall"
-            if (argc != 1)
-              throw error( "'morlock $' requires a single package name as argument."(command//action) )
-            endIf
-        endWhich
+    method parse_args( args:String[] )->String[]
+      if (System.is_windows)
+        HOME = "%HOMEDRIVE%/%HOMEPATH%/AppData/Local/Morlock"
+      else
+        HOME = "/opt/morlock"
       endIf
 
-      return command
+      args .= cloned
+      if (args.is_empty) return args
+
+      which (args.first)
+        case "init"
+          contingent
+            necessary (args.count <= 2)
+
+            forEach (arg in args from 1)
+              local name = arg.before_first('=')
+              local value = arg.after_first('=')
+              which (name)
+                case "home"
+                  necessary (value != "")
+                    HOME = value
+                others
+                  necessary (false)
+              endWhich
+            endForEach
+            args.discard_from( 1 )
+
+          unsatisfied
+            throw error( "'morlock init' accepts a single 'home=<path>' argument." )
+          endContingent
+
+        case "install", "reinstall"
+          if (args.count != 2)
+            throw error( "'morlock $' requires a single package name as argument."(args.first) )
+          endIf
+      endWhich
+
+      HOME = File.expand_path( HOME )
+
+      return args
 
     method print_usage
       println @|USAGE
-               |  morlock COMMAND
+               |  morlock <command>
                |
                |COMMANDS
-               |  help, --help, -h, -?
+               |  help
                |    Show this help text.
                |
-               |  install provider/app_name
+               |  init [home=<folder>]
+               |    Initializes Morlock using the specified home folder. Default:
+      if (System.is_windows)
+        println @|    %HOMEPATH%\AppData\Local\Morlock
+      else
+        println @|    /opt/morlock
+      endIf
+      println @|
+               |  install   <package>
                |
-               |  reinstall provider/app_name
+               |  uninstall <package>
                |
-               |  uninstall provider/app_name
+               |PACKAGE FORMAT
+               |  provider/repo/app-name
+               |  provider/repo
+               |  repo
+               |  https://github.com/provider/repo/morlock/app-name.rogue
 endClass
 
 routine execute( cmd:String, &suppress_error, &allow_sudo, &bg )->Logical

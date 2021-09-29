@@ -1,4 +1,5 @@
 uses Utility/Best
+uses Utility/Zip
 
 class Package
   PROPERTIES
@@ -23,6 +24,11 @@ class Package
     properties       : Value
 
   METHODS
+    method init
+      # Can override this to add specific release()s. For example:
+      #   release "https://raw.githubusercontent.com/.../xyz-1.0.tar.gz"
+      scan_repo_releases
+
     method init( args:String[] )
       require args.count
       init( JSON.parse(args.first) )
@@ -62,9 +68,6 @@ class Package
 
       init
 
-    method init
-      noAction
-
     method build
       # Attempts to automatically figure out how build the downloaded & unpacked
       # archive and launches the appropriate commands.
@@ -86,14 +89,17 @@ class Package
       endIf
 
     method copy_executable( src_filepath:String, dest_filename=null:String )
-      if (not dest_filename) dest_filename = app_name
+      if (not dest_filename)
+        dest_filename = app_name
+        if (System.is_windows) dest_filename += ".exe"
+      endIf
 
       create_folder( bin_folder )
       local dest_filepath = bin_folder/dest_filename
 
       println "Copying $ -> $" (src_filepath,dest_filepath)
       File.copy( src_filepath, dest_filepath )
-      execute( "chmod u+x $" (File.esc(dest_filepath)), &bg )
+      if (not System.is_windows) execute( "chmod u+x $" (File.esc(dest_filepath)), &bg )
 
     method create_folder( folder:String )
       println "  " + folder
@@ -171,7 +177,11 @@ class Package
       endTry
 
     method install
-      throw error( "install() must overridden." )
+      # Override as needed.
+      download
+      unpack
+      build
+      install_executable
 
     method install_executable( default=null:String, windows=null:String, macos=null:String, linux=null:String,
         dest_filename=null:String, &link=true )
@@ -346,11 +356,11 @@ class Package
         throw error( "[INTERNAL] Must call download() before unpack()." )
       endIf
 
+      is_unpacked = true
       if (archive_filename.ends_with(".zip",&ignore_case))
-        throw error( "TODO: unpack ZIP." )
+        Zip( File(archive_filename) ).extract( destination_folder )
       elseIf (archive_filename.ends_with(".tar.gz"))
         execute "tar -C $ -xvf $" (File.esc(destination_folder),File.esc(archive_filename))
-        is_unpacked = true
       else
         throw error( "Cannot unpack() file type '.$'; write custom install() code to handle it." )
       endIf
