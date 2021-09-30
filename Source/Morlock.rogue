@@ -13,7 +13,6 @@ try
   Morlock.init( System.command_line_arguments )
 catch (error:Error)
   local mesg = error->String
-  local w = mesg.longest_line.or_larger(80).or_smaller( Console.width )
   Console.error.println mesg
   System.exit 1
 endTry

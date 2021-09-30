@@ -37,6 +37,13 @@ routine rogo_default
   rogo_run
 endRoutine
 
+routine rogo_bootstrap
+  rogo_build
+  local base_filepath = "Build/$-$" (Build.PROJECT,System.os)
+  File.copy( base_filepath+".h",   "Source/Bootstrap/Morlock.h" )
+  File.copy( base_filepath+".cpp", "Source/Bootstrap/Morlock.cpp" )
+endRoutine
+
 routine rogo_build
   local source_files = Files( ".", "**/*.rogue" )
   if (source_files.any_newer_than(exe_filepath))
