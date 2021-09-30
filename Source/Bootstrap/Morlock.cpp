@@ -1,7 +1,7 @@
 #include <stdio.h>
 namespace std {}
 using namespace std;
-#include "Morlock-macOS.h"
+#include "Morlock.h"
 
 //=============================================================================
 //  NativeCPP.cpp

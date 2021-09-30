@@ -39,7 +39,7 @@ endRoutine
 
 routine rogo_bootstrap
   rogo_build
-  local base_filepath = "Build/$-$" (Build.PROJECT,System.os)
+  local base_filepath = "Build/$" (Build.PROJECT)
   File.copy( base_filepath+".h",   "Source/Bootstrap/Morlock.h" )
   File.copy( base_filepath+".cpp", "Source/Bootstrap/Morlock.cpp" )
 endRoutine
@@ -47,7 +47,7 @@ endRoutine
 routine rogo_build
   local source_files = Files( ".", "**/*.rogue" )
   if (source_files.any_newer_than(exe_filepath))
-    local cpp_filepath = "Build/$-$.cpp" (Build.PROJECT,System.os)
+    local cpp_filepath = "Build/$.cpp" (Build.PROJECT)
     if (source_files.any_newer_than(cpp_filepath))
       compile_rogue
     endIf
@@ -62,7 +62,7 @@ endRoutine
 
 routine compile_rogue
   local src_filepath = "Source/$.rogue" (Build.PROJECT)
-  local cpp_filepath = "Build/$-$.cpp" (Build.PROJECT,System.os)
+  local cpp_filepath = "Build/$.cpp" (Build.PROJECT)
   local flags = Build.ROGUEC_FLAGS
   if (flags != "") flags += " "
   flags += which{ Build.RELEASE_MODE:"--release" || "--debug" }
@@ -71,7 +71,7 @@ routine compile_rogue
 endRoutine
 
 routine compile_cpp
-  local cpp_filepath = "Build/$-$.cpp" (Build.PROJECT,System.os)
+  local cpp_filepath = "Build/$.cpp" (Build.PROJECT)
   if (System.is_windows)
     local libs = ""
     local flags = Build.CPP_FLAGS_WINDOWS
