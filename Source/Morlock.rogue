@@ -26,7 +26,7 @@ class Morlock [singleton]
     method init( args:String[] )
       args = parse_args( args )
 
-      Bootstrap.configure
+      Bootstrap.configure( &bootstrapping=(args.count and args.first=="bootstrap") )
 
       if (args.is_empty or args.first=="help")
         print_usage
@@ -232,26 +232,10 @@ class Morlock [singleton]
       args .= cloned
       if (args.count)
         which (args.first)
-          case "init"
-            contingent
-              necessary (args.count <= 2)
-
-              forEach (arg in args from 1)
-                local name = arg.before_first('=')
-                local value = arg.after_first('=')
-                which (name)
-                  case "home"
-                    necessary (value != "")
-                      HOME = value
-                  others
-                    necessary (false)
-                endWhich
-              endForEach
-              args.discard_from( 1 )
-
-            unsatisfied
-              throw error( "'morlock init' accepts a single 'home=<path>' argument." )
-            endContingent
+          case "bootstrap"
+            if (args.count >= 2)
+              HOME = args[1]
+            endIf
 
           case "install", "reinstall"
             if (args.count != 2)
@@ -272,14 +256,6 @@ class Morlock [singleton]
                |  help
                |    Show this help text.
                |
-               |  init [home=<folder>]
-               |    Initializes Morlock using the specified home folder. Default:
-      if (System.is_windows)
-        println "    $"(File.expand_path("%HOMEDRIVE%%HOMEPATH%\\AppData\\Local\\Morlock"))
-      else
-        println @|    /opt/morlock
-      endIf
-      println @|
                |  install   <package>
                |
                |  uninstall <package>

@@ -11,9 +11,10 @@ uses Utility/Zip
 class Bootstrap [singleton]
   PROPERTIES
     printed_installing_header = false
+    bootstrapping = false
 
   METHODS
-    method configure
+    method configure( bootstrapping )
       # Windows: make sure we're running from a developer command prompt with
       # command-line C++ support.
       if (System.is_windows)
@@ -49,29 +50,29 @@ class Bootstrap [singleton]
       unsatisfied
         print_installing_header
         Morlock.header
-        println "Add the following folder to your system Path:"
-        println binpath
-        println
         if (System.is_windows)
+          println "Add the following folder to your system Path:"
+          println binpath
+          println
           println ''1. Start > Search for "env" > run "Edit the system environment variables".''
           println ''2. Click "Environment Variables..." near the bottom.''
           println ''3. Add or edit "Path" in the top "User variables" section.''
           println ''4. Add the Morlock "bin" folder to the path:''
           println ''  '' + binpath
-          println ''5. Close and re-open the command prompt and re-run 'morlock.exe'.''
+          println ''5. Open a new Developer Command Prompt and re-run 'install.bat'.''
         else
+          println "Add the following folder to your system PATH and re-run Morlock install command:"
+          println binpath
+          println
           local shell = System.env//SHELL
           contingent
             necessary (shell)
             shell = "~/.$rc" (File.filename(shell))
             necessary (File.exists(shell))
-            println "You can add this line to your $ (etc.) and reopen your terminal:" (shell)
-            println ''export PATH="'' + binpath + ''":$PATH''
-            println
-            println "Or copy and paste this command to perform both steps:"
+            println "You can execute this command to make the change:"
             println ''echo export PATH="$":\\$PATH >> $ && source $''(binpath,'$',shell,shell)
           unsatisfied
-            println "You can add this line to your ~/.bashrc (etc.) and reopen your terminal:"
+            println "Make the change by adding this line to your ~/.bashrc (etc.) and reopening your terminal:"
             println ''export PATH="'' + binpath + ''":$PATH''
           endContingent
         endIf
