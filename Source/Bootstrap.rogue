@@ -61,7 +61,7 @@ class Bootstrap [singleton]
           println ''  '' + binpath
           println ''5. Open a new Developer Command Prompt and re-run 'install.bat'.''
         else
-          println "Add the following folder to your system PATH and re-run Morlock install command:"
+          println "Add the following folder to your system PATH and re-run the Morlock install command:"
           println binpath
           println
           local shell = System.env//SHELL
@@ -72,7 +72,8 @@ class Bootstrap [singleton]
             println "You can execute this command to make the change:"
             println ''echo export PATH="$":\\$PATH >> $ && source $''(binpath,'$',shell,shell)
           unsatisfied
-            println "Make the change by adding this line to your ~/.bashrc (etc.) and reopening your terminal:"
+            println "Make the change by adding this line to your ~/.bashrc (etc.) and reopening your"
+            println "terminal:"
             println ''export PATH="'' + binpath + ''":$PATH''
           endContingent
         endIf
@@ -209,7 +210,11 @@ class Bootstrap [singleton]
       local libraries_folder = install_folder
       Morlock.create_folder( libraries_folder )
 
-      Morlock.header( "Compiling roguec - this may take a while..." )
+      if (System.is_windows)
+        Morlock.header( "Compiling roguec..." )
+      else
+        Morlock.header( "Compiling roguec - this may take a while..." )
+      endIf
       if (System.is_windows)
         execute( "cd $ && make build" (File.esc(archive_folder)) )
         execute( "xcopy /I /S /Q /Y $ $"...
