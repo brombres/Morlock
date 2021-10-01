@@ -112,7 +112,7 @@ class PackageInfo
 
     method fetch_latest_script
       if (not using_local_script)
-        #println "$ $ install script" (which{File.exists(filepath):"Updating" || "Fetching"}, name)
+        println "[$]"(name)
         if (not url)
           which (host)
             case "github.com"

@@ -8,14 +8,15 @@ if ! [ -d "$HOME" ]; then
   echo Creating home folder: $HOME
   mkdir "$HOME" &> /dev/null
   if ! [ -d "$HOME" ]; then
-    echo '> sudo mkdir "$HOME"'
+    echo '> sudo mkdir' "$HOME"
     sudo mkdir "$HOME"
   fi
 fi
 
-if ! chown $USER:admin "$HOME" &> /dev/null; then
-  echo '>' sudo chown $USER:admin "$HOME"
-  sudo chown $USER:admin "$HOME"
+GROUP=""
+if ! chown $USER$GROUP "$HOME" &> /dev/null; then
+  echo '>' sudo chown $USER$GROUP "$HOME"
+  sudo chown $USER$GROUP "$HOME"
 fi
 
 mkdir -p "$HOME/build/abepralle/morlock"
