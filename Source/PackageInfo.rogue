@@ -133,7 +133,7 @@ class PackageInfo
 
               local folder_info = data.first( $//name->String.equals("morlock",&ignore_case) )
               if (not folder_info)
-                throw Error( "No morlock/ install script folder exists on repo." )
+                throw Error( "No morlock/app-name.rogue install script exists in repo." )
               endIf
 
               local branch = folder_info//url->String.after_last('?').after_last("ref=").before_first('&')
@@ -152,8 +152,13 @@ class PackageInfo
           File.create_folder( folder )
         endIf
 
-        execute( "curl -LfsS $ -o $" (url,filepath), &bg )
-        File.save( folder/"url.txt", url )
+        if (execute("curl -fsSL $ -o $" (url,filepath), &bg, &suppress_error))
+          File.save( folder/"url.txt", url )
+        else
+          throw Error( "Can't find Morlock install script at:\n"+url )
+        endIf
+
+        File.delete( folder/"cache.json" )  # delete any existing cache
       endIf
 
     method description->String

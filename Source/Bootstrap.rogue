@@ -5,7 +5,6 @@
 
 $requireRogue "1.8.8"
 
-uses Utility/CommandLineParser
 uses Utility/Zip
 
 class Bootstrap [singleton]
@@ -85,12 +84,31 @@ class Bootstrap [singleton]
       install_rogo
       install_morlock
 
+      delete_unused_package_versions
+
+    method delete_unused_package_versions
+      forEach (folder in File.listing(Morlock.HOME/"packages/*/*",&ignore_hidden,&folders))
+        local v_filepath = folder/"active_version.txt"
+        if (File.exists(v_filepath))
+          local active_v = String(File(v_filepath)).trimmed
+          forEach (v_folder in File.listing(folder/"*",&ignore_hidden,&folders))
+            if (File.filename(v_folder) != active_v)
+              File.delete( v_folder )
+            endIf
+          endForEach
+        endIf
+      endForEach
+
     method execute( cmd:String, error_message=null:String, &suppress_error, &bg )->Logical
       if (not bg) println "> " + cmd
       if (0 == System.run(cmd)) return true
       if (suppress_error) return false
       if (not error_message) error_message = "Error executing:\n"+cmd
       throw Error( error_message )
+
+    method package_instance( url:String )->Package
+      local info = PackageInfo( Morlock.HOME, url )
+      return Package( info.name, info.package_args )
 
     method install_morlock
       local ext = which{ System.is_windows:".bat" || "" }
@@ -100,7 +118,7 @@ class Bootstrap [singleton]
       # Can use the regular system to install the latest Morlock.
       # If the remaining code in this method executes on Windows it's probably a bootstrap
       # executable and may be out of date.
-      local package = Package( Morlock.HOME, "https://github.com/abepralle/morlock" )
+      local package = package_instance( "https://github.com/abepralle/morlock" )
       package.scan_repo_releases
       package.select_version
       if (File.exists(package.install_folder) and not File.listing(package.install_folder).is_empty)
@@ -133,13 +151,15 @@ class Bootstrap [singleton]
       execute( "(cd $ && rogo build)" (File.esc(archive_folder)) )
 
       package.install_executable
+      File.save( File.folder(package.install_folder)/"active_version.txt", package.version )
+
 
     method install_rogo
       local ext = which{ System.is_windows:".bat" || "" }
       local bin_filepath = "$/bin/rogo$" (Morlock.HOME,ext)
       if (File.exists(bin_filepath)) return
 
-      local package = Package( Morlock.HOME, "https://github.com/abepralle/rogo" )
+      local package = package_instance( "https://github.com/abepralle/rogo" )
       package.scan_repo_releases
       package.select_version
       if (File.exists(package.install_folder) and not File.listing(package.install_folder).is_empty)
@@ -173,12 +193,14 @@ class Bootstrap [singleton]
 
       package.install_executable
 
+      File.save( File.folder(package.install_folder)/"active_version.txt", package.version )
+
     method install_rogue
       local ext = which{ System.is_windows:".bat" || "" }
       local bin_filepath = "$/bin/roguec$" (Morlock.HOME,ext)
       if (File.exists(bin_filepath)) return
 
-      local package = Package( Morlock.HOME, "https://github.com/abepralle/rogue" )
+      local package = package_instance( "https://github.com/abepralle/rogue" )
       package.scan_repo_releases
       package.select_version
       if (File.exists(package.install_folder) and not File.listing(package.install_folder).is_empty)
@@ -225,6 +247,8 @@ class Bootstrap [singleton]
 
       local dest_filename = which{ System.is_windows:"roguec.exe" || "roguec" }
       package.install_executable( &=dest_filename )
+
+      File.save( File.folder(package.install_folder)/"active_version.txt", package.version )
 
     method print_installing_header
       if (printed_installing_header) return

@@ -1,0 +1,18 @@
+class MorlockPackage : Package
+  # Base class Package is defined here:
+  # https://github.com/AbePralle/Morlock/blob/main/Source/Package.rogue
+  PROPERTIES
+    name = "abepralle/morlock"
+
+  METHODS
+    method init
+      # Uncomment to automatically determine releases using GitHub's API.
+      scan_repo_releases
+
+    method install
+      prior.install
+
+      local src = Files( archive_folder/"Source", "*.rogue" )
+      File.sync_from( src, install_folder/"Source" )
+endClass
+

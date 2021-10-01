@@ -32,9 +32,96 @@ class Morlock [singleton]
         System.exit 0
       endIf
 
-      which (args[0])
+      local action = args.remove_first
+      which (action)
+        case "create"
+          local info = resolve_package( args.first )
+          local script_folder : String
+          local listing = File.listing("./?orlock",&folders)
+          forEach (folder in listing)
+            if (folder.equals("morlock",&ignore_case))
+              script_folder = folder
+              escapeForEach
+            endIf
+          endForEach
+
+          if (not script_folder)
+            local n_caps = 0
+            local n_lc = 0
+            forEach (folder in File.listing(".",&folders,&ignore_hidden))
+              if (folder[0].is_uppercase)     ++n_caps
+              elseIf (folder[0].is_lowercase) ++n_lc
+            endForEach
+            script_folder = which{ (n_caps>=n_lc):"Morlock" || "morlock" }
+            println "Creating $/ for install scripts..."(script_folder)
+            create_folder( script_folder )
+          endIf
+
+          local script_filepath = "$/$.rogue" (script_folder,info.app_name)
+          if (File.exists(script_filepath))
+            throw error( "Install script '$' already exists."(script_filepath) )
+          endIf
+
+          local src =
+          @|class $(CLASS_NAME)Package : Package
+           |  # Base class Package is defined here:
+           |  # https://github.com/AbePralle/Morlock/blob/main/Source/Package.rogue
+           |  PROPERTIES
+           |    name = "$(PACKAGE_NAME)"
+           |
+           |  METHODS
+           |    method init
+           |      # Uncomment to automatically determine releases using GitHub's API.
+           |      # scan_repo_releases
+           |
+           |      # OR explicitly specify one or more release()s:
+           |      # release "https://raw.githubusercontent.com/.../xyz-1.0.tar.gz"
+           |      # release ...
+           |
+           |    #method build
+           |      # Called by install(). Override as needed. The default implementation
+           |      # knows how to build a Rogo-based project but nothing else.
+           |      # Typically the only subfolder in the current folder will be the
+           |      # unpacked archive.
+           |      #   forEach (folder in File.listing(".",&folders,&ignore_hidden))
+           |      #     if (File.exists(folder/"build-file-name"))
+           |      #       archive_folder = folder  # be sure to set this property
+           |      #       execute "cd $ && <build-command>" (File.esc(folder))
+           |      #     endIf
+           |      #   endForEach
+           |
+           |    method install
+           |      # By the time install() is called the following properties are set:
+           |      #   version           # "1.0"
+           |      #   url               # "https://github.com/.../abc.tar.gz"
+           |      #   archive_filename  # "abc.tar.gz"
+           |      #
+           |      # The current working directory is a temporary build folder.
+           |
+           |      download
+           |      # Typically no need to customize
+           |
+           |      unpack
+           |      # Knows how to unpack .tar.gz (Unix-like only) and .zip (Unix+Windows)
+           |
+           |      build
+           |      # Builds the unpacked archive. See build() above.
+           |
+           |      install_executable( "**/exe-filename" )
+           |      # Copies the file matching the given pattern to bin_folder/"app-name"
+           |
+           |      # If you have additional support files to install, copy them to
+           |      # 'install_folder'.
+           |endClass
+          src .= replacing( "$(CLASS_NAME)",   info.app_name.capitalized.replacing('-','_') )
+          src .= replacing( "$(PACKAGE_NAME)", info.name )
+
+          println "Creating script template - edit to add appropriate build steps and commit:"
+          println "$"(script_filepath)
+          File.save( script_filepath, src )
+
         case "install"
-          local info = resolve_package( args[1], &allow_local_script )
+          local info = resolve_package( args.first, &allow_local_script )
           if (info.version and info.installed_versions.contains(info.version))
             throw error( "$ version $ is already installed."(info.name,info.version) )
           endIf
@@ -42,7 +129,7 @@ class Morlock [singleton]
           run_script( "install", info )
 
         case "uninstall"
-          local info = resolve_package( args[1] )
+          local info = resolve_package( args.first )
           if (info.version and not info.installed_versions.contains(info.version))
             throw error( "$ version $ is not installed."(info.name,info.version) )
           endIf
@@ -51,8 +138,33 @@ class Morlock [singleton]
           endIf
           run_script( "uninstall", info )
 
+        case "update"
+          if (args.is_empty) args = installed_packages
+          forEach (package in args)
+            try
+              local info = resolve_package( package )
+              info.fetch_latest_script
+              run_script( "update", info )
+            catch (err:Error)
+              local w = Console.width.or_smaller(80)
+              println "="*w
+              println "ERROR [$]" (package)
+              println err->String.indented(2)
+              println "="*w
+            endTry
+          endForEach
+
+          #{
+          local info = resolve_package( args.first, &allow_local_script )
+          if (info.version and info.installed_versions.contains(info.version))
+            throw error( "$ version $ is already installed."(info.name,info.version) )
+          endIf
+          info.fetch_latest_script
+          run_script( "install", info )
+          }#
+
         others
-          throw error( "Unrecognized morlock command '$'."(args[0]) )
+          throw error( "Unrecognized morlock command '$'."(action) )
       endWhich
 
     method create_build_folder( info:PackageInfo )->String
@@ -99,9 +211,17 @@ class Morlock [singleton]
       println message
       header
 
+    method installed_packages->String[]
+      local packages = Set<<String>>()
+      local versions = File.listing( HOME/"packages/*/*/*", &folders, &omit_path )
+      forEach (v in versions)
+        packages.add( File.folder(v) )
+      endForEach
+      return packages->String[]
+
     method run_script( action:String, info:PackageInfo )
       local build_folder : String
-      if (action == "install")
+      if (action == "install" or action == "update")
         build_folder = create_build_folder(info)
       endIf
 
@@ -110,8 +230,15 @@ class Morlock [singleton]
 
       try
         block script_args = script_args.to_json.to_escaped_ascii('"')
-          local launcher_filepath = "/opt/morlock/packages/morlock/Source/ScriptLauncher.rogue"
-          local package_filepath = "/opt/morlock/packages/morlock/Source/Package.rogue"
+          local v_list = File.listing( HOME/"packages/abepralle/morlock", &folders, &ignore_hidden, &omit_path )
+          if (v_list.is_empty)
+            println "[INTERNAL ERROR] Morlock has no current version."
+            System.exit 1
+          endIf
+          v_list.sort( (a,b) => VersionNumber(a) > b )
+          local v = v_list.first
+          local launcher_filepath = HOME/"packages/abepralle/morlock/$/Source/ScriptLauncher.rogue"(v)
+          local package_filepath  = HOME/"packages/abepralle/morlock/$/Source/Package.rogue"(v)
           local exe_filepath = info.folder/info.app_name
           local crc32_filepath = info.folder/"source_crc32.txt"
           local crc32 : Int32
@@ -134,7 +261,7 @@ class Morlock [singleton]
 
           endContingent
 
-          if (action == "install")
+          if (action == "install" or action == "update")
             execute( 'cd $ && $ "$"' (File.esc(build_folder),File.esc(exe_filepath),script_args), &bg )
           else
             execute( 'cd $ && $ "$"' (File.esc(info.folder),File.esc(exe_filepath),script_args), &bg )
@@ -236,7 +363,7 @@ class Morlock [singleton]
               HOME = args[1]
             endIf
 
-          case "install", "reinstall"
+          case "create", "install", "reinstall"
             if (args.count != 2)
               throw error( "'morlock $' requires a single package name as argument."(args.first) )
             endIf
@@ -255,9 +382,22 @@ class Morlock [singleton]
                |  help
                |    Show this help text.
                |
+               |  create    <package>
+               |    Execute in the root folder of a repo you want to add a Morlock install
+               |    script to. If your GitHub username is "user" and you are in repo "abc",
+               |    write "morlock create user/abc". If you want to have the app named "xyz"
+               |    (but still from repo "abc"), write "morlock create user/xyz" and then
+               |    users will install with "morlock install user/abc/xyz".
+               |
                |  install   <package>
+               |    'morlock install user/repo/app-name' - installs package user/app-name
+               |    'morlock install user/app-name'      - shorthand for user/app-name/app-name
                |
                |  uninstall <package>
+               |
+               |  update    [package-a [package-b ...]]
+               |    Updates listed packages or else all packages, including Morlock, Rogue,
+               |    and Rogo.
                |
                |PACKAGE FORMAT
                |  provider/repo/app-name

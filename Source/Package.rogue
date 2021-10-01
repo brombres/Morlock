@@ -14,14 +14,16 @@ class Package
     url               : String
     morlock_home      : String
     launcher_folder   : String
+    package_folder    : String
     install_folder    : String
     bin_folder        : String
     archive_filename  : String
     archive_folder    : String
     is_unpacked       : String
 
-    releases         = @[]
-    properties       : Value
+    releases          = @[]
+    properties        : Value
+    cache             : Value
 
   METHODS
     method init
@@ -35,11 +37,6 @@ class Package
 
     method init( name, properties:Value )
       init( properties )
-
-    method init( morlock_home, url:String )
-      local info = PackageInfo( morlock_home, url )
-      name = info.name
-      init( info.package_args )
 
     method init( properties )
       if (not name or name.count('/')>1)
@@ -60,6 +57,13 @@ class Package
       host = properties//host
       repo = properties//repo
       launcher_folder = morlock_home/"bin"
+      package_folder = "$/packages/$/$" (morlock_home,provider,app_name)
+
+      if (package_folder/"cache.json")
+        cache = JSON.parse(File(package_folder/"cache.json"))
+      else
+        cache = @{}
+      endIf
 
       if (properties//version)
         specified_version = properties//version
@@ -71,9 +75,9 @@ class Package
     method build
       # Attempts to automatically figure out how build the downloaded & unpacked
       # archive and launches the appropriate commands.
-      forEach (folder in File.listing(".",&folders))
+      forEach (folder in File.listing(".",&folders,&ignore_hidden))
         if (File.exists(folder/"Build.rogue"))
-          execute "cd $ && rogo build" (folder)
+          execute "cd $ && rogo build" (File.esc(folder))
           archive_folder = folder
           return
         endIf
@@ -98,6 +102,7 @@ class Package
       local dest_filepath = bin_folder/dest_filename
 
       println "Copying $ -> $" (src_filepath,dest_filepath)
+      File.delete( dest_filepath )
       File.copy( src_filepath, dest_filepath )
       if (not System.is_windows) execute( "chmod u+x $" (File.esc(dest_filepath)), &bg )
 
@@ -138,7 +143,7 @@ class Package
 
     method handle_action
       which (action)
-        case "install"
+        case "install", "update"
           handle_install
         case "uninstall"
           if (File.exists(install_folder))
@@ -160,6 +165,7 @@ class Package
 
     method handle_install
       if (File.exists(install_folder) and File.listing(install_folder).count > 0)
+        if (action == "update") System.exit(0)
         throw error( "$ version $ is already installed."(name,version) )
       endIf
 
@@ -171,6 +177,8 @@ class Package
         create_folder( install_folder )
         create_folder( bin_folder )
         install
+        File.save( File.folder(install_folder)/"active_version.txt", version )
+
       catch (err:Error)
         File.delete( install_folder )
         throw err
@@ -192,8 +200,8 @@ class Package
       else                       pattern = default
 
       if (not pattern)
-        if (File.is_folder("Build"))   pattern = "Build/*"
-        elseIf (File.is_folder("bin")) pattern = "bin/*"
+        if (File.is_folder(archive_folder/"Build"))   pattern = "Build/*"
+        elseIf (File.is_folder(archive_folder/"bin")) pattern = "bin/*"
       endIf
 
       if (not pattern) throw error( "No filepath or pattern given for $."(System.os) )
@@ -235,7 +243,7 @@ class Package
         endIf
       endForEach
 
-    method release( url:String, platforms=Platforms():Platforms, version=null:String )
+    method release( url:String, platforms=null:Platforms, version=null:String )
       # Registers a release with .tar.gz/.zip URL and version number.
       #
       # platforms
@@ -247,6 +255,14 @@ class Package
       # version
       #   In the format "1", "1.0", "1.0.0", etc. Will be inferred from url
       #   if unspecified.
+      if (not platforms)
+        if (url.ends_with(".zip",&ignore_case) or url.contains("zipball",&ignore_case))
+          platforms = Platforms.windows
+        else
+          platforms = Platforms.all
+        endIf
+      endIf
+
       if (not version)
         local lc = url.to_lowercase
         local span = lc.locate_pattern("v$(I)")
@@ -276,14 +292,26 @@ class Package
 
       releases.add @{ :version, :url, platforms:platforms->String, filename:filename_for_url(url) }
 
+    method save_cache
+      cache.save( File(package_folder/"cache.json") )
+
     method scan_repo_releases( min_version=null:String, max_version=null:String, platforms=null:Platforms )
-      local url = "https://api.github.com/repos/$/$/releases"(provider,repo)
-      local cmd = ''curl -fsSL -H "Accept: application/vnd.github.v3+json" '' + url
+      local info : Value
 
-      local process = Process.run( cmd )
-      if (not process.success) throw Error( "Download failed: " + url )
+      if (cache//repo_releases)
+        info = cache//repo_releases
+      else
+        local url = "https://api.github.com/repos/$/$/releases"(provider,repo)
+        local cmd = ''curl -fsSL -H "Accept: application/vnd.github.v3+json" '' + url
 
-      local info = JSON.parse( process.output_string )
+        local process = Process.run( cmd )
+        if (not process.success) throw Error( "Download failed: " + url )
+
+        info = JSON.parse( process.output_string )
+        cache//repo_releases = info
+        save_cache
+      endIf
+
       forEach (release_info in info)
         local v = VersionNumber( release_info//tag_name->String.after_any("v") )
         contingent
@@ -350,8 +378,9 @@ class Package
           endIf
         endIf
       endForEach
+      if (not archive_filename) throw error( "No releases available." )
 
-      install_folder = "$/packages/$/$/$" (morlock_home,provider,app_name,version)
+      install_folder = package_folder/version
       bin_folder = install_folder/"bin"
 
     method uninstall
@@ -387,6 +416,9 @@ endClass
 
 class Platforms
   GLOBAL METHODS
+    method all->Platforms
+      return Platforms("wml")
+
     method linux->Platforms
       return Platforms( "l" )
 
@@ -408,6 +440,7 @@ class Platforms
       if (windows and not combined.contains('w')) combined += 'w'
       if (macos and not combined.contains('m')) combined += 'm'
       if (linux and not combined.contains('l')) combined += 'l'
+      if (combined == "") combined = "wml"
 
     method includes_linux->Logical
       return combined.contains('l')
