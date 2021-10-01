@@ -12,9 +12,9 @@
 
 @if exist "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\success.txt" goto DOWNLOADED_EXE
 @echo Downloading Morlock bootstrap executable...
-@curl -fsSL https://github.com/AbePralle/Morlock/releases/download/v0.0.3/morlock.exe -o "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\morlock.exe"
+@curl -fsSL https://github.com/AbePralle/Morlock/releases/download/v0.0.4/morlock.exe -o "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\morlock.exe"
 @echo Success > "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\success.txt"
 :DOWNLOADED_EXE
 
-"%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\morlock.exe" bootstrap
+"%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\morlock.exe" bootstrap --installer="%0"
 

@@ -18,7 +18,14 @@ class Bootstrap [singleton]
       # command-line C++ support.
       if (System.is_windows)
         if (Process.run("cl").exit_code != 0)
-          throw Error( "This command must be run from a Visual Studio Developer Command Prompt with a command line C++ compiler." )
+          local mesg = "This command must be run from a Visual Studio Developer Command Prompt that supports C++. "
+          if (cmd//options//installer)
+            mesg += "Open a Developer Command Prompt and re-run:\n"
+            mesg += cmd//options//installer
+          else
+            mesg += "Open a Developer Command Prompt and re-run morlock."
+          endIf
+          throw Error( mesg )
         endIf
       endIf
 
