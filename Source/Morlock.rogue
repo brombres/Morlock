@@ -9,6 +9,8 @@ $include "Bootstrap.rogue"
 $include "Package.rogue"
 $include "PackageInfo.rogue"
 
+uses Utility/CommandLineParser
+
 try
   Morlock.init( System.command_line_arguments )
 catch (error:Error)
@@ -23,19 +25,21 @@ class Morlock [singleton]
 
   METHODS
     method init( args:String[] )
-      args = parse_args( args )
+      local cmd = parse_args( args )
 
-      Bootstrap.configure( &bootstrapping=(args.count and args.first=="bootstrap") )
+      Bootstrap.configure( cmd )
 
-      if (args.is_empty or args.first=="help")
+      if (not cmd//action or cmd//action=="help")
         print_usage
         System.exit 0
       endIf
 
-      local action = args.remove_first
-      which (action)
+      which (cmd//action)
+        case "bootstrap"
+          noAction # already handled
+
         case "create"
-          local info = resolve_package( args.first )
+          local info = resolve_package( cmd//args.first )
           local script_folder : String
           local listing = File.listing("./?orlock",&folders)
           forEach (folder in listing)
@@ -121,7 +125,8 @@ class Morlock [singleton]
           File.save( script_filepath, src )
 
         case "install"
-          local info = resolve_package( args.first, &allow_local_script )
+          if (cmd//args.is_empty) throw error( "Package name expected after 'morlock install'." )
+          local info = resolve_package( cmd//args.first, &allow_local_script )
           if (info.version and info.installed_versions.contains(info.version))
             throw error( "$ version $ is already installed."(info.name,info.version) )
           endIf
@@ -132,7 +137,8 @@ class Morlock [singleton]
           println (forEach in installed_packages)
 
         case "uninstall"
-          local info = resolve_package( args.first )
+          if (cmd//args.is_empty) throw error( "Package name expected after 'morlock uninstall'." )
+          local info = resolve_package( cmd//args.first )
           if (info.version and not info.installed_versions.contains(info.version))
             throw error( "$ version $ is not installed."(info.name,info.version) )
           endIf
@@ -142,6 +148,7 @@ class Morlock [singleton]
           run_script( "uninstall", info )
 
         case "update"
+          args = cmd//args.to_list<<String>>
           if (args.is_empty) args = installed_packages
           forEach (package in args)
             try
@@ -158,11 +165,11 @@ class Morlock [singleton]
           endForEach
 
         others
-          if (args.is_empty)
-            throw error( "Missing package name after 'morlock $'."(action) )
+          if (cmd//args.is_empty)
+            throw error( "Missing package name after 'morlock $'."(cmd//action) )
           endIf
-          local info = resolve_package( args.first )
-          run_script( action, info )
+          local info = resolve_package( cmd//args.first )
+          run_script( cmd//action, info )
       endWhich
 
     method create_build_folder( info:PackageInfo )->String
@@ -350,31 +357,26 @@ class Morlock [singleton]
 
       return info
 
-    method parse_args( args:String[] )->String[]
+    method parse_args( args:String[] )->Value
       if (System.is_windows)
         HOME = "%HOMEDRIVE%%HOMEPATH%/AppData/Local/Morlock"
       else
         HOME = "/opt/morlock"
       endIf
 
-      args .= cloned
-      if (args.count)
-        which (args.first)
-          case "bootstrap"
-            if (args.count >= 2)
-              HOME = args[1]
-            endIf
+      local command = CommandLineParser().
+      [
+        option( "--home=",      &alias="-h", &default=HOME )
+        option( "--installer=", &alias="-i" )
+      ].parse( args )
 
-          case "create", "install", "reinstall"
-            if (args.count != 2)
-              throw error( "'morlock $' requires a single package name as argument."(args.first) )
-            endIf
-        endWhich
+      if (command//args.count)
+        command//action = command//args.remove_first
       endIf
 
-      HOME = File.expand_path( HOME )
+      HOME = File.expand_path( command//options//home )
 
-      return args
+      return command
 
     method print_usage
       println @|USAGE
@@ -384,20 +386,20 @@ class Morlock [singleton]
                |  help
                |    Show this help text.
                |
-               |  create    <package>
+               |  create <package>
                |    Execute in the root folder of a repo you want to add a Morlock install
                |    script to. If your GitHub username is "user" and you are in repo "abc",
                |    write "morlock create user/abc". If you want to have the app named "xyz"
                |    (but still from repo "abc"), write "morlock create user/xyz" and then
                |    users will install with "morlock install user/abc/xyz".
                |
-               |  install   <package>
+               |  install <package>
                |    'morlock install user/repo/app-name' - installs package user/app-name
                |    'morlock install user/app-name'      - shorthand for user/app-name/app-name
                |
                |  uninstall <package>
                |
-               |  update    [package-a [package-b ...]]
+               |  update [package-a [package-b ...]]
                |    Updates listed packages or else all packages, including Morlock, Rogue,
                |    and Rogo.
                |

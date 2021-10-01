@@ -9,11 +9,11 @@ uses Utility/Zip
 
 class Bootstrap [singleton]
   PROPERTIES
+    cmd : Value
     printed_installing_header = false
-    bootstrapping = false
 
   METHODS
-    method configure( bootstrapping )
+    method configure( cmd )
       # Windows: make sure we're running from a developer command prompt with
       # command-line C++ support.
       if (System.is_windows)
@@ -58,7 +58,12 @@ class Bootstrap [singleton]
           println ''3. Add or edit "Path" in the top "User variables" section.''
           println ''4. Add the Morlock "bin" folder to the path:''
           println ''  '' + binpath
-          println ''5. Open a new Developer Command Prompt and re-run 'install.bat'.''
+          if (cmd//options//installer)
+            println ''5. Open a new Developer Command Prompt and re-run:''
+            println ''   '' + cmd//options//installer
+          else
+            println ''5. Open a new Developer Command Prompt and re-run morlock.''
+          endIf
         else
           println "Add the following folder to your system PATH and re-run the Morlock install command:"
           println binpath
