@@ -248,7 +248,11 @@ class Morlock [singleton]
           local v = v_list.first
           local launcher_filepath = HOME/"packages/abepralle/morlock/$/Source/ScriptLauncher.rogue"(v)
           local package_filepath  = HOME/"packages/abepralle/morlock/$/Source/Package.rogue"(v)
-          local exe_filepath = info.folder/info.app_name
+
+          local exe_filename = info.app_name
+          if (System.is_windows) exe_filename += ".exe"
+          local exe_filepath = info.folder/exe_filename
+
           local crc32_filepath = info.folder/"source_crc32.txt"
           local crc32 : Int32
           contingent
@@ -260,12 +264,12 @@ class Morlock [singleton]
 
           unsatisfied
             build_folder = create_build_folder(info)
-            local cmd = "roguec $ $ $ --essential --api --compile --output=$/$" ...
+            local cmd = "roguec $ $ $ --essential --api --compile --output=$" ...
               (File.esc(info.filepath), File.esc(launcher_filepath), ...
-               File.esc(package_filepath), File.esc(build_folder), info.app_name)
+               File.esc(package_filepath), File.esc(build_folder/info.app_name))
             execute cmd
             File.delete( exe_filepath )
-            File.copy( build_folder/info.app_name, exe_filepath, &verbose )
+            File.copy( build_folder/exe_filename, exe_filepath, &verbose )
             if (not System.is_windows) execute( "chmod u+x $" (File.esc(exe_filepath)), &bg )
             File.save( crc32_filepath, crc32->String )
 
@@ -279,7 +283,7 @@ class Morlock [singleton]
         endBlock
       catch (err:Error)
         if (build_folder) File.delete( build_folder )
-        System.exit 1
+        throw err
       endTry
 
     method resolve_package( name:String, &allow_local_script )->PackageInfo
