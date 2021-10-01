@@ -59,8 +59,9 @@ class Package
       launcher_folder = morlock_home/"bin"
       package_folder = "$/packages/$/$" (morlock_home,provider,app_name)
 
-      if (package_folder/"cache.json")
-        cache = JSON.parse(File(package_folder/"cache.json"))
+      local cache_file = File(package_folder/"cache.json")
+      if (cache_file.exists)
+        cache = JSON.parse(cache_file)
       else
         cache = @{}
       endIf
@@ -146,16 +147,9 @@ class Package
         case "install", "update"
           handle_install
         case "uninstall"
-          if (File.exists(install_folder))
-            header "Uninstalling $ version $"(name,version)
-            File.delete( install_folder )
-          elseIf (specified_version)
-            throw error( "$ version $ is not installed." (name,version) )
-          else
-            throw error( "$ is not installed." (name) )
-          endIf
+          handle_uninstall
         others
-          println ''WARNING: morlock script $.rogue does not support action "$".''(app_name,action)
+          on( action )
       endWhich
 
     method header( message:String )
@@ -183,6 +177,18 @@ class Package
         File.delete( install_folder )
         throw err
       endTry
+
+    method handle_uninstall
+      if (File.exists(install_folder))
+        header "Uninstalling $ version $"(name,version)
+        File.delete( install_folder )
+        local v_file = File( package_folder/"active_version.txt" )
+        if (v_file.exists and version == String(v_file).trimmed) v_file.delete
+      elseIf (specified_version)
+        throw error( "$ version $ is not installed." (name,version) )
+      else
+        throw error( "$ is not installed." (name) )
+      endIf
 
     method install
       # Override as needed.
@@ -242,6 +248,9 @@ class Package
           execute( cmd, &bg )
         endIf
       endForEach
+
+    method on( action:String )
+      throw error( "Package does not implement '$'."(action) )
 
     method release( url:String, platforms=null:Platforms, version=null:String )
       # Registers a release with .tar.gz/.zip URL and version number.

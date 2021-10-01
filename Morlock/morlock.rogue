@@ -14,5 +14,8 @@ class MorlockPackage : Package
 
       local src = Files( archive_folder/"Source", "*.rogue" )
       File.sync_from( src, install_folder/"Source" )
+
+    method handle_uninstall
+      throw error( "Essential package $ cannot be uninstalled."(name) )
 endClass
 

@@ -128,6 +128,9 @@ class Morlock [singleton]
           info.fetch_latest_script
           run_script( "install", info )
 
+        case "list"
+          println (forEach in installed_packages)
+
         case "uninstall"
           local info = resolve_package( args.first )
           if (info.version and not info.installed_versions.contains(info.version))
@@ -154,17 +157,12 @@ class Morlock [singleton]
             endTry
           endForEach
 
-          #{
-          local info = resolve_package( args.first, &allow_local_script )
-          if (info.version and info.installed_versions.contains(info.version))
-            throw error( "$ version $ is already installed."(info.name,info.version) )
-          endIf
-          info.fetch_latest_script
-          run_script( "install", info )
-          }#
-
         others
-          throw error( "Unrecognized morlock command '$'."(action) )
+          if (args.is_empty)
+            throw error( "Missing package name after 'morlock $'."(action) )
+          endIf
+          local info = resolve_package( args.first )
+          run_script( action, info )
       endWhich
 
     method create_build_folder( info:PackageInfo )->String
@@ -220,6 +218,10 @@ class Morlock [singleton]
       return packages->String[]
 
     method run_script( action:String, info:PackageInfo )
+      if (action != "install" and not File.exists(info.folder))
+        throw error( "Package $ is not installed." (info.name) )
+      endIf
+
       local build_folder : String
       if (action == "install" or action == "update")
         build_folder = create_build_folder(info)
@@ -322,7 +324,6 @@ class Morlock [singleton]
 
       else
         # TODO: map 'name' to any "built-in" packages.
-
         if (name.contains('/'))
           info = PackageInfo( HOME, name )
         else
