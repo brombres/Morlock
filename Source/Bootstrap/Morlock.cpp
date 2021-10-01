@@ -8823,7 +8823,7 @@ const char* Rogue_literal_c_strings[646] =
   "Zip.extract() folder does not exist: ",
   "Extracting ",
   "tar -C ",
-  " -xvf ",
+  " -xf ",
   "Cannot unpack() file type '.$'; write custom install() code to handle it.",
   "make.bat",
   "Makefile",
@@ -22855,6 +22855,7 @@ void RoguePackage__release__String_Platforms_String( RogueClassPackage* THIS, Ro
 void RoguePackage__save_cache( RogueClassPackage* THIS )
 {
   ROGUE_GC_CHECK;
+  RogueFile__create_folder__String( ROGUE_ARG(THIS->package_folder) );
   RogueValue__save__File_Logical_Logical( ROGUE_ARG(THIS->cache), ROGUE_ARG(((RogueClassFile*)(RogueFile__init__String( ROGUE_ARG(ROGUE_CREATE_REF(RogueClassFile*,ROGUE_CREATE_OBJECT(File))), ROGUE_ARG((RogueString__operatorSLASH__String_String( ROGUE_ARG(THIS->package_folder), Rogue_literal_strings[124] ))) )))), false, false );
 }
 
