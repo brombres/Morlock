@@ -302,6 +302,7 @@ class Package
       releases.add @{ :version, :url, platforms:platforms->String, filename:filename_for_url(url) }
 
     method save_cache
+      File.create_folder( package_folder )
       cache.save( File(package_folder/"cache.json") )
 
     method scan_repo_releases( min_version=null:String, max_version=null:String, platforms=null:Platforms )
@@ -403,7 +404,7 @@ class Package
       if (archive_filename.ends_with(".zip",&ignore_case))
         Zip( File(archive_filename) ).extract( destination_folder )
       elseIf (archive_filename.ends_with(".tar.gz"))
-        execute "tar -C $ -xvf $" (File.esc(destination_folder),File.esc(archive_filename))
+        execute "tar -C $ -xf $" (File.esc(destination_folder),File.esc(archive_filename))
       else
         throw error( "Cannot unpack() file type '.$'; write custom install() code to handle it." )
       endIf
