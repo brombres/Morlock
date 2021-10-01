@@ -112,7 +112,7 @@ class PackageInfo
 
     method fetch_latest_script
       if (not using_local_script)
-        println "$ $.rogue install script" (which{File.exists(filepath):"Updating" || "Fetching"}, app_name)
+        println "$ $ install script" (which{File.exists(filepath):"Updating" || "Fetching"}, name)
         if (not url)
           which (host)
             case "github.com"
@@ -152,7 +152,7 @@ class PackageInfo
           File.create_folder( folder )
         endIf
 
-        if (execute("curl -fsSL $ -o $" (url,filepath), &bg, &suppress_error))
+        if (execute("curl -fsSL $ -o $" (url,File.esc(filepath)), &bg, &suppress_error))
           File.save( folder/"url.txt", url )
         else
           throw Error( "Can't find Morlock install script at:\n"+url )

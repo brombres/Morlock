@@ -153,6 +153,8 @@ class Bootstrap [singleton]
       package.install_executable
       File.save( File.folder(package.install_folder)/"active_version.txt", package.version )
 
+      local src = Files( archive_folder/"Source", "*.rogue" )
+      File.sync_from( src, install_folder/"Source" )
 
     method install_rogo
       local ext = which{ System.is_windows:".bat" || "" }

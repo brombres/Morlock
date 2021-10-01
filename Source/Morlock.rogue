@@ -254,7 +254,8 @@ class Morlock [singleton]
           unsatisfied
             build_folder = create_build_folder(info)
             local cmd = "roguec $ $ $ --essential --api --compile --output=$/$" ...
-              (info.filepath, launcher_filepath, package_filepath, File.esc(build_folder), info.app_name)
+              (File.esc(info.filepath), File.esc(launcher_filepath), ...
+               File.esc(package_filepath), File.esc(build_folder), info.app_name)
             execute cmd
             File.delete( exe_filepath )
             File.copy( build_folder/info.app_name, exe_filepath, &verbose )
