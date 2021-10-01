@@ -37,7 +37,7 @@ routine rogo_default
   rogo_run
 endRoutine
 
-routine rogo_bootstrap
+routine rogo_update_bootstrap
   rogo_build
   local base_filepath = "Build/$" (Build.PROJECT)
   File.copy( base_filepath+".h",   "Source/Bootstrap/Morlock.h" )
