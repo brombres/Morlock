@@ -289,7 +289,6 @@ class Morlock [singleton]
             execute( 'cd $ && $ "$"' (File.esc(info.folder),File.esc(exe_filepath),script_args), &quiet )
           endIf
         endBlock
-        if (build_folder) File.delete( build_folder )
 
       catch (err:Error)
         if (build_folder) File.delete( build_folder )

@@ -168,7 +168,7 @@ class Bootstrap [singleton]
       local src = Files( archive_folder/"Source", "*.rogue" )
       File.sync_from( src, install_folder/"Source" )
 
-      File.delete( build_folder )
+      PackageInfo( Morlock.HOME, "abepralle/morlock" ).ensure_script_exists
 
     method install_rogo
       local ext = which{ System.is_windows:".bat" || "" }
@@ -211,7 +211,7 @@ class Bootstrap [singleton]
 
       File.save( File.folder(package.install_folder)/"active_version.txt", package.version )
 
-      File.delete( build_folder )
+      PackageInfo( Morlock.HOME, "abepralle/rogo" ).ensure_script_exists
 
     method install_rogue
       local ext = which{ System.is_windows:".bat" || "" }
@@ -267,8 +267,7 @@ class Bootstrap [singleton]
       package.install_executable( &=dest_filename )
 
       File.save( File.folder(package.install_folder)/"active_version.txt", package.version )
-
-      File.delete( build_folder )
+      PackageInfo( Morlock.HOME, "abepralle/rogue" ).ensure_script_exists
 
     method print_installing_header
       if (printed_installing_header) return

@@ -2,7 +2,7 @@
 
 About     | Current Release
 ----------|-----------------------
-Version   | 0.0.7
+Version   | 0.0.8
 Date      | 2021.10.01
 Platforms | Windows, macOS, Linux (Ubuntu+), Cygwin
 

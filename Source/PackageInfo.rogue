@@ -110,6 +110,9 @@ class PackageInfo
       installed_versions = which{ File.exists(folder):File.listing(folder,&folders,&omit_path) || String[] }
       installed_versions.sort( (a,b) => VersionNumber(a) > b )
 
+    method ensure_script_exists
+      if (not File.exists(filepath)) fetch_latest_script
+
     method fetch_latest_script
       if (not using_local_script)
         println "[$]"(name)
