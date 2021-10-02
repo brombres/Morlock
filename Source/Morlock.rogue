@@ -183,7 +183,7 @@ class Morlock [singleton]
     method create_build_folder( info:PackageInfo )->String
       local build_folder = "$/$/$/$" (HOME,"build",info.provider,info.app_name)
       if (not File.is_folder(build_folder))
-        println "Creating " + build_folder
+        #println "Creating " + build_folder
         File.delete( build_folder )
         File.create_folder( build_folder )
       endIf
