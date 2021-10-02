@@ -10,12 +10,12 @@ class PackageInfo
     filepath : String  # /opt/morlock/packages/abepralle/rogo/rogo.rogue, /opt/morlock/packages/provider/app_name.rogue
     url      : String  # https://raw.githubusercontent.com/abepralle/rogo/master/morlock/abepralle/rogo.rogue
                        # protocol://domain/provider/repo/master/morlock/provider/app_name.rogue
+    build_folder       : String   # /opt/morlock/build/abepralle/rogo
     installed_versions : String[]
     using_local_script : Logical  # prevents pinging repo for updates
-    morlock_home       : String   # Usually /opt/morlock or %HOMEPATH%\AppData\Local\Morlock
 
   METHODS
-    method init( morlock_home, url )
+    method init( url )
       if (url.contains('@'))
         version = url.after_last('@')
         url .= before_last('@')
@@ -80,7 +80,7 @@ class PackageInfo
             url  = null
           others
             # Assume a URL that's missing the https:// protocol
-            init( morlock_home, "https://"+url )
+            init( "https://"+url )
             return
         endWhich
 
@@ -88,7 +88,7 @@ class PackageInfo
 
       if (not repo) repo = app_name
       name = provider/app_name
-      folder = "$/packages/$/$" (morlock_home,provider,app_name)
+      folder = "$/packages/$/$" (Morlock.HOME,provider,app_name)
       filepath = "$/$.rogue" (folder,app_name)
 
       if (not url)
@@ -192,6 +192,15 @@ class PackageInfo
       throw Error( "Error executing:\n$"(cmd) )
 
     method package_args->Value
-      return @{ :morlock_home, :version, script_filepath:filepath, :host, :repo }
+      return @{ morlock_home:Morlock.HOME, :version, script_filepath:filepath, :host, :repo }
+
+    method prepare_build_folder
+      build_folder = "$/build/$/$" (Morlock.HOME,provider,app_name)
+      if (File.is_folder(build_folder) and File.listing(build_folder).count)
+        File.delete(build_folder)
+      endIf
+      if (not File.is_folder(build_folder))
+        File.create_folder( build_folder )
+      endIf
 endClass
 

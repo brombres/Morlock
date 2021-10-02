@@ -97,8 +97,8 @@ class Package
     method copy_executable( src_filepath:String, dest_filename=null:String )
       if (not dest_filename)
         dest_filename = app_name
-        if (System.is_windows) dest_filename += ".exe"
       endIf
+      if (System.is_windows) dest_filename .= with_trailing(".exe")
 
       create_folder( bin_folder )
       local dest_filepath = bin_folder/dest_filename
