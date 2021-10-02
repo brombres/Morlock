@@ -11,7 +11,7 @@ augment Build
   # You can create a Local.settings file with overrides for these values, e.g.:
   # LAUNCHER_FOLDER = "~/bin"
   PROPERTIES
-    RELEASE_MODE      = false
+    RELEASE_MODE      = true
     PROJECT           = "Morlock"
     LAUNCHER_NAME     = "morlock"
     LAUNCHER_FOLDER   = "/usr/local/bin"
