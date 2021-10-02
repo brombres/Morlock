@@ -152,7 +152,7 @@ class PackageInfo
           File.create_folder( folder )
         endIf
 
-        if (execute("curl -fsSL $ -o $" (url,File.esc(filepath)), &bg, &suppress_error))
+        if (execute("curl -fsSL $ -o $" (url,File.esc(filepath)), &quiet, &suppress_error))
           File.save( folder/"url.txt", url )
         else
           throw Error( "Can't find Morlock install script at:\n"+url )
@@ -176,8 +176,8 @@ class PackageInfo
         return builder->String
       endUse
 
-    method execute( cmd:String, &suppress_error, &allow_sudo, &bg )->Logical
-      if (not bg) println "> " + cmd
+    method execute( cmd:String, &suppress_error, &allow_sudo, &quiet )->Logical
+      if (not quiet) println "> " + cmd
       if (0 == System.run(cmd)) return true
 
       if (allow_sudo)

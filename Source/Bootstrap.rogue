@@ -111,8 +111,8 @@ class Bootstrap [singleton]
         endIf
       endForEach
 
-    method execute( cmd:String, error_message=null:String, &suppress_error, &bg )->Logical
-      if (not bg) println "> " + cmd
+    method execute( cmd:String, error_message=null:String, &suppress_error, &quiet )->Logical
+      if (not quiet) println "> " + cmd
       if (0 == System.run(cmd)) return true
       if (suppress_error) return false
       if (not error_message) error_message = "Error executing:\n"+cmd
@@ -168,6 +168,8 @@ class Bootstrap [singleton]
       local src = Files( archive_folder/"Source", "*.rogue" )
       File.sync_from( src, install_folder/"Source" )
 
+      File.delete( build_folder )
+
     method install_rogo
       local ext = which{ System.is_windows:".bat" || "" }
       local bin_filepath = "$/bin/rogo$" (Morlock.HOME,ext)
@@ -208,6 +210,8 @@ class Bootstrap [singleton]
       package.install_executable
 
       File.save( File.folder(package.install_folder)/"active_version.txt", package.version )
+
+      File.delete( build_folder )
 
     method install_rogue
       local ext = which{ System.is_windows:".bat" || "" }
@@ -263,6 +267,8 @@ class Bootstrap [singleton]
       package.install_executable( &=dest_filename )
 
       File.save( File.folder(package.install_folder)/"active_version.txt", package.version )
+
+      File.delete( build_folder )
 
     method print_installing_header
       if (printed_installing_header) return

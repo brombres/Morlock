@@ -21,7 +21,8 @@ endTry
 
 class Morlock [singleton]
   PROPERTIES
-    HOME : String
+    HOME          : String
+    is_dependency = false
 
   METHODS
     method init( args:String[] )
@@ -75,6 +76,10 @@ class Morlock [singleton]
            |
            |  METHODS
            |    method init
+           |      # Specify dependencies like this:
+           |      # dependency "abepralle/helloworld"
+           |      # dependency "abepralle/rogue@1.9.2"   # (1.9.2 or better)
+           |
            |      # Uncomment to automatically determine releases using GitHub's API.
            |      # scan_repo_releases
            |
@@ -128,7 +133,10 @@ class Morlock [singleton]
           if (cmd//args.is_empty) throw error( "Package name expected after 'morlock install'." )
           local info = resolve_package( cmd//args.first, &allow_local_script )
           if (info.version and info.installed_versions.contains(info.version))
+            if (is_dependency) return  # all good
             throw error( "$ version $ is already installed."(info.name,info.version) )
+          elseIf (not info.version and info.installed_versions.count and is_dependency)
+            return
           endIf
           info.fetch_latest_script
           run_script( "install", info )
@@ -201,7 +209,7 @@ class Morlock [singleton]
             endIf
           endIf
 
-          execute( "chmod 755 $"(File.esc(path)), &bg )
+          execute( "chmod 755 $"(File.esc(path)), &quiet )
         endIf
       endIf
 
@@ -264,23 +272,25 @@ class Morlock [singleton]
 
           unsatisfied
             build_folder = create_build_folder(info)
-            local cmd = "roguec $ $ $ --essential --api --compile --output=$" ...
+            local cmd = "roguec $ $ $ --debug --essential --api --compile --output=$" ...
               (File.esc(info.filepath), File.esc(launcher_filepath), ...
                File.esc(package_filepath), File.esc(build_folder/info.app_name))
             execute cmd
             File.delete( exe_filepath )
             File.copy( build_folder/exe_filename, exe_filepath, &verbose )
-            if (not System.is_windows) execute( "chmod u+x $" (File.esc(exe_filepath)), &bg )
+            if (not System.is_windows) execute( "chmod u+x $" (File.esc(exe_filepath)), &quiet )
             File.save( crc32_filepath, crc32->String )
 
           endContingent
 
           if (action == "install" or action == "update")
-            execute( 'cd $ && $ "$"' (File.esc(build_folder),File.esc(exe_filepath),script_args), &bg )
+            execute( 'cd $ && $ "$"' (File.esc(build_folder),File.esc(exe_filepath),script_args), &quiet )
           else
-            execute( 'cd $ && $ "$"' (File.esc(info.folder),File.esc(exe_filepath),script_args), &bg )
+            execute( 'cd $ && $ "$"' (File.esc(info.folder),File.esc(exe_filepath),script_args), &quiet )
           endIf
         endBlock
+        if (build_folder) File.delete( build_folder )
+
       catch (err:Error)
         if (build_folder) File.delete( build_folder )
         throw err
@@ -370,6 +380,7 @@ class Morlock [singleton]
 
       local command = CommandLineParser().
       [
+        option( "--dependency", &alias="-d" )
         option( "--home=",      &alias="-h", &default=HOME )
         option( "--installer=", &alias="-i" )
       ].parse( args )
@@ -379,6 +390,7 @@ class Morlock [singleton]
       endIf
 
       HOME = File.expand_path( command//options//home )
+      is_dependency = command//options//dependency->Logical
 
       return command
 
@@ -414,8 +426,8 @@ class Morlock [singleton]
                |  https://github.com/provider/repo/morlock/app-name.rogue
 endClass
 
-routine execute( cmd:String, &suppress_error, &allow_sudo, &bg )->Logical
-  if (not bg) println "> " + cmd
+routine execute( cmd:String, &suppress_error, &allow_sudo, &quiet )->Logical
+  if (not quiet) println "> " + cmd
   if (0 == System.run(cmd)) return true
 
   if (allow_sudo)

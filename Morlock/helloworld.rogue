@@ -1,5 +1,0 @@
-class HelloWorldPackage : Package
-  PROPERTIES
-    name = "abepralle/helloworld"
-endClass
-

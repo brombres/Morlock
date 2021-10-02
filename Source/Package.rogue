@@ -14,6 +14,7 @@ class Package
     url               : String
     morlock_home      : String
     launcher_folder   : String
+    launcher_filepath : String
     package_folder    : String
     install_folder    : String
     bin_folder        : String
@@ -105,7 +106,7 @@ class Package
       println "Copying $ -> $" (src_filepath,dest_filepath)
       File.delete( dest_filepath )
       File.copy( src_filepath, dest_filepath )
-      if (not System.is_windows) execute( "chmod u+x $" (File.esc(dest_filepath)), &bg )
+      if (not System.is_windows) execute( "chmod u+x $" (File.esc(dest_filepath)), &quiet )
 
     method create_folder( folder:String )
       println "  " + folder
@@ -114,17 +115,20 @@ class Package
         throw error( ''Error creating folder "$".''(folder) )
       endIf
 
+    method dependency( package_name:String )
+      execute( "morlock install --dependency " + package_name, &quiet )
+
     method download->String
       println "Downloading $ v$" (name,version)
-      execute( "curl -LfsS $ -o $" (url,File.esc(archive_filename)), &bg )
+      execute( "curl -LfsS $ -o $" (url,File.esc(archive_filename)), &quiet )
       if (not File.exists(archive_filename)) throw error( "Error downloading " + url )
       return archive_filename
 
     method error( message:String )->Error
       return PackageError( provider/app_name, message )
 
-    method execute( cmd:String, &bg )
-      if (not bg )println "> " + cmd
+    method execute( cmd:String, &quiet )
+      if (not quiet )println "> " + cmd
       if (0 != System.run(cmd))
         throw error( "Error executing:\n"+cmd )
       endIf
@@ -146,8 +150,12 @@ class Package
       which (action)
         case "install", "update"
           handle_install
+        case "link"
+          handle_link
         case "uninstall"
           handle_uninstall
+        case "unlink"
+          handle_unlink
         others
           on( action )
       endWhich
@@ -158,30 +166,51 @@ class Package
       println "-" * Console.width.or_smaller(80)
 
     method handle_install
-      if (File.exists(install_folder) and File.listing(install_folder).count > 0)
-        if (action == "update") System.exit(0)
-        throw error( "$ version $ is already installed."(name,version) )
+      if (install_folder)
+        if (File.exists(install_folder) and File.listing(install_folder).count > 0)
+          if (action == "update") System.exit(0)
+          throw error( "$ version $ is already installed."(name,version) )
+        endIf
+
+        try
+          println "-" * Console.width.or_smaller(80)
+          println "Installing $ v$" (app_name,version)
+          println "-" * Console.width.or_smaller(80)
+          println "Creating install folder"
+          create_folder( install_folder )
+          create_folder( bin_folder )
+          install
+          File.save( File.folder(install_folder)/"active_version.txt", version )
+
+        catch (err:Error)
+          File.delete( install_folder )
+          throw err
+        endTry
+
+      else
+        try
+          println "-" * Console.width.or_smaller(80)
+          println "Installing $" (app_name)
+          println "-" * Console.width.or_smaller(80)
+          install
+
+        catch (err:Error)
+          throw err
+        endTry
+
       endIf
 
-      try
-        println "-" * Console.width.or_smaller(80)
-        println "Installing $ v$" (app_name,version)
-        println "-" * Console.width.or_smaller(80)
-        println "Creating install folder"
-        create_folder( install_folder )
-        create_folder( bin_folder )
-        install
-        File.save( File.folder(install_folder)/"active_version.txt", version )
+    method handle_link
+      link
 
-      catch (err:Error)
-        File.delete( install_folder )
-        throw err
-      endTry
+    method handle_unlink
+      unlink
 
     method handle_uninstall
       if (File.exists(install_folder))
         header "Uninstalling $ version $"(name,version)
-        File.delete( install_folder )
+        unlink
+        uninstall
         local v_file = File( package_folder/"active_version.txt" )
         if (v_file.exists and version == String(v_file).trimmed) v_file.delete
       elseIf (specified_version)
@@ -238,19 +267,21 @@ class Package
     method link
       local exe_list = File.listing( bin_folder/"*" )
       forEach (exe in exe_list)
-        local launcher = launcher_folder/(File.filename(exe).before_last(".exe",&ignore_case))
+        local base_launcher = File.filename(exe).before_last(".exe",&ignore_case)
+        local launcher = launcher_folder/base_launcher
         if (System.is_windows) launcher += ".bat"
         File.delete( launcher )
+        println "Linking " + base_launcher
         if (System.is_windows)
           File.save( launcher, ''@$ %*''(File.esc(File.conventional_filepath(exe))) )
         else
           local cmd = "ln -s $ $" (exe,launcher)
-          execute( cmd, &bg )
+          execute( cmd, &quiet )
         endIf
       endForEach
 
     method on( action:String )
-      throw error( "Package does not implement '$'."(action) )
+      throw error( "Package [$] does not implement '$'."(name,action) )
 
     method release( url:String, platforms=null:Platforms, version=null:String )
       # Registers a release with .tar.gz/.zip URL and version number.
@@ -394,6 +425,17 @@ class Package
       bin_folder = install_folder/"bin"
 
     method uninstall
+      File.delete( install_folder )
+
+    method unlink
+      local exe_list = File.listing( bin_folder/"*" )
+      forEach (exe in exe_list)
+        local base_launcher = File.filename(exe).before_last(".exe",&ignore_case)
+        local launcher = launcher_folder/base_launcher
+        if (System.is_windows) launcher += ".bat"
+        println "Unlinking " + base_launcher
+        File.delete( launcher )
+      endForEach
 
     method unpack( destination_folder=".":String )
       if (not File.exists(archive_filename))
