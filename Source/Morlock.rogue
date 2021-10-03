@@ -2,6 +2,7 @@
 # Morlock.rogue
 # August 15, 2021
 #================================================================================
+$define VERSION "Morlock v0.0.10\n2021.10.02 by Abe Pralle"
 
 $requireRogue "1.8.8"
 
@@ -41,28 +42,7 @@ class Morlock [singleton]
 
         case "create"
           local info = resolve_package( cmd//args.first )
-          local script_folder : String
-          local listing = File.listing("./?orlock",&folders)
-          forEach (folder in listing)
-            if (folder.equals("morlock",&ignore_case))
-              script_folder = folder
-              escapeForEach
-            endIf
-          endForEach
-
-          if (not script_folder)
-            local n_caps = 0
-            local n_lc = 0
-            forEach (folder in File.listing(".",&folders,&ignore_hidden))
-              if (folder[0].is_uppercase)     ++n_caps
-              elseIf (folder[0].is_lowercase) ++n_lc
-            endForEach
-            script_folder = which{ (n_caps>=n_lc):"Morlock" || "morlock" }
-            println "Creating $/ for install scripts..."(script_folder)
-            create_folder( script_folder )
-          endIf
-
-          local script_filepath = "$/$.rogue" (script_folder,info.app_name)
+          local script_filepath = "$.rogue" (info.app_name)
           if (File.exists(script_filepath))
             throw error( "Install script '$' already exists."(script_filepath) )
           endIf
@@ -125,7 +105,7 @@ class Morlock [singleton]
           src .= replacing( "$(CLASS_NAME)",   info.app_name.capitalized.replacing('-','_') )
           src .= replacing( "$(PACKAGE_NAME)", info.name )
 
-          println "Creating script template - edit to add appropriate build steps and commit:"
+          println "Creating script template '$'."(script_filepath)
           println "$"(script_filepath)
           File.save( script_filepath, src )
 
@@ -139,7 +119,7 @@ class Morlock [singleton]
             return
           endIf
           info.fetch_latest_script
-          run_script( "install", info )
+          run_script( cmd, info )
 
         case "list"
           println (forEach in installed_packages)
@@ -153,7 +133,7 @@ class Morlock [singleton]
           if (not File.exists(info.folder))
             throw error( "$ is not installed."(info.name) )
           endIf
-          run_script( "uninstall", info )
+          run_script( cmd, info )
 
         case "update"
           args = cmd//args.to_list<<String>>
@@ -162,7 +142,7 @@ class Morlock [singleton]
             try
               local info = resolve_package( package )
               info.fetch_latest_script
-              run_script( "update", info )
+              run_script( cmd, info )
             catch (err:Error)
               local w = Console.width.or_smaller(80)
               println "="*w
@@ -231,7 +211,8 @@ class Morlock [singleton]
       endForEach
       return packages->String[]
 
-    method run_script( action:String, info:PackageInfo )
+    method run_script( command:Value, info:PackageInfo )
+      local action = command//action->String
       if (action != "install" and not File.exists(info.folder))
         throw error( "Package $ is not installed." (info.name) )
       endIf
@@ -240,51 +221,46 @@ class Morlock [singleton]
 
       local script_args = info.package_args
       script_args//action = action
+      script_args//command = command
 
-      try
-        block script_args = script_args.to_json.to_escaped_ascii('"')
-          local v_list = File.listing( HOME/"packages/abepralle/morlock", &folders, &ignore_hidden, &omit_path )
-          if (v_list.is_empty)
-            println "[INTERNAL ERROR] Morlock has no current version."
-            System.exit 1
-          endIf
-          v_list.sort( (a,b) => VersionNumber(a) > b )
-          local v = v_list.first
-          local script_launcher_filepath = HOME/"packages/abepralle/morlock/$/Source/ScriptLauncher.rogue"(v)
-          local package_filepath  = HOME/"packages/abepralle/morlock/$/Source/Package.rogue"(v)
+      block script_args = script_args.to_json.to_escaped_ascii('"')
+        local v_list = File.listing( HOME/"packages/abepralle/morlock", &folders, &ignore_hidden, &omit_path )
+        if (v_list.is_empty)
+          println "[INTERNAL ERROR] Morlock has no current version."
+          System.exit 1
+        endIf
+        v_list.sort( (a,b) => VersionNumber(a) > b )
+        local v = v_list.first
+        local script_launcher_filepath = HOME/"packages/abepralle/morlock/$/Source/ScriptLauncher.rogue"(v)
+        local package_filepath  = HOME/"packages/abepralle/morlock/$/Source/Package.rogue"(v)
 
-          local exe_filename = info.app_name
-          if (System.is_windows) exe_filename += ".exe"
-          local exe_filepath = info.folder/exe_filename
+        local exe_filename = info.app_name
+        if (System.is_windows) exe_filename += ".exe"
+        local exe_filepath = info.folder/exe_filename
 
-          local crc32_filepath = info.folder/"source_crc32.txt"
-          local crc32 : Int32
-          contingent
-            # Recompile?
-            crc32 = File.crc32(info.filepath) ~ File.crc32(package_filepath) ~ File.crc32(script_launcher_filepath)
-            necessary (File.exists(exe_filepath))
-            necessary (File.exists(crc32_filepath))
-            necessary (crc32->String == String(File(crc32_filepath)).trimmed)
+        local crc32_filepath = info.folder/"source_crc32.txt"
+        local crc32 : Int32
+        contingent
+          # Recompile?
+          crc32 = File.crc32(info.filepath) ~ File.crc32(package_filepath) ~ File.crc32(script_launcher_filepath)
+          necessary (File.exists(exe_filepath))
+          necessary (File.exists(crc32_filepath))
+          necessary (crc32->String == String(File(crc32_filepath)).trimmed)
 
-          unsatisfied
-            local cmd = "roguec $ $ $ --debug --essential --api --compile --output=$" ...
-              (File.esc(info.filepath), File.esc(script_launcher_filepath), ...
-               File.esc(package_filepath), File.esc(info.build_folder/info.app_name))
-            execute cmd
-            File.delete( exe_filepath )
-            File.copy( info.build_folder/exe_filename, exe_filepath, &verbose )
-            if (not System.is_windows) execute( "chmod u+x $" (File.esc(exe_filepath)), &quiet )
-            File.save( crc32_filepath, crc32->String )
+        unsatisfied
+          local cmd = "roguec $ $ $ --debug --essential --api --compile --quiet --output=$" ...
+            (File.esc(info.filepath), File.esc(script_launcher_filepath), ...
+             File.esc(package_filepath), File.esc(info.build_folder/info.app_name))
+          execute( cmd, &quiet, &exit_on_error )
+          File.delete( exe_filepath )
+          File.copy( info.build_folder/exe_filename, exe_filepath, &verbose )
+          if (not System.is_windows) execute( "chmod u+x $" (File.esc(exe_filepath)), &quiet )
+          File.save( crc32_filepath, crc32->String )
 
-          endContingent
+        endContingent
 
-          execute( 'cd $ && $ "$"' (File.esc(info.build_folder),File.esc(exe_filepath),script_args), &quiet )
-        endBlock
-
-      catch (err:Error)
-        if (info.build_folder) File.delete( info.build_folder )
-        throw err
-      endTry
+        execute( 'cd $ && $ "$"' (File.esc(info.build_folder),File.esc(exe_filepath),script_args), &quiet, &exit_on_error )
+      endBlock
 
     method resolve_package( name:String, &allow_local_script )->PackageInfo
       local info    : PackageInfo
@@ -306,29 +282,7 @@ class Morlock [singleton]
           throw error( "A local .rogue script can only be used with 'morlock install'." )
         endIf
 
-        # Parse the package name out of the script
-        local provider, app_name : String
-        forEach (line in LineReader(File(filepath)))
-          if (line.contains("name") and line.contains_pattern(''name*=*"*"'' ))
-            local package_name = line.extract_string( ''*name*=*"$"*'' )
-            if (not package_name) escapeForEach
-            if (package_name.contains('/'))
-              provider = File.filename( File.folder(package_name) )
-              app_name = File.filename( package_name )
-            else
-              provider = package_name
-              app_name = package_name
-            endIf
-            escapeForEach
-          endIf
-        endForEach
-
-        if (not app_name)
-          throw error( ''Failed to parse package name out of script ('name = "provider/app-name"').'' )
-        endIf
-
-        info = PackageInfo( provider/app_name )
-        info.using_local_script = true
+        info = PackageInfo( String(File(filepath)), &is_script )
 
         # Copy script into place
         File.create_folder( info.folder )
@@ -385,6 +339,8 @@ class Morlock [singleton]
       return command
 
     method print_usage
+      println VERSION
+      println
       println @|USAGE
                |  morlock <command>
                |
@@ -416,16 +372,18 @@ class Morlock [singleton]
                |  https://github.com/provider/repo/morlock/app-name.rogue
 endClass
 
-routine execute( cmd:String, &suppress_error, &allow_sudo, &quiet )->Logical
+routine execute( cmd:String, &suppress_error, &allow_sudo, &quiet, &exit_on_error )->Logical
   if (not quiet) println "> " + cmd
   if (0 == System.run(cmd)) return true
 
   if (allow_sudo)
     println "Error executing '$'; retrying with 'sudo'."(cmd)
-    return execute( "sudo "+cmd, &=suppress_error )
+    return execute( "sudo "+cmd, &=suppress_error, &=exit_on_error )
   endIf
 
   if (suppress_error) return false
+
+  if (exit_on_error) System.exit(1)
   throw Error( "Error executing:\n$"(cmd) )
 endRoutine
 

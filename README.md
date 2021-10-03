@@ -2,7 +2,7 @@
 
 About     | Current Release
 ----------|-----------------------
-Version   | 0.0.9
+Version   | 0.0.10
 Date      | 2021.10.02
 Platforms | Windows, macOS, Linux (Ubuntu+), Cygwin
 
@@ -78,4 +78,22 @@ This are the Morlock package management system itself, the [Rogue](https://githu
     morlock update
     morlock update provider/name [...]
 
+# Making Morlock-Installable Packages
+Morlock does not have a central registry. Any package or process can be adapted to be installable with Morlock. Here are the different ways that can be accomplished.
+
+## `morlock install provider-name/app-name`
+1. Assumes a GitHub repo and looks at `https://github.com/provider-name/app-name`.
+2. Attempts to find a `morlock/app-name.rogue` install script (see `morlock create` under Usage).
+3. Failing that, checks for `Build.rogue` (Rogo) or `setup.py` (Python) and creates a default install script. For this option to work the repo must have at least one Release.
+
+## `morlock install provider-name/repo-name/app-name`
+1. Assumes a GitHub repo and looks for `https://github.com/provider-name/repo-name/morlock/app-name.rogue`.
+2. Attempts to find a `morlock/app-name.rogue` install script (see `morlock create` under Usage).
+3. Failing that, checks for `Build.rogue` (Rogo) or `setup.py` (Python) and creates a default install script. For this option to work the repo must have at least one Release.
+
+## `morlock install https://.../app-name.rogue`
+Downloads the specified install script (see `morlock create` under Usage), pulls the provider name and app name from it, and runs it.
+
+## `morlock install local/filepath/app-name.rogue`
+Uses the specified local install script (see `morlock create` under Usage), pulls the provider name and app name from it, and runs it.
 

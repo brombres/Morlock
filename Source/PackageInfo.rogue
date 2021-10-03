@@ -15,36 +15,70 @@ class PackageInfo
     using_local_script : Logical  # prevents pinging repo for updates
 
   METHODS
-    method init( url )
+    method init( text:String, &is_script )
+      if (is_script)
+        using_local_script = true
+        init( parse_package_name(text) )
+        return
+      else
+        url = text
+      endIf
+
       if (url.contains('@'))
         version = url.after_last('@')
         url .= before_last('@')
       endIf
 
       if (url.contains("://"))
-        local parts = url.extract_strings( "$://$/$" )
-        if (not parts)
-          local sample = "https://github.com/account/repo or https://raw.githubusercontent.com/account/repo/main/morlock/account/app_name.rogue"
-          throw Error( ''Invalid URL "$" - expected e.g. "$".'' (url,sample) )
-        endIf
+        if (url.ends_with(".rogue"))
+          # Direct link to the install script - get the package name from it
+          local result = Process.run( "curl -fsSL " + url )
+          if (not result.success) throw Error( "Download failed: " + url )
 
-        if (not url.ends_with(".rogue",&ignore_case))
-          # URL was good enough to get started but is not the URL of a script.
-          # Reconstruct URL later.
-          url = null
-        endIf
+          local script = result->String
+          using_local_script = true  # not exactly true but suppresses the later attempt to fetch the script
 
-        # protocol = parts[0]
-        host       = parts[1]
-        local path = parts[2]
+          local package_name = parse_package_name( script )
+          provider = package_name.before_first('/')
+          app_name = package_name.after_first('/')
 
-        app_name = File.filename(path).before_last('.')
-        if (path.contains('/'))
-          provider = path.before_first('/')
-          repo = path.after_first('/').before_first('/')
+          folder = "$/packages/$/$" (Morlock.HOME,provider,app_name)
+          filepath = "$/$.rogue" (folder,app_name)
+
+          if (not File.is_folder(folder))
+            File.create_folder( folder )
+          endIf
+          File.save( filepath, script )
+          File.save( folder/"url.txt", url )
+
+          File.delete( folder/"cache.json" )  # delete any existing cache
+
         else
-          provider = app_name
-          repo = app_name
+          # URL of a repo
+          local parts = url.extract_strings( "$://$/$" )
+          if (not parts)
+            local sample = "https://github.com/account/repo or https://raw.githubusercontent.com/account/repo/main/morlock/account/app_name.rogue"
+            throw Error( ''Invalid URL "$" - expected e.g. "$".'' (url,sample) )
+          endIf
+
+          if (not url.ends_with(".rogue",&ignore_case))
+            # URL was good enough to get started but is not the URL of a script.
+            # Reconstruct URL later.
+            url = null
+          endIf
+
+          # protocol = parts[0]
+          host       = parts[1]
+          local path = parts[2]
+
+          app_name = File.filename(path).before_last('.')
+          if (path.contains('/'))
+            provider = path.before_first('/')
+            repo = path.after_first('/').before_first('/')
+          else
+            provider = app_name
+            repo = app_name
+          endIf
         endIf
 
       else
@@ -86,10 +120,10 @@ class PackageInfo
 
       endIf
 
-      if (not repo) repo = app_name
-      name = provider/app_name
-      folder = "$/packages/$/$" (Morlock.HOME,provider,app_name)
-      filepath = "$/$.rogue" (folder,app_name)
+      if (not repo)     repo = app_name
+      if (not name)     name = provider/app_name
+      if (not folder)   folder = "$/packages/$/$" (Morlock.HOME,provider,app_name)
+      if (not filepath) filepath = "$/$.rogue" (folder,app_name)
 
       if (not url)
         local url_filepath = folder/"url.txt"
@@ -114,55 +148,123 @@ class PackageInfo
       if (not File.exists(filepath)) fetch_latest_script
 
     method fetch_latest_script
-      if (not using_local_script)
-        println "[$]"(name)
-        if (not url)
-          which (host)
-            case "github.com"
-              # Use the GitHub API to determine the default branch for the repo and the
-              # capitalization of the Morlock folder.
-              local cmd = ''curl -H "Accept: application/vnd.github.v3+json" ''
-              cmd += "https://api.github.com/repos/$/$/contents"(provider,repo)
-              #println "> " + cmd
-              local result = Process.run( cmd, &env )
-              if (not result.success)
-                throw Error( "Unable to list default branch of 'github.com/$/$'."(provider,repo) )
-              endIf
+      println "[$]"(name)
+      if (using_local_script) return
 
-              local data = JSON.parse( result->String )
-              if (not data.is_list)
+      if (not url)
+        which (host)
+          case "github.com"
+            # Use the GitHub API to determine the default branch for the repo and the
+            # capitalization of the Morlock folder.
+            local cmd = ''curl -H "Accept: application/vnd.github.v3+json" ''
+            cmd += "https://api.github.com/repos/$/$/contents"(provider,repo)
+            #println "> " + cmd
+            local result = Process.run( cmd, &env )
+            if (not result.success)
+              throw Error( "Unable to list default branch of 'github.com/$/$'."(provider,repo) )
+            endIf
+
+            local contents = JSON.parse( result->String )
+            if (not contents.is_list)
+              if (File.exists(filepath))
+                # We're good with the copy we already have
+                return
+              else
                 throw Error( "Repo does not exist: github.com/$/$"(provider,repo) )
               endIf
+            endIf
 
-              local folder_info = data.first( $//name->String.equals("morlock",&ignore_case) )
-              if (not folder_info)
-                throw Error( "No morlock/app-name.rogue install script exists in repo." )
-              endIf
+            local folder_info = contents.first( $//name->String.equals("morlock",&ignore_case) )
+            if (not folder_info)
+              if (create_default_script(contents)) return
+              throw Error( "No morlock/$.rogue install script exists in repo."(app_name) )
+            endIf
 
-              local branch = folder_info//url->String.after_last('?').after_last("ref=").before_first('&')
-              if (not String.exists(branch)) branch = "main"
+            local branch = folder_info//url->String.after_last('?').after_last("ref=").before_first('&')
+            if (not String.exists(branch)) branch = "main"
 
-              url = "https://raw.githubusercontent.com/$/$/$/$/$.rogue"(provider,repo,branch,folder_info//name,app_name)
+            url = "https://raw.githubusercontent.com/$/$/$/$/$.rogue"(provider,repo,branch,folder_info//name,app_name)
 
-            others
-              throw Error( "Morlock does not know how to construct $ URLs."(host) )
+          others
+            throw Error( "Morlock does not know how to construct $ URLs."(host) )
 
-          endWhich
-        endIf
-
-        if (not File.is_folder(folder))
-          println "Creating folder " + folder
-          File.create_folder( folder )
-        endIf
-
-        if (execute("curl -fsSL $ -o $" (url,File.esc(filepath)), &quiet, &suppress_error))
-          File.save( folder/"url.txt", url )
-        else
-          throw Error( "Can't find Morlock install script at:\n"+url )
-        endIf
-
-        File.delete( folder/"cache.json" )  # delete any existing cache
+        endWhich
       endIf
+
+      if (not File.is_folder(folder))
+        File.create_folder( folder )
+      endIf
+
+      if (execute("curl -fsSL $ -o $" (url,File.esc(filepath)), &quiet, &suppress_error))
+        File.save( folder/"url.txt", url )
+      else
+        throw Error( "Can't find Morlock install script at:\n"+url )
+      endIf
+
+      File.delete( folder/"cache.json" )  # delete any existing cache
+
+    method create_default_script( contents:Value )->Logical
+      local builder = StringBuilder()
+      builder.println "class $Package : Package" (app_name.capitalized)
+      builder.println "  PROPERTIES"
+      builder.println '    name = "$"' (name)
+
+      if (contents.first($//name=="Build.rogue"))
+        # Contains Rogo Build.rogue
+        # No other content needed
+        println "Using default install script for a Rogo-based project."
+      elseIf (contents.first($//name=="setup.py"))
+        println "Using default install script for a Python-based project."
+        local has_pip3 = System.find_program("pip3")
+        if (not (has_pip3 or System.find_program("pip")))
+          throw Error( "No morlock/$.rogue install script exists in repo. "...
+            "Repo has a setup.py; install pip3 or pip in order to allow automatic "...
+            "Morlock installation of this project."(app_name) )
+        endIf
+        builder.println @|
+                         |  METHODS
+                         |    method install
+                         |      download
+                         |      unpack
+                         |      build
+                         |
+                         |    method build
+                         |      localize pip
+                         |      if (not pip)
+                         |        throw error( "Python must be installed before Morlock can install [$]."(name) )
+                         |      endIf
+                         |
+                         |      forEach (folder in File.listing(".",&folders,&ignore_hidden))
+                         |        local setup_file = File(folder/"setup.py")
+                         |        if (setup_file.exists)
+                         |          local src = String(setup_file)
+                         |          execute "cd $ && $ install --user ." (File.esc(folder),pip)
+                         |          archive_folder = folder
+                         |          return
+                         |        endIf
+                         |      endForEach #yay
+                         |
+                         |    method pip->String
+                         |      if (System.find_program("pip3")) return "pip3"
+                         |      if (System.find_program("pip"))  return "pip"
+                         |      return null
+                         |
+                         |    method uninstall
+                         |      localize pip
+                         |      if (not pip)
+                         |        throw error( "Python must be installed before Morlock can uninstall [$]."(name) )
+                         |      endIf
+                         |      execute "$ uninstall -y $" (pip,app_name)
+      else
+        return false
+      endIf
+      builder.println "endClass"
+
+      File.create_folder( folder )
+      File.save( "$/$.rogue"(folder,app_name), builder )
+      File.delete( folder/"cache.json" )  # delete any existing cache
+
+      return true
 
     method description->String
       use builder = StringBuilder.pool
@@ -193,6 +295,19 @@ class PackageInfo
 
     method package_args->Value
       return @{ morlock_home:Morlock.HOME, :version, script_filepath:filepath, :host, :repo }
+
+    method parse_package_name( script:String )->String
+      forEach (line in LineReader(script))
+        if (line.contains("name"))
+          local package_name = line.extract_string( ''*name = "$"*'' )
+          if (not package_name) nextIteration
+
+          if (package_name.contains('/')) return package_name
+          else                            return package_name/package_name
+        endIf
+      endForEach
+
+      throw Error( ''Failed to parse package name from PROPERTIES. Required: name = "provider/app-name"'' )
 
     method prepare_build_folder
       build_folder = "$/build/$/$" (Morlock.HOME,provider,app_name)
