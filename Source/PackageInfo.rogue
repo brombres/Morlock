@@ -209,12 +209,14 @@ class PackageInfo
       builder.println "  PROPERTIES"
       builder.println '    name = "$"' (name)
 
+      local quiet = File.exists(filepath)
+
       if (contents.first($//name=="Build.rogue"))
         # Contains Rogo Build.rogue
         # No other content needed
-        println "Using default install script for a Rogo-based project."
+        if (not quiet) println "Using default install script for a Rogo-based project."
       elseIf (contents.first($//name=="setup.py"))
-        println "Using default install script for a Python-based project."
+        if (not quiet) println "Using default install script for a Python-based project."
         local has_pip3 = System.find_program("pip3")
         if (not (has_pip3 or System.find_program("pip")))
           throw Error( "No morlock/$.rogue install script exists in repo. "...

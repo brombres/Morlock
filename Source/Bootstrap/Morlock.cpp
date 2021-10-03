@@ -9662,7 +9662,7 @@ const char* Rogue_literal_c_strings[725] =
   "abepralle/morlock",
   "packages/*/*",
   "help",
-  "Morlock v0.0.11",
+  "Morlock v0.0.12",
   "2021.10.02 by Abe Pralle",
   "USAGE\n  morlock <command>\n\nCOMMANDS\n  help\n    Show this help text.\n\n  create <package>\n    Execute in the root folder of a repo you want to add a Morlock install\n    script to. If your GitHub username is \"user\" and you are in repo \"abc\",\n    write \"morlock create user/abc\". If you want to have the app named \"xyz\"\n    (but still from repo \"abc\"), write \"morlock create user/xyz\" and then\n    users will install with \"morlock install user/abc/xyz\".\n\n  install <package>\n    'morlock install user/repo/app-name' - installs package user/app-name\n    'morlock install user/app-name'      - shorthand for user/app-name/app-name\n\n  uninstall <package>\n\n  update [package-a [package-b ...]]\n    Updates listed packages or else all packages, including Morlock, Rogue,\n    and Rogo.\n\nPACKAGE FORMAT\n  provider/repo/app-name\n  provider/repo\n  repo\n  https://github.com/provider/repo/morlock/app-name.rogue",
   "bootstrap",
@@ -25584,15 +25584,22 @@ RogueLogical RoguePackageInfo__create_default_script__Value( RogueClassPackageIn
   RogueStringBuilder__println__String( builder_1, ROGUE_ARG(((RogueString*)(RogueStringBuilder__to_String( ROGUE_ARG(((RogueStringBuilder*)(RogueStringBuilder__print__String( ROGUE_ARG(((RogueStringBuilder*)(RogueStringBuilder__print__String( ROGUE_ARG(((RogueStringBuilder*)(RogueStringBuilder__print__String( ROGUE_ARG(((RogueStringBuilder*)(RogueStringBuilder__init( ROGUE_ARG(ROGUE_CREATE_REF(RogueStringBuilder*,ROGUE_CREATE_OBJECT(StringBuilder))) )))), Rogue_literal_strings[240] )))), ROGUE_ARG((RogueString__operatorPLUS__String_String( Rogue_literal_strings[0], ROGUE_ARG(((RogueString*)(RogueString__capitalized( ROGUE_ARG(THIS->app_name) )))) ))) )))), Rogue_literal_strings[241] )))) )))) );
   RogueStringBuilder__println__String( builder_1, Rogue_literal_strings[242] );
   RogueStringBuilder__println__String( builder_1, ROGUE_ARG(((RogueString*)(RogueStringBuilder__to_String( ROGUE_ARG(((RogueStringBuilder*)(RogueStringBuilder__print__String( ROGUE_ARG(((RogueStringBuilder*)(RogueStringBuilder__print__String( ROGUE_ARG(((RogueStringBuilder*)(RogueStringBuilder__print__String( ROGUE_ARG(((RogueStringBuilder*)(RogueStringBuilder__init( ROGUE_ARG(ROGUE_CREATE_REF(RogueStringBuilder*,ROGUE_CREATE_OBJECT(StringBuilder))) )))), Rogue_literal_strings[243] )))), ROGUE_ARG((RogueString__operatorPLUS__String_String( Rogue_literal_strings[0], ROGUE_ARG(THIS->name) ))) )))), Rogue_literal_strings[50] )))) )))) );
+  RogueLogical quiet_2 = ((RogueFile__exists__String( ROGUE_ARG(THIS->filepath) )));
   if (ROGUE_COND((RogueOptionalValue__operator__Value( ROGUE_ARG(((RogueClassValue*)Rogue_call_ROGUEM3( 39, contents_0, ROGUE_ARG(((RogueClass_Function_Value_RETURNSLogical_*)(((RogueClassFunction_1090*)ROGUE_SINGLETON(Function_1090))))) ))) ))))
   {
-    RogueGlobal__println( ROGUE_ARG(((RogueClassGlobal*)(RogueGlobal__print__String( ((RogueClassGlobal*)ROGUE_SINGLETON(Global)), Rogue_literal_strings[244] )))) );
+    if (ROGUE_COND(!(quiet_2)))
+    {
+      RogueGlobal__println( ROGUE_ARG(((RogueClassGlobal*)(RogueGlobal__print__String( ((RogueClassGlobal*)ROGUE_SINGLETON(Global)), Rogue_literal_strings[244] )))) );
+    }
   }
   else if (ROGUE_COND((RogueOptionalValue__operator__Value( ROGUE_ARG(((RogueClassValue*)Rogue_call_ROGUEM3( 39, contents_0, ROGUE_ARG(((RogueClass_Function_Value_RETURNSLogical_*)(((RogueClassFunction_1091*)ROGUE_SINGLETON(Function_1091))))) ))) ))))
   {
-    RogueGlobal__println( ROGUE_ARG(((RogueClassGlobal*)(RogueGlobal__print__String( ((RogueClassGlobal*)ROGUE_SINGLETON(Global)), Rogue_literal_strings[245] )))) );
-    ROGUE_DEF_LOCAL_REF(RogueString*,has_pip3_2,((RogueSystem__find_program__String( Rogue_literal_strings[248] ))));
-    if (ROGUE_COND(!(((!!(has_pip3_2)) || (!!((RogueSystem__find_program__String( Rogue_literal_strings[249] ))))))))
+    if (ROGUE_COND(!(quiet_2)))
+    {
+      RogueGlobal__println( ROGUE_ARG(((RogueClassGlobal*)(RogueGlobal__print__String( ((RogueClassGlobal*)ROGUE_SINGLETON(Global)), Rogue_literal_strings[245] )))) );
+    }
+    ROGUE_DEF_LOCAL_REF(RogueString*,has_pip3_3,((RogueSystem__find_program__String( Rogue_literal_strings[248] ))));
+    if (ROGUE_COND(!(((!!(has_pip3_3)) || (!!((RogueSystem__find_program__String( Rogue_literal_strings[249] ))))))))
     {
       throw ((RogueException*)Rogue_call_ROGUEM0( 16, ROGUE_ARG(((RogueClassError*)(((RogueException*)Rogue_call_ROGUEM3( 13, ROGUE_ARG(((RogueException*)ROGUE_CREATE_REF(RogueClassError*,ROGUE_CREATE_OBJECT(Error)))), ROGUE_ARG(((RogueString*)(RogueStringBuilder__to_String( ROGUE_ARG(((RogueStringBuilder*)(RogueStringBuilder__print__String( ROGUE_ARG(((RogueStringBuilder*)(RogueStringBuilder__print__String( ROGUE_ARG(((RogueStringBuilder*)(RogueStringBuilder__print__String( ROGUE_ARG(((RogueStringBuilder*)(RogueStringBuilder__init( ROGUE_ARG(ROGUE_CREATE_REF(RogueStringBuilder*,ROGUE_CREATE_OBJECT(StringBuilder))) )))), Rogue_literal_strings[250] )))), ROGUE_ARG((RogueString__operatorPLUS__String_String( Rogue_literal_strings[0], ROGUE_ARG(THIS->app_name) ))) )))), Rogue_literal_strings[251] )))) )))) ))))) ));
     }
