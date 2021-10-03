@@ -1,5 +1,8 @@
 <html>
   <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Morlock Package Manager</title>
+    <link rel="icon" href="/favicon.svg?v=7">
     <style type="text/css">
       body
       {
@@ -8,8 +11,28 @@
         font-family: arial;
       }
 
+      .installtitle
+      {
+        font-size:16pt;
+        font-weight:bold;
+      }
+
+      .installreq
+      {
+        color:#888;
+      }
+
+      code
+      {
+        font-size:12pt;
+        line-height:2;
+      }
+
       a         { color:white; }
       a:visited { color:#ccc; }
+
+      .installreq a { color:#888; }
+
     </style>
   </head>
   <body>
@@ -18,19 +41,27 @@
       <span style="font-size:14pt; font-weight:bold;">Package Management System</span><br>
       <span style="font-size:14pt; font-weight:bold;">Windows &#8226; macOS &#8226; Linux</span><br><br>
     </center>
-    <table>
-      <tr><td><h3>Installation: macOS or Linux</h3></td></tr>
-      <tr><td><h3><code>bash -c "$(curl -L install.morlock.sh)"</code></h3></td></tr>
-    </table>
-    <table>
-      <tr><td><h3>Installation: Windows</h3></td></tr>
-      <tr><td><h3><code>curl -L windows.morlock.sh -o %TEMP%\install.bat && %TEMP%\install</code></h3></td></tr>
-    </table>
+    <p>
+      <table>
+        <tr><td><span class="installtitle">Installation: macOS or Linux</span></td></tr>
+        <tr><td><code>bash -c "$(curl -L install.morlock.sh)"</code></td></tr>
+      </table>
+    </p>
+    <p>
+      <table>
+        <tr><td><span class="installtitle">Installation: Windows</span></td></tr>
+        <tr>
+          <td>
+            <code>curl -L windows.morlock.sh -o %TEMP%\install.bat &amp;&amp; %TEMP%\install</code><br>
+            <span class="installreq">Requires Visual Studio Developer Command Prompt With C++ Support</span>
+          </td>
+        </tr>
+      </table>
+    </p>
 
     <!--navigator.clipboard.writeText(copyText.value);-->
     <center>
-      <span style="font-size:14pt; font-weight:bold;">Developer-oriented &#8226; Decentralized</span><br>
-      <span style="font-size:14pt; font-weight:bold;">More Information: <a href="https://github.com/AbePralle/Morlock">GitHub</a></span>
+      <span style="font-size:14pt;"><a href="https://github.com/AbePralle/Morlock">GitHub</a></span>
     </center>
     <p>
     </p>
