@@ -158,7 +158,7 @@ class Morlock [singleton]
             throw error( "Missing package name after 'morlock $'."(cmd//action) )
           endIf
           local info = resolve_package( cmd//args.first )
-          run_script( cmd//action, info )
+          run_script( cmd, info )
       endWhich
 
     method create_build_folder( info:PackageInfo )->String
@@ -361,7 +361,16 @@ class Morlock [singleton]
                |    'morlock install user/repo/app-name' - installs package user/app-name
                |    'morlock install user/app-name'      - shorthand for user/app-name/app-name
                |
+               |  link <package>
+               |    Re-links the launchers for the specified package.
+               |
+               |  list
+               |    Shows list of all installed packages.
+               |
                |  uninstall <package>
+               |
+               |  unlink <package>
+               |    Unlinks the launchers for a given package.
                |
                |  update [package-a [package-b ...]]
                |    Updates listed packages or else all packages, including Morlock, Rogue,

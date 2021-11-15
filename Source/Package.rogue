@@ -5,6 +5,7 @@ class Package
   # Note: the "current folder" (".") is a temporary build folder.
   PROPERTIES
     action            : String   # "install", "uninstall", "<custom>", ...
+    args              : String[] # any command line args after action and package name
     name              : String   # "provider-name/app-name" ->  "abepralle/helloworld"
     host              : String   # "github.com" etc.
     provider          : String   # "provider-name"          ->  "abepralle"
@@ -48,6 +49,9 @@ class Package
           (File.filename(properties//script_filepath).before_last('.'))
         )
       endIf
+
+      args = properties//command//args.to_list<<String>>
+      if (args.count) args.remove_first  # removing package name from this 'args' list
 
       if (not name.contains('/')) name = name/name
 
@@ -345,7 +349,6 @@ class Package
       else
         local url = "https://api.github.com/repos/$/$/releases"(provider,repo)
         local cmd = ''curl -fsSL -H "Accept: application/vnd.github.v3+json" '' + url
-
         local process = Process.run( cmd )
         if (not process.success) throw Error( "Download failed: " + url )
 
