@@ -2,8 +2,8 @@
 
 About     | Current Release
 ----------|-----------------------
-Version   | 0.0.12
-Date      | 2021.10.02
+Version   | 0.0.13
+Date      | November 15, 2021
 Platforms | Windows, macOS, Linux (Ubuntu+), Cygwin
 
 Morlock is a multi-platform, decentralized console package manager implemented in [Rogue](https://github.com/AbePralle/Rogue). It has two goals:

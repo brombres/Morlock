@@ -2,8 +2,8 @@
 # Morlock.rogue
 # Started August 15, 2021
 #================================================================================
-$define VERSION "Morlock v0.0.12"
-$define AUTHOR  "2021.10.02 by Abe Pralle"
+$define VERSION "Morlock v0.0.13"
+$define AUTHOR "November 15, 2021 by Abe Pralle"
 
 $requireRogue "1.8.8"
 
