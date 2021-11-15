@@ -37,6 +37,30 @@ routine rogo_default
   rogo_run
 endRoutine
 
+routine rogo_debug
+  Build.RELEASE_MODE = false
+  rogo_build
+endRoutine
+
+routine rogo_install
+  # Developer option to link 'morlock' launcher in existing Morlock install to current build.
+  # Only works on macOS & Linux.
+  rogo_build
+  local src = File("Build/Morlock-macOS")
+  local list = File.listing( "/opt/morlock/packages/abepralle/morlock/*/bin/morlock" )
+  require list.count == 1
+  local dest = File(list.first)
+  dest.delete
+  src.copy(dest,&verbose)
+  execute( "chmod a+x $"(dest.filepath) )
+
+  local launcher = "/opt/morlock/bin/morlock"
+  File.delete( launcher )
+  execute( "ln -s $ $"(dest.filepath,launcher) )
+
+  File.sync_from( Files("Source","*.rogue"), dest.parent(2)/"Source" )
+endRoutine
+
 routine rogo_update_bootstrap
   rogo_build
   local base_filepath = "Build/$" (Build.PROJECT)
@@ -93,47 +117,6 @@ endRoutine
 
 routine rogo_run
   execute File.esc( exe_filepath )
-endRoutine
-
-routine rogo_install
-  local exe_filepath = File.abs( exe_filepath )
-  if (System.is_windows)
-    local exe_folder = File.conventional_filepath( File.folder(exe_filepath) )
-    local path = System.environment//PATH
-    if (not path.to_lowercase.contains(exe_folder.to_lowercase))
-      println
-      println ''Add the following to your system PATH then reopen this command prompt to be able''
-      println ''to launch $ by typing "$":'' (Build.PROJECT,Build.LAUNCHER_NAME)
-      println
-      println "  ADD THIS TO YOUR PATH"
-      println "  " + exe_folder
-    endIf
-  else
-    contingent
-      local result = Process.run( "which " + Build.LAUNCHER_NAME, &env )
-      necessary (result.success)
-      local launcher_filepath = result->String.trimmed
-      necessary launcher_filepath
-      necessary File.load_as_string( launcher_filepath ).contains( exe_filepath )
-
-    unsatisfied
-      local launcher_filepath = "$/$" (launcher_folder,Build.LAUNCHER_NAME)
-      println "Creating launcher " + launcher_filepath
-      local sudo = ""
-      loop
-        try
-          if (not File.exists(launcher_folder)) execute( "$mkdir $"(sudo,launcher_folder) )
-          File.save( "$.launcher"(Build.LAUNCHER_NAME), ''#!/bin/sh\nexec "$" "$@"\n''(exe_filepath,'$') )
-          execute( "$mv $.launcher $"(sudo,Build.LAUNCHER_NAME,launcher_filepath) )
-          execute( "$chmod a+x $"(sudo,launcher_filepath) )
-          escapeLoop
-        catch (err:Error)
-          if (sudo != "") throw err
-          sudo = "sudo "
-        endTry
-      endLoop
-    endContingent
-  endIf
 endRoutine
 
 routine rogo_uninstall
