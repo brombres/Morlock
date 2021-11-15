@@ -174,7 +174,7 @@ routine rogo_publish( version:String )
 
   execute( ''git commit -am "[v$] Release"''(version), &suppress_error )
   execute "git push"
-  local cmd = ''gh release create v$ --title "Rogo v$"''(version,version)
+  local cmd = ''gh release create v$ --title "Morlock v$"''(version,version)
   execute cmd
 
 endRoutine
