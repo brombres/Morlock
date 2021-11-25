@@ -37,9 +37,13 @@ class Morlock [singleton]
         System.exit 0
       endIf
 
+      perform_action( cmd )
+
+    method perform_action( cmd:Value )
       which (cmd//action)
         case "bootstrap"
           noAction # already handled
+          return
 
         case "create"
           local info = resolve_package( cmd//args.first )
@@ -109,21 +113,72 @@ class Morlock [singleton]
           println "Creating script template '$'."(script_filepath)
           println "$"(script_filepath)
           File.save( script_filepath, src )
+          return
 
         case "install"
           if (cmd//args.is_empty) throw error( "Package name expected after 'morlock install'." )
           local info = resolve_package( cmd//args.first, &allow_local_script )
-          if (info.version and info.installed_versions.contains(info.version))
+
+          local is_sufficient_version_installed : Logical
+          if (info.version)
+            local required_v = VersionNumber(info.version)
+            forEach (v in info.installed_versions)
+              if (VersionNumber(v) >= required_v)
+                is_sufficient_version_installed = true
+                escapeForEach
+              endIf
+            endForEach
+          endIf
+
+          if (info.version and is_sufficient_version_installed)
             if (is_dependency) return  # all good
             throw error( "$ version $ is already installed."(info.name,info.version) )
           elseIf (not info.version and info.installed_versions.count and is_dependency)
             return
           endIf
+
           info.fetch_latest_script
           run_script( cmd, info )
+          return
+
+        case "link"
+          if (cmd//args.is_empty) throw error( "Missing package name after 'morlock link'." )
+
+          contingent
+            necessary (cmd//args.count <= 2)
+
+            local package_or_exe = cmd//args.first->String
+
+            necessary (File.exists(package_or_exe) and not File.is_folder(package_or_exe))
+            local launcher_name : String
+            if (cmd//args.count >= 2)
+              launcher_name = cmd//args[1]->String
+            else
+              launcher_name = File.filename( package_or_exe ).before_last(".exe",&ignore_case)
+            endIf
+            local exe_filepath = File.absolute_filepath( package_or_exe )
+
+            local launcher_filepath = HOME/"bin"/launcher_name
+            if (System.is_windows) launcher_filepath += ".bat"
+            File.delete( launcher_filepath )
+
+            println "Linking $ -> $" (launcher_name,exe_filepath)
+            if (System.is_windows)
+              File.save( launcher_filepath, ''@$ %*''(File.esc(File.conventional_filepath(exe_filepath))) )
+            else
+              local link_cmd = "ln -s $ $" (exe_filepath,launcher_filepath)
+              execute( link_cmd, &quiet )
+            endIf
+
+            return
+
+          endContingent
+
+          # 'link <package-name>' will fall though to the code coming after this 'which'.
 
         case "list"
           println (forEach in installed_packages)
+          return
 
         case "uninstall"
           if (cmd//args.is_empty) throw error( "Package name expected after 'morlock uninstall'." )
@@ -135,9 +190,30 @@ class Morlock [singleton]
             throw error( "$ is not installed."(info.name) )
           endIf
           run_script( cmd, info )
+          return
+
+        case "unlink"
+          if (cmd//args.is_empty)
+            throw error( "Missing package name or launcher name after 'morlock unlink'." )
+          endIf
+
+          local arg = cmd//args.first->String
+          if (not arg.contains('/'))
+            local launcher = arg
+            if (System.is_windows) launcher += ".bat"
+            launcher = HOME/"bin"/launcher
+            if (File.exists(launcher))
+              println "Unlinking $" (arg)
+              File.delete( launcher )
+            else
+              println "No such launcher: " + arg
+            endIf
+            return
+            # else fall through to unlink by package name
+          endIf
 
         case "update"
-          args = cmd//args.to_list<<String>>
+          local args = cmd//args.to_list<<String>>
           if (args.is_empty) args = installed_packages
           forEach (package in args)
             try
@@ -152,14 +228,15 @@ class Morlock [singleton]
               println "="*w
             endTry
           endForEach
+          return
 
-        others
-          if (cmd//args.is_empty)
-            throw error( "Missing package name after 'morlock $'."(cmd//action) )
-          endIf
-          local info = resolve_package( cmd//args.first )
-          run_script( cmd, info )
       endWhich
+
+      if (cmd//args.is_empty)
+        throw error( "Missing package name after 'morlock $'."(cmd//action) )
+      endIf
+      local info = resolve_package( cmd//args.first )
+      run_script( cmd, info )
 
     method create_build_folder( info:PackageInfo )->String
       local build_folder = "$/$/$/$" (HOME,"build",info.provider,info.app_name)
@@ -350,12 +427,10 @@ class Morlock [singleton]
                |  help
                |    Show this help text.
                |
-               |  create <package>
-               |    Execute in the root folder of a repo you want to add a Morlock install
-               |    script to. If your GitHub username is "user" and you are in repo "abc",
-               |    write "morlock create user/abc". If you want to have the app named "xyz"
-               |    (but still from repo "abc"), write "morlock create user/xyz" and then
-               |    users will install with "morlock install user/abc/xyz".
+               |  create <provider>/<app-name>
+               |    For example, `create mygithub/myapp` will create a template install script
+               |    `myapp.rogue`. Edit it and move it to a root subfolder called `Morlock/`
+               |    (or `morlock/`).
                |
                |  install <package>
                |    'morlock install user/repo/app-name' - installs package user/app-name
@@ -364,13 +439,18 @@ class Morlock [singleton]
                |  link <package>
                |    Re-links the launchers for the specified package.
                |
+               |  link <exe-filepath> <launcher-name>
+               |    Links an arbitrary executable to an arbitrary launcher on the Morlock binpath.
+               |    For example: 'morlock link ~/MyProject/Build/myprog.exe myprog'.
+               |
                |  list
                |    Shows list of all installed packages.
                |
                |  uninstall <package>
+               |    Uninstalls the specified package.
                |
-               |  unlink <package>
-               |    Unlinks the launchers for a given package.
+               |  unlink <package-name-or-launcher-name>
+               |    Unlinks launchers so they're no longer on the Morlock binpath.
                |
                |  update [package-a [package-b ...]]
                |    Updates listed packages or else all packages, including Morlock, Rogue,

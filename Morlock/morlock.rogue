@@ -7,6 +7,7 @@ class MorlockPackage : Package
   METHODS
     method init
       # Uncomment to automatically determine releases using GitHub's API.
+      dependency( "abepralle/rogue@1.10.1" )
       scan_repo_releases
 
     method install

@@ -5,6 +5,7 @@ About     | Current Release
 Version   | 0.0.13
 Date      | November 15, 2021
 Platforms | Windows, macOS, Linux (Ubuntu+), Cygwin
+Author    | Abe Pralle
 
 Morlock is a multi-platform, decentralized console package manager implemented in [Rogue](https://github.com/AbePralle/Rogue). It has two goals:
 
@@ -21,7 +22,7 @@ Copy and paste this line in the console:
 
     bash -c "$(curl -L install.morlock.sh)"
 
-The installation will ask you to add `/opt/morlock/bin` to your path before proceeding. You can do that beforehand by adding the following to your `~/.bashrc`, ~/.zshrc`, etc:
+The installation will ask you to add `/opt/morlock/bin` to your path before proceeding. You can do that beforehand by adding the following to your `~/.bashrc`, `~/.zshrc`, etc:
 
     export PATH="/opt/morlock/bin":$PATH
 
@@ -37,19 +38,13 @@ The installation will ask you to add `/opt/morlock/bin` to your path before proc
 
         C:\Users\YourUserName\AppData\Local\Morlock\bin
 
-# Usage
+# Core Commands
 
 ## Hello World
 Test out Morlock with:
 
     morlock install abepralle/helloworld
     helloworld
-
-## `create` (Create a Morlock Install Script)
-
-    morlock create provider/app-name
-
-Execute the `morlock create ...` command from the root folder of a repo you want to add a Morlock install script to. A `morlock` subfolder will be created if it doesn't already exist (both `morlock/` and `Morlock/` are fine) and `morlock/app-name.rogue` will be created with a helpful template. Edit the template and commit it to your repo to enable Morlock to download and build your repo as a package.
 
 ## `help`
 
@@ -73,10 +68,32 @@ Morlock pre-installs three packages:
 
 This are the Morlock package management system itself, the [Rogue](https://github.com/AbePralle/Rogue) language compiler that Morlock install scripts are written in, and the [Rogo](https://github.com/AbePralle/Rogo) build system that all three packages use. These packages can be updated but not uninstalled.
 
+## `uninstall`
+
+    uninstall <package>
+
+Uninstalls the specified package.
+
 ## `update`
 
     morlock update
     morlock update provider/name [...]
+
+# Additional Commands
+
+## `link`
+
+    link <package>
+
+Re-links the launchers for the specified package.
+
+    link <exe-filepath> <launcher-name>
+
+Links an arbitrary executable to an arbitrary launcher on the Morlock binpath.
+For example: `morlock link ~/MyProject/Build/myprog.exe myprog`.
+
+## `unlink <package-name-or-launcher-name>`
+Unlinks launchers so they're no longer on the Morlock binpath.
 
 # Making Morlock-Installable Packages
 Morlock does not have a central registry. Any package or process can be adapted to be installable with Morlock. Here are the different ways that can be accomplished.
@@ -97,3 +114,10 @@ Downloads the specified install script (see `morlock create` under Usage), pulls
 ## `morlock install local/filepath/app-name.rogue`
 Uses the specified local install script (see `morlock create` under Usage), pulls the provider name and app name from it, and runs it.
 
+## Create a Morlock Install Script with `create`
+
+    morlock create provider/app-name
+
+For example, `create mygithub/myapp` will create a template install script
+`myapp.rogue`. Edit it and move it to a root subfolder called `Morlock/`
+(or `morlock/`).
