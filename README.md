@@ -2,8 +2,8 @@
 
 About     | Current Release
 ----------|-----------------------
-Version   | 0.0.13
-Date      | November 15, 2021
+Version   | 1.0
+Date      | November 24, 2021
 Platforms | Windows, macOS, Linux (Ubuntu+), Cygwin
 Author    | Abe Pralle
 
