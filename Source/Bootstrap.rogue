@@ -5,7 +5,7 @@
 
 $requireRogue "1.8.8"
 
-uses Utility/Zip
+uses Codec/Zip
 
 class Bootstrap [singleton]
   PROPERTIES
@@ -30,7 +30,7 @@ class Bootstrap [singleton]
       endIf
 
       # Create the Morlock home folder
-      if (not File.is_folder(Morlock.HOME))
+      if (not File(Morlock.HOME).is_folder)
         print_installing_header
         println "Creating home folder..."
         Morlock.create_folder( Morlock.HOME, &chown )
@@ -42,7 +42,7 @@ class Bootstrap [singleton]
       Morlock.create_folder( Morlock.HOME/"packages" )
 
       # Make sure Morlock.HOME/bin is on the system PATH before proceeding.
-      local binpath = File.conventional_filepath( Morlock.HOME/"bin" )
+      local binpath = File( Morlock.HOME/"bin" ).conventional_filepath
       contingent
         local path_name = System.env.names.find( (name)=>name.equals("path",&ignore_case) )
         necessary (path_name.exists)
@@ -78,8 +78,8 @@ class Bootstrap [singleton]
           local shell = System.env//SHELL
           contingent
             necessary (shell)
-            shell = "~/.$rc" (File.filename(shell))
-            necessary (File.exists(shell))
+            shell = "~/.$rc" (File(shell).filename)
+            necessary (File(shell).exists)
             println "You can execute this command to make the change:"
             println ''echo export PATH="$":\\$PATH >> $ && source $''(binpath,'$',shell,shell)
           unsatisfied
@@ -99,13 +99,13 @@ class Bootstrap [singleton]
       delete_unused_package_versions
 
     method delete_unused_package_versions
-      forEach (folder in File.listing(Morlock.HOME/"packages/*/*",&ignore_hidden,&folders))
+      forEach (folder in File(Morlock.HOME/"packages/*/*").listing(&ignore_hidden,&folders))
         local v_filepath = folder/"active_version.txt"
-        if (File.exists(v_filepath))
+        if (File(v_filepath).exists)
           local active_v = String(File(v_filepath)).trimmed
-          forEach (v_folder in File.listing(folder/"*",&ignore_hidden,&folders))
-            if (File.filename(v_folder) != active_v)
-              File.delete( v_folder )
+          forEach (v_folder in File(folder/"*").listing(&ignore_hidden,&folders))
+            if (File(v_folder).filename != active_v)
+              File( v_folder ).delete
             endIf
           endForEach
         endIf
@@ -125,7 +125,7 @@ class Bootstrap [singleton]
     method install_morlock
       local ext = which{ System.is_windows:".bat" || "" }
       local bin_filepath = "$/bin/morlock$" (Morlock.HOME,ext)
-      if (File.exists(bin_filepath)) return
+      if (File(bin_filepath).exists) return
 
       # Can use the regular system to install the latest Morlock.
       # If the remaining code in this method executes on Windows it's probably a bootstrap
@@ -133,13 +133,13 @@ class Bootstrap [singleton]
       local package = package_instance( "https://github.com/abepralle/morlock" )
       package.scan_repo_releases
       package.select_version
-      if (File.exists(package.install_folder) and not File.listing(package.install_folder).is_empty)
+      if (File(package.install_folder).exists and not File(package.install_folder).listing.is_empty)
         println "$ v$ is already installed." (package.name,package.version)
         return
       endIf
 
       local build_folder = Morlock.HOME/"build/abepralle/morlock"
-      File.delete( build_folder )
+      File( build_folder ).delete
       Morlock.create_folder( build_folder )
 
       package.archive_filename = build_folder/package.archive_filename
@@ -148,8 +148,8 @@ class Bootstrap [singleton]
       package.unpack( build_folder )
 
       local archive_folder : String
-      forEach (folder in File.listing(build_folder,&folders))
-        if (File.exists(folder/"Build.rogue"))
+      forEach (folder in File(build_folder).listing(&folders))
+        if (File(folder/"Build.rogue").exists)
           archive_folder = folder
           escapeForEach
         endIf
@@ -160,31 +160,31 @@ class Bootstrap [singleton]
       local install_folder   = package.install_folder
       Morlock.create_folder( install_folder )
       Morlock.header( "Compiling morlock..." )
-      execute( "(cd $ && rogo build)" (File.esc(archive_folder)) )
+      execute( "(cd $ && rogo build)" (File(archive_folder).esc) )
 
       package.install_executable
-      File.save( File.folder(package.install_folder)/"active_version.txt", package.version )
+      File( File(package.install_folder).folder/"active_version.txt" ).save( package.version )
 
       local src = Files( archive_folder/"Source", "*.rogue" )
-      File.sync_from( src, install_folder/"Source" )
+      src.sync_to( install_folder/"Source" )
 
       PackageInfo( "abepralle/morlock" ).ensure_script_exists
 
     method install_rogo
       local ext = which{ System.is_windows:".bat" || "" }
       local bin_filepath = "$/bin/rogo$" (Morlock.HOME,ext)
-      if (File.exists(bin_filepath)) return
+      if (File(bin_filepath).exists) return
 
       local package = package_instance( "https://github.com/abepralle/rogo" )
       package.scan_repo_releases
       package.select_version
-      if (File.exists(package.install_folder) and not File.listing(package.install_folder).is_empty)
+      if (File(package.install_folder).exists and not File(package.install_folder).listing.is_empty)
         println "$ v$ is already installed." (package.name,package.version)
         return
       endIf
 
       local build_folder = Morlock.HOME/"build/abepralle/rogo"
-      File.delete( build_folder )
+      File( build_folder ).delete
       Morlock.create_folder( build_folder )
 
       package.archive_filename = build_folder/package.archive_filename
@@ -193,8 +193,8 @@ class Bootstrap [singleton]
       package.unpack( build_folder )
 
       local archive_folder : String
-      forEach (folder in File.listing(build_folder,&folders))
-        if (File.exists(folder/"Makefile"))
+      forEach (folder in File(build_folder).listing(&folders))
+        if (File(folder/"Makefile").exists)
           archive_folder = folder
           escapeForEach
         endIf
@@ -205,29 +205,29 @@ class Bootstrap [singleton]
       local install_folder   = package.install_folder
       Morlock.create_folder( install_folder )
       Morlock.header( "Compiling rogo..." )
-      execute( "(cd $ && make build)" (File.esc(archive_folder)) )
+      execute( "(cd $ && make build)" (File(archive_folder).esc) )
 
       package.install_executable
 
-      File.save( File.folder(package.install_folder)/"active_version.txt", package.version )
+      File( File(package.install_folder).folder/"active_version.txt" ).save( package.version )
 
       PackageInfo( "abepralle/rogo" ).ensure_script_exists
 
     method install_rogue
       local ext = which{ System.is_windows:".bat" || "" }
-      local bin_filepath = "$/bin/roguec$" (Morlock.HOME,ext)
-      if (File.exists(bin_filepath)) return
+      local bin_filepath = "$/bin/$$" (Morlock.HOME,ROGUEC_EXE,ext)
+      if (File(bin_filepath).exists) return
 
       local package = package_instance( "https://github.com/abepralle/rogue" )
       package.scan_repo_releases
       package.select_version
-      if (File.exists(package.install_folder) and not File.listing(package.install_folder).is_empty)
+      if (File(package.install_folder).exists and not File(package.install_folder).listing.is_empty)
         println "$ v$ is already installed." (package.name,package.version)
         return
       endIf
 
       local build_folder = Morlock.HOME/"build/abepralle/rogue"
-      File.delete( build_folder )
+      File( build_folder ).delete
       Morlock.create_folder( build_folder )
 
       package.archive_filename = build_folder/package.archive_filename
@@ -237,8 +237,8 @@ class Bootstrap [singleton]
 
       local archive_folder : String
       local makefile = which{ System.is_windows:"make.bat" || "Makefile" }
-      forEach (folder in File.listing(build_folder,&folders))
-        if (File.exists(folder/makefile))
+      forEach (folder in File(build_folder).listing(&folders))
+        if (File(folder/makefile).exists)
           archive_folder = folder
           escapeForEach
         endIf
@@ -251,22 +251,22 @@ class Bootstrap [singleton]
       Morlock.create_folder( libraries_folder )
 
       if (System.is_windows)
-        Morlock.header( "Compiling roguec..." )
+        Morlock.header( "Compiling $..."(ROGUEC_EXE) )
       else
-        Morlock.header( "Compiling roguec - this may take a while..." )
+        Morlock.header( "Compiling $ - this may take a while..."(ROGUEC_EXE) )
       endIf
       if (System.is_windows)
-        execute( "cd $ && make build" (File.esc(archive_folder)) )
+        execute( "cd $ && make build" (File(archive_folder).esc) )
         execute( "xcopy /I /S /Q /Y $ $"...
-          (File.esc(archive_folder/"Source/Libraries"),File.esc(install_folder/"Libraries")) )
+          (File(archive_folder/"Source/Libraries").esc,File(install_folder/"Libraries").esc) )
       else
-        execute( "(cd $ && make build LIBRARIES_FOLDER=$)" (File.esc(archive_folder),File.esc(install_folder)) )
+        execute( "(cd $ && make build LIBRARIES_FOLDER=$)" (File(archive_folder).esc,File(install_folder).esc) )
       endIf
 
-      local dest_filename = which{ System.is_windows:"roguec.exe" || "roguec" }
+      local dest_filename = which{ System.is_windows:"$.exe"(ROGUEC_EXE) || "$"(ROGUEC_EXE) }
       package.install_executable( &=dest_filename )
 
-      File.save( File.folder(package.install_folder)/"active_version.txt", package.version )
+      File( File(package.install_folder).folder/"active_version.txt" ).save( package.version )
       PackageInfo( "abepralle/rogue" ).ensure_script_exists
 
     method print_installing_header

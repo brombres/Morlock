@@ -1,5 +1,5 @@
-uses Utility/Best
-uses Utility/Zip
+uses Math/Best
+uses Codec/Zip
 
 class Package
   # Note: the "current folder" (".") is a temporary build folder.
@@ -44,9 +44,9 @@ class Package
     method init( properties )
       if (not name or name.count('/')>1)
         throw PackageError(
-          File.filename(properties//script_filepath),
+          File(properties//script_filepath).filename,
           ''Package name must be specified as a property. For example:\n\n  PROPERTIES\n    name = "provider/$"''...
-          (File.filename(properties//script_filepath).before_last('.'))
+          (File(properties//script_filepath).filename.before_last('.'))
         )
       endIf
 
@@ -82,9 +82,9 @@ class Package
     method build
       # Attempts to automatically figure out how build the downloaded & unpacked
       # archive and launches the appropriate commands.
-      forEach (folder in File.listing(".",&folders,&ignore_hidden))
-        if (File.exists(folder/"Build.rogue"))
-          execute "cd $ && rogo build" (File.esc(folder))
+      forEach (folder in File(".",&folders,&ignore_hidden).listing)
+        if (File(folder/"Build.rogue").exists)
+          execute "cd $ && rogo build" (File(folder).esc)
           archive_folder = folder
           return
         endIf
@@ -103,20 +103,20 @@ class Package
       if (not dest_filename)
         dest_filename = app_name
       endIf
-      if (System.is_windows) dest_filename .= with_trailing(".exe")
+      if (System.is_windows) dest_filename .= with_suffix(".exe")
 
       create_folder( bin_folder )
       local dest_filepath = bin_folder/dest_filename
 
       #println "Copying $ -> $" (src_filepath,dest_filepath)
-      File.delete( dest_filepath )
-      File.copy( src_filepath, dest_filepath )
-      if (not System.is_windows) execute( "chmod u+x $" (File.esc(dest_filepath)), &quiet )
+      File( dest_filepath ).delete
+      File( src_filepath ).copy_to( dest_filepath )
+      if (not System.is_windows) execute( "chmod u+x $" (File(dest_filepath).esc), &quiet )
 
     method create_folder( folder:String )
       #println "  " + folder
-      File.create_folder( folder )
-      if (not File.is_folder(folder))
+      File( folder ).create_folder
+      if (not File(folder).is_folder)
         throw error( ''Error creating folder "$".''(folder) )
       endIf
 
@@ -125,8 +125,8 @@ class Package
 
     method download->String
       println "Downloading $ v$" (name,version)
-      execute( "curl -LfsS $ -o $" (url,File.esc(archive_filename)), &quiet )
-      if (not File.exists(archive_filename)) throw error( "Error downloading " + url )
+      execute( "curl -LfsS $ -o $" (url,File(archive_filename).esc), &quiet )
+      if (not File(archive_filename).esc) throw error( "Error downloading " + url )
       return archive_filename
 
     method error( message:String )->Error
@@ -139,9 +139,9 @@ class Package
       endIf
 
     method filename_for_url( url:String )->String
-      local filename = File.filename(url)
+      local filename = File(url).filename
       contingent
-        local ext = File.extension(filename)
+        local ext = File(filename).extension
         sufficient (ext.equals("zip",&ignore_case))
         sufficient (ext.equals("tar",&ignore_case))
         sufficient (ext.equals("gz",&ignore_case))
@@ -171,7 +171,7 @@ class Package
 
     method handle_install
       if (install_folder)
-        if (File.exists(install_folder) and File.listing(install_folder).count > 0)
+        if (File(install_folder).exists and File(install_folder).listing.count > 0)
           if (action == "update") System.exit(0)
           throw error( "$ version $ is already installed."(name,version) )
         endIf
@@ -184,10 +184,10 @@ class Package
           create_folder( install_folder )
           create_folder( bin_folder )
           install
-          File.save( File.folder(install_folder)/"active_version.txt", version )
+          File( File(install_folder).folder/"active_version.txt" ).save( version )
 
         catch (err:Error)
-          File.delete( install_folder )
+          File( install_folder ).delete
           throw err
         endTry
 
@@ -211,11 +211,11 @@ class Package
       unlink
 
     method handle_uninstall
-      if (File.exists(install_folder))
+      if (File(install_folder).exists)
         header "Uninstalling $ version $"(name,version)
         unlink
         uninstall
-        File.delete( install_folder )
+        File( install_folder ).delete
         local v_file = File( package_folder/"active_version.txt" )
         if (v_file.exists and version == String(v_file).trimmed) v_file.delete
       elseIf (specified_version)
@@ -240,15 +240,15 @@ class Package
       else                       pattern = default
 
       if (not pattern)
-        if (File.is_folder(archive_folder/"Build"))   pattern = "Build/*"
-        elseIf (File.is_folder(archive_folder/"bin")) pattern = "bin/*"
+        if (File(archive_folder/"Build").is_folder)   pattern = "Build/*"
+        elseIf (File(archive_folder/"bin").is_folder) pattern = "bin/*"
       endIf
 
       if (not pattern) throw error( "No filepath or pattern given for $."(System.os) )
 
       pattern = pattern.replacing( "$(OS)", System.os )
 
-      local exe_list = File.listing( archive_folder/pattern )
+      local exe_list = File( archive_folder/pattern ).listing
       contingent
         sufficient (exe_list.count == 1)
         if (System.is_windows)
@@ -256,9 +256,9 @@ class Package
         else
           if (exe_list.find( (f)=>f.ends_with(System.os,&ignore_case) ))
             exe_list.keep( (f)=>f.ends_with(System.os,&ignore_case) )
-          elseIf
-            exe_list.find( (f) with (app_name) => File.filename(f) == app_name )
-            exe_list.keep( (f) with (app_name) => File.filename(f) == app_name )
+          else
+            exe_list.find( (f) with (app_name) => File(f).filename == app_name )
+            exe_list.keep( (f) with (app_name) => File(f).filename == app_name )
           endIf
         endIf
         sufficient (exe_list.count == 1)
@@ -270,15 +270,15 @@ class Package
       if (link) this.link
 
     method link
-      local exe_list = File.listing( bin_folder/"*" )
+      local exe_list = File( bin_folder/"*" ).listing
       forEach (exe in exe_list)
-        local base_launcher = File.filename(exe).before_last(".exe",&ignore_case)
+        local base_launcher = File(exe).filename.before_last(".exe",&ignore_case)
         local launcher = launcher_folder/base_launcher
         if (System.is_windows) launcher += ".bat"
-        File.delete( launcher )
+        File( launcher ).delete
         println "Linking " + base_launcher
         if (System.is_windows)
-          File.save( launcher, ''@$ %*''(File.esc(File.conventional_filepath(exe))) )
+          File( launcher ).save( ''@$ %*''(File(File(exe).conventional_filepath).esc) )
         else
           local cmd = "ln -s $ $" (exe,launcher)
           execute( cmd, &quiet )
@@ -324,22 +324,21 @@ class Package
         version = url.substring( span.value.index )
         local separator_index = span.value.index + span.value.count
         local separator = which{ (separator_index<url.count):url[separator_index] || '.' }
-        use builder = StringBuilder.pool
-          local found_numbers = false
-          forEach (ch in version)
-            if (ch == separator) builder.print "."
-            elseIf (ch.is_number) builder.print ch; found_numbers = true
-            elseIf (found_numbers) escapeForEach
-          endForEach
-          version = builder->String.without_trailing('.')
-        endUse
+        local version = String()
+        local found_numbers = false
+        forEach (ch in version)
+          if (ch == separator) version.print "."
+          elseIf (ch.is_number) version.print ch; found_numbers = true
+          elseIf (found_numbers) escapeForEach
+        endForEach
+        version = version.without_suffix('.')
       endIf
 
       releases.add @{ :version, :url, platforms:platforms->String, filename:filename_for_url(url) }
 
     method save_cache
-      File.create_folder( package_folder )
-      cache.save( File(package_folder/"cache.json") )
+      File( package_folder ).create_folder
+      JSON.save( cache, File(package_folder/"cache.json") )
 
     method scan_repo_releases( min_version=null:String, max_version=null:String, platforms=null:Platforms )
       local info : Value
@@ -385,19 +384,18 @@ class Package
           if (VersionNumber(version).is_compatible_with(v)) best.consider( v )
         endForEach
         if (not best.exists)
-          use builder = StringBuilder.pool
-            builder.println "No release is compatible with requested version '$'. Available versions:" (version)
-            local compatible = @{}
-            forEach (release in releases)
-              if (release//platforms->String.contains(platform))
-                compatible[ release//version ] = release//version
-              endIf
-            endForEach
-            block compatible = compatible.to_list<<String>>.[ sort( (a,b) => VersionNumber(a) > b ) ]
-              builder.println "  " + (forEach in compatible)
-            endBlock
-            throw error( builder )
-          endUse
+          local builder = String()
+          builder.println "No release is compatible with requested version '$'. Available versions:" (version)
+          local compatible = @{}
+          forEach (release in releases)
+            if (release//platforms->String.contains(platform))
+              compatible[ release//version ] = release//version
+            endIf
+          endForEach
+          block compatible = compatible.to_list<<String>>.[ sort( (a,b) => VersionNumber(a) > b ) ]
+            builder.println "  " + (forEach in compatible)
+          endBlock
+          throw error( builder )
         endIf
         version = best.value
 
@@ -431,17 +429,17 @@ class Package
     method uninstall
 
     method unlink
-      local exe_list = File.listing( bin_folder/"*" )
+      local exe_list = File( bin_folder/"*" ).listing
       forEach (exe in exe_list)
-        local base_launcher = File.filename(exe).before_last(".exe",&ignore_case)
+        local base_launcher = File(exe).filename.before_last(".exe",&ignore_case)
         local launcher = launcher_folder/base_launcher
         if (System.is_windows) launcher += ".bat"
         println "Unlinking " + base_launcher
-        File.delete( launcher )
+        File( launcher ).delete
       endForEach
 
     method unpack( destination_folder=".":String )
-      if (not File.exists(archive_filename))
+      if (not File(archive_filename).exists)
         throw error( "[INTERNAL] Must call download() before unpack()." )
       endIf
 
@@ -449,7 +447,7 @@ class Package
       if (archive_filename.ends_with(".zip",&ignore_case))
         Zip( File(archive_filename) ).extract( destination_folder )
       elseIf (archive_filename.ends_with(".tar.gz"))
-        execute "tar -C $ -xf $" (File.esc(destination_folder),File.esc(archive_filename))
+        execute "tar -C $ -xf $" (File(destination_folder).esc,File(archive_filename).esc)
       else
         throw error( "Cannot unpack() file type '.$'; write custom install() code to handle it." )
       endIf
@@ -458,17 +456,16 @@ endClass
 class PackageError( package_name:String, message ) : Error
   METHODS
     method description->String
-      use builder = StringBuilder.pool
-        local w1 = message.longest_line
-        local w2 = Console.width
-        local w = w1.or_larger(80).or_smaller( w2 )
-        local hr = "=" * w
-        builder.println hr
-        builder.println "ERROR [$]\n" (package_name)
-        builder.println message
-        builder.println hr
-        return builder
-      endUse
+      local builder = String()
+      local w1 = message.longest_line
+      local w2 = Console.width
+      local w = w1.or_larger(80).or_smaller( w2 )
+      local hr = "=" * w
+      builder.println hr
+      builder.println "ERROR [$]\n" (package_name)
+      builder.println message
+      builder.println hr
+      return builder
 endClass
 
 class Platforms

@@ -5,13 +5,16 @@
 $define VERSION "Morlock v1.0"
 $define AUTHOR "November 24, 2021 by Abe Pralle"
 
-$requireRogue "1.8.8"
+$requireRogue "2.0"
+
+$define ROGUEC_EXE "r2"
 
 $include "Bootstrap.rogue"
-$include "Package.rogue"
-$include "PackageInfo.rogue"
+$include Package
+$include PackageInfo
 
-uses Utility/CommandLineParser
+uses Console/CommandLineParser
+uses Utility/VersionNumber
 
 try
   Morlock.init( System.command_line_arguments )
@@ -48,7 +51,7 @@ class Morlock [singleton]
         case "create"
           local info = resolve_package( cmd//args.first )
           local script_filepath = "$.rogue" (info.app_name)
-          if (File.exists(script_filepath))
+          if (File(script_filepath).exists)
             throw error( "Install script '$' already exists."(script_filepath) )
           endIf
 
@@ -77,10 +80,10 @@ class Morlock [singleton]
            |      # knows how to build a Rogo-based project but nothing else.
            |      # Typically the only subfolder in the current folder will be the
            |      # unpacked archive.
-           |      #   forEach (folder in File.listing(".",&folders,&ignore_hidden))
-           |      #     if (File.exists(folder/"build-file-name"))
+           |      #   forEach (folder in File(".",&folders,&ignore_hidden).listing)
+           |      #     if (File(folder/"build-file-name").exists)
            |      #       archive_folder = folder  # be sure to set this property
-           |      #       execute "cd $ && <build-command>" (File.esc(folder))
+           |      #       execute "cd $ && <build-command>" (File(folder).esc)
            |      #     endIf
            |      #   endForEach
            |
@@ -112,7 +115,7 @@ class Morlock [singleton]
 
           println "Creating script template '$'."(script_filepath)
           println "$"(script_filepath)
-          File.save( script_filepath, src )
+          File( script_filepath ).save( src )
           return
 
         case "install"
@@ -149,22 +152,22 @@ class Morlock [singleton]
 
             local package_or_exe = cmd//args.first->String
 
-            necessary (File.exists(package_or_exe) and not File.is_folder(package_or_exe))
+            necessary (File(package_or_exe).esc and not File(package_or_exe).is_folder)
             local launcher_name : String
             if (cmd//args.count >= 2)
               launcher_name = cmd//args[1]->String
             else
-              launcher_name = File.filename( package_or_exe ).before_last(".exe",&ignore_case)
+              launcher_name = File( package_or_exe ).filename.before_last(".exe",&ignore_case)
             endIf
-            local exe_filepath = File.absolute_filepath( package_or_exe )
+            local exe_filepath = File( package_or_exe ).abs
 
             local launcher_filepath = HOME/"bin"/launcher_name
             if (System.is_windows) launcher_filepath += ".bat"
-            File.delete( launcher_filepath )
+            File( launcher_filepath ).delete
 
             println "Linking $ -> $" (launcher_name,exe_filepath)
             if (System.is_windows)
-              File.save( launcher_filepath, ''@$ %*''(File.esc(File.conventional_filepath(exe_filepath))) )
+              File( launcher_filepath ).save( ''@$ %*''(File(File(exe_filepath).conventional_filepath).esc) )
             else
               local link_cmd = "ln -s $ $" (exe_filepath,launcher_filepath)
               execute( link_cmd, &quiet )
@@ -186,7 +189,7 @@ class Morlock [singleton]
           if (info.version and not info.installed_versions.contains(info.version))
             throw error( "$ version $ is not installed."(info.name,info.version) )
           endIf
-          if (not File.exists(info.folder))
+          if (not File(info.folder).exists)
             throw error( "$ is not installed."(info.name) )
           endIf
           run_script( cmd, info )
@@ -202,9 +205,9 @@ class Morlock [singleton]
             local launcher = arg
             if (System.is_windows) launcher += ".bat"
             launcher = HOME/"bin"/launcher
-            if (File.exists(launcher))
+            if (File(launcher).exists)
               println "Unlinking $" (arg)
-              File.delete( launcher )
+              File( launcher ).delete
             else
               println "No such launcher: " + arg
             endIf
@@ -240,19 +243,19 @@ class Morlock [singleton]
 
     method create_build_folder( info:PackageInfo )->String
       local build_folder = "$/$/$/$" (HOME,"build",info.provider,info.app_name)
-      if (not File.is_folder(build_folder))
+      if (not File(build_folder).is_folder)
         #println "Creating " + build_folder
-        File.delete( build_folder )
-        File.create_folder( build_folder )
+        File( build_folder ).delete
+        File( build_folder ).create_folder
       endIf
       return build_folder
 
     method create_folder( path:String, &chown )
-      if (not File.is_folder(path))
-        if (not File.create_folder(path))
+      if (not File(path).is_folder)
+        if (not File(path).create_folder)
           local error_message = "Unable to create folder: "+path
           if (System.is_windows) throw Error(error_message)
-          local cmd = "sudo mkdir -p $" (File.esc(path))
+          local cmd = "sudo mkdir -p $" (File(path).esc)
           execute( cmd, error_message )
         endIf
 
@@ -260,13 +263,13 @@ class Morlock [singleton]
           if (chown)
             # chown the Morlock home folder
             local group = which{ System.is_macos:":admin" || "" }
-            local cmd = "chown $$ $" (System.environment//USER,group,File.esc(Morlock.HOME))
+            local cmd = "chown $$ $" (System.env//USER,group,File(Morlock.HOME).esc)
             if (not Process.run(cmd,&env).success)
               execute( "sudo " + cmd, "Unable to chown Morlock home folder: "+Morlock.HOME )
             endIf
           endIf
 
-          execute( "chmod 755 $"(File.esc(path)), &quiet )
+          execute( "chmod 755 $"(File(path).esc), &quiet )
         endIf
       endIf
 
@@ -283,15 +286,15 @@ class Morlock [singleton]
 
     method installed_packages->String[]
       local packages = Set<<String>>()
-      local versions = File.listing( HOME/"packages/*/*/*", &folders, &omit_path )
+      local versions = File( HOME/"packages/*/*/*" ).listing( &folders, &omit_path )
       forEach (v in versions)
-        packages.add( File.folder(v) )
+        packages.add( File(v).folder )
       endForEach
-      return packages->String[]
+      return packages.to_list
 
     method run_script( command:Value, info:PackageInfo )
       local action = command//action->String
-      if (action != "install" and not File.exists(info.folder))
+      if (action != "install" and not File(info.folder).exists)
         throw error( "Package $ is not installed." (info.name) )
       endIf
 
@@ -302,7 +305,7 @@ class Morlock [singleton]
       script_args//command = command
 
       block script_args = script_args.to_json.to_escaped_ascii('"')
-        local v_list = File.listing( HOME/"packages/abepralle/morlock", &folders, &ignore_hidden, &omit_path )
+        local v_list = File( HOME/"packages/abepralle/morlock" ).listing( &folders, &ignore_hidden, &omit_path )
         if (v_list.is_empty)
           println "[INTERNAL ERROR] Morlock has no current version."
           System.exit 1
@@ -320,24 +323,24 @@ class Morlock [singleton]
         local crc32 : Int32
         contingent
           # Recompile?
-          crc32 = File.crc32(info.filepath) ~ File.crc32(package_filepath) ~ File.crc32(script_launcher_filepath)
-          necessary (File.exists(exe_filepath))
-          necessary (File.exists(crc32_filepath))
+          crc32 = File(info.filepath).crc32 ~ File(package_filepath).crc32 ~ File(script_launcher_filepath).crc32
+          necessary (File(exe_filepath).exists)
+          necessary (File(crc32_filepath).exists)
           necessary (crc32->String == String(File(crc32_filepath)).trimmed)
 
         unsatisfied
-          local cmd = "roguec $ $ $ --debug --essential --api --compile --quiet --output=$" ...
-            (File.esc(info.filepath), File.esc(script_launcher_filepath), ...
-             File.esc(package_filepath), File.esc(info.build_folder/info.app_name))
+          local cmd = "$ $ $ $ --debug --essential --api --compile --quiet --output=$" ...
+            (ROGUEC_EXE,File(info.filepath).esc, File(script_launcher_filepath).esc, ...
+            File(package_filepath).esc, File(info.build_folder/info.app_name).esc)
           execute( cmd, &quiet, &exit_on_error )
-          File.delete( exe_filepath )
-          File.copy( info.build_folder/exe_filename, exe_filepath )
-          if (not System.is_windows) execute( "chmod u+x $" (File.esc(exe_filepath)), &quiet )
-          File.save( crc32_filepath, crc32->String )
+          File( exe_filepath ).delete
+          File( info.build_folder/exe_filename ).copy_to( exe_filepath )
+          if (not System.is_windows) execute( "chmod u+x $" (File(exe_filepath).esc), &quiet )
+          File( crc32_filepath ).save( crc32->String )
 
         endContingent
 
-        execute( 'cd $ && $ "$"' (File.esc(info.build_folder),File.esc(exe_filepath),script_args), &quiet, &exit_on_error )
+        execute( 'cd $ && $ "$"' (File(info.build_folder).esc,File(exe_filepath).esc,script_args), &quiet, &exit_on_error )
       endBlock
 
     method resolve_package( name:String, &allow_local_script )->PackageInfo
@@ -352,7 +355,7 @@ class Morlock [singleton]
       if (name.contains("://"))
         info = PackageInfo( name )
 
-      elseIf (File.exists(name) and not File.is_folder(name))
+      elseIf (File(name).exists and not File(name).is_folder)
         # Local script for install.
         local filepath = name
 
@@ -363,27 +366,26 @@ class Morlock [singleton]
         info = PackageInfo( String(File(filepath)), &is_script )
 
         # Copy script into place
-        File.create_folder( info.folder )
-        File.copy( filepath, info.filepath, &if_different )
+        File( info.folder ).create_folder
+        File( filepath ).copy_to( info.filepath, &if_different )
 
       else
         # TODO: map 'name' to any "built-in" packages.
         if (name.contains('/'))
           info = PackageInfo( name )
         else
-          local listing = File.listing( HOME/"packages/*/$"(name), &folders )
+          local listing = File( HOME/"packages/*/$"(name) ).listing( &folders )
           which (listing.count)
             case 0
               info = PackageInfo( name )
             case 1
-              local provider = File.filename(File.folder(listing.first))
+              local provider = File(listing.first).parent.filename
               info = PackageInfo( provider/name )
             others
-              use builder = StringBuilder.pool
-                builder.println "Ambiguous app name '$' matches mulitple installed packages:"(name)
-                builder.println "  $/$"(File.filename(File.folder(forEach in listing)),name)
-                throw error( builder )
-              endUse
+              local builder = String()
+              builder.println "Ambiguous app name '$' matches mulitple installed packages:"(name)
+              builder.println "  $/$"(File(File(forEach in listing).folder).filename,name)
+              throw error( builder )
           endWhich
         endIf
 
@@ -411,7 +413,7 @@ class Morlock [singleton]
         command//action = command//args.remove_first
       endIf
 
-      HOME = File.expand_path( command//options//home )
+      HOME = File( command//options//home ).resolved.filepath
       is_dependency = command//options//dependency->Logical
 
       return command
