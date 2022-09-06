@@ -148,18 +148,14 @@ class Morlock [singleton]
           if (cmd//args.is_empty) throw error( "Missing package name after 'morlock link'." )
 
           contingent
-            necessary (cmd//args.count <= 2)
+            necessary (cmd//args.count == 2)
+            # This handles 'link <launcher> <exe>'.
+            # 'link <package-name>' will fall though to the code coming after this 'which'.
 
-            local package_or_exe = cmd//args.first->String
+            local launcher_name = cmd//args.first->String
+            local exe_filepath = File( cmd//args[1]->String ).abs
 
-            necessary (File(package_or_exe).esc and not File(package_or_exe).is_folder)
-            local launcher_name : String
-            if (cmd//args.count >= 2)
-              launcher_name = cmd//args[1]->String
-            else
-              launcher_name = File( package_or_exe ).filename.before_last(".exe",&ignore_case)
-            endIf
-            local exe_filepath = File( package_or_exe ).abs
+            necessary (File(exe_filepath).exists and not File(exe_filepath).is_folder)
 
             local launcher_filepath = HOME/"bin"/launcher_name
             if (System.is_windows) launcher_filepath += ".bat"
@@ -176,8 +172,6 @@ class Morlock [singleton]
             return
 
           endContingent
-
-          # 'link <package-name>' will fall though to the code coming after this 'which'.
 
         case "list"
           println (forEach in installed_packages)
@@ -441,9 +435,9 @@ class Morlock [singleton]
                |  link <package>
                |    Re-links the launchers for the specified package.
                |
-               |  link <exe-filepath> <launcher-name>
-               |    Links an arbitrary executable to an arbitrary launcher on the Morlock binpath.
-               |    For example: 'morlock link ~/MyProject/Build/myprog.exe myprog'.
+               |  link <launcher-name> <exe-filepath>
+               |    Links an arbitrary launcher on the Morlock path to an arbitrary executable.
+               |    For example: 'morlock link myprog ~/MyProject/Build/myprog.exe'.
                |
                |  list
                |    Shows list of all installed packages.

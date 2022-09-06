@@ -87,10 +87,10 @@ Uninstalls the specified package.
 
 Re-links the launchers for the specified package.
 
-    link <exe-filepath> <launcher-name>
+    link <launcher-name> <exe-filepath>
 
 Links an arbitrary executable to an arbitrary launcher on the Morlock binpath.
-For example: `morlock link ~/MyProject/Build/myprog.exe myprog`.
+For example: `morlock link myprog ~/MyProject/Build/myprog.exe`.
 
 ## `unlink <package-name-or-launcher-name>`
 Unlinks launchers so they're no longer on the Morlock binpath.
