@@ -11,7 +11,7 @@ augment Build
     PROJECT          = "Morlock"
     LAUNCHER_NAME    = PROJECT.to_lowercase : String
 
-    BUILD_MODE       = "debug"
+    BUILD_MODE       = "release"
     LAUNCHER_FOLDER  = "/usr/local/bin"
     ROGUEC_FLAGS     = ""
     CC_FLAGS_UNIX    = ""
@@ -110,8 +110,8 @@ endRoutine
 routine rogo_update_bootstrap
   rogo_build
   local base_filepath = "Build/$" (Build.PROJECT)
-  File( base_filepath+".h" ).copy_to(   "Source/Bootstrap/Morlock.h" )
-  File( base_filepath+".cpp" ).copy_to( "Source/Bootstrap/Morlock.cpp" )
+  File( base_filepath+".h" ).copy_to( "Source/Bootstrap/Morlock.h" )
+  File( base_filepath+".c" ).copy_to( "Source/Bootstrap/Morlock.c" )
 endRoutine
 
 routine rogo_link
@@ -227,7 +227,7 @@ routine rogo_publish( new_version:String )
   endIf
 
   if (cur_branch != main_branch)
-    if (not Console.input("$ will be merged into $. Continue? ").to_lowercase.begins_with('y')) return
+    if (not Console.input("$ will be merged into $. Continue? "(cur_branch,main_branch)).to_lowercase.begins_with('y')) return
     execute "git push origin $"(cur_branch)
     execute "git checkout $"(main_branch)
     execute "git pull"
@@ -243,7 +243,7 @@ endRoutine
 
 routine compile_rogue
   local src_filepath = "Source/$.rogue" (Build.PROJECT)
-  local c_filepath = "Build/$-$" (Build.PROJECT,System.os)
+  local c_filepath = "Build/$" (Build.PROJECT)
   local flags = Build.ROGUEC_FLAGS
   if (Build.BUILD_MODE == "debug") flags = flags.with_suffix(' ') + "--debug"
   local cmd = "roguec $ $ --main --output=$ --target=Console,C,$"...
@@ -259,7 +259,7 @@ routine compile_rogue
 endRoutine
 
 routine compile_c
-  local c_filepath = File( "Build/$-$" (Build.PROJECT,System.os) ).esc
+  local c_filepath = File( "Build/$" (Build.PROJECT) ).esc
   local exe_filepath = exe_file.esc
   if (System.is_windows)
     local flags = Build.CC_FLAGS_WINDOWS

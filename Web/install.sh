@@ -24,14 +24,14 @@ if ! [ -f "$HOME/build/abepralle/morlock/download.success" ]; then
   echo Downloading Morlock bootstrap source...
   curl -fsSL https://raw.githubusercontent.com/AbePralle/Morlock/main/Source/Bootstrap/Morlock.h \
     -o "$HOME/build/abepralle/morlock/Morlock.h"
-  curl -fsSL https://raw.githubusercontent.com/AbePralle/Morlock/main/Source/Bootstrap/Morlock.cpp \
-    -o "$HOME/build/abepralle/morlock/Morlock.cpp"
+  curl -fsSL https://raw.githubusercontent.com/AbePralle/Morlock/main/Source/Bootstrap/Morlock.c \
+    -o "$HOME/build/abepralle/morlock/Morlock.c"
   echo success >> "$HOME/build/abepralle/morlock/download.success"
 fi
 
 if ! [ -f "$HOME/build/abepralle/morlock/compile.success" ]; then
-  if c++ -O3 -Wall -std=gnu++11 -fno-strict-aliasing -Wno-invalid-offsetof \
-    "$HOME/build/abepralle/morlock/Morlock.cpp" \
+  if c++ -O3 -Wall -fno-strict-aliasing -Wno-invalid-offsetof \
+    "$HOME/build/abepralle/morlock/Morlock.c" \
     -o "$HOME/build/abepralle/morlock/morlock"; then
     chmod a+x "$HOME/build/abepralle/morlock/morlock"
     echo success >> "$HOME/build/abepralle/morlock/compile.success"

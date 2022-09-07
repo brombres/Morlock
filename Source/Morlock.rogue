@@ -7,7 +7,7 @@ $define AUTHOR "November 24, 2021 by Abe Pralle"
 
 $requireRogue "2.0"
 
-$define ROGUEC_EXE "r2"
+$define ROGUEC_EXE "roguec"
 
 $include "Bootstrap.rogue"
 $include Package

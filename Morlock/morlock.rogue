@@ -6,15 +6,14 @@ class MorlockPackage : Package
 
   METHODS
     method init
-      # Uncomment to automatically determine releases using GitHub's API.
-      dependency( "abepralle/rogue@1.10.1" )
+      dependency( "abepralle/rogue@2.0.0" )
       scan_repo_releases
 
     method install
       prior.install
 
       local src = Files( archive_folder/"Source", "*.rogue" )
-      File.sync_from( src, install_folder/"Source" )
+      src.sync_to( install_folder/"Source" )
 
     method handle_uninstall
       throw error( "Essential package $ cannot be uninstalled."(name) )
