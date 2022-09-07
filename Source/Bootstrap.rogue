@@ -16,7 +16,6 @@ class Bootstrap [singleton]
     method configure( cmd )
       # Windows: make sure we're running from a developer command prompt with
       # command-line C++ support.
-trace
       if (System.is_windows)
         if (Process.run("cl").exit_code != 0)
           local mesg = "This command must be run from a Visual Studio Developer Command Prompt that supports C++. "
@@ -30,7 +29,6 @@ trace
         endIf
       endIf
 
-trace
       # Create the Morlock home folder
       if (not File(Morlock.HOME).is_folder)
         print_installing_header
@@ -38,13 +36,11 @@ trace
         Morlock.create_folder( Morlock.HOME, &chown )
       endIf
 
-trace
       # Create primary subfolders
       Morlock.create_folder( Morlock.HOME/"bin" )
       Morlock.create_folder( Morlock.HOME/"build" )
       Morlock.create_folder( Morlock.HOME/"packages" )
 
-trace
       # Make sure Morlock.HOME/bin is on the system PATH before proceeding.
       local binpath = File( Morlock.HOME/"bin" ).conventional_filepath
       contingent
@@ -96,13 +92,9 @@ trace
         System.exit 1
       endContingent
 
-trace
       install_rogue
-trace
       install_rogo
-trace
       install_morlock
-trace
 
       delete_unused_package_versions
 
@@ -133,7 +125,6 @@ trace
     method install_morlock
       local ext = which{ System.is_windows:".bat" || "" }
       local bin_filepath = "$/bin/morlock$" (Morlock.HOME,ext)
-      if (File(bin_filepath).exists) return
 
       # Can use the regular system to install the latest Morlock.
       # If the remaining code in this method executes on Windows it's probably a bootstrap
@@ -181,7 +172,6 @@ trace
     method install_rogo
       local ext = which{ System.is_windows:".bat" || "" }
       local bin_filepath = "$/bin/rogo$" (Morlock.HOME,ext)
-      if (File(bin_filepath).exists) return
 
       local package = package_instance( "https://github.com/abepralle/rogo" )
       package.scan_repo_releases
@@ -224,7 +214,6 @@ trace
     method install_rogue
       local ext = which{ System.is_windows:".bat" || "" }
       local bin_filepath = "$/bin/$$" (Morlock.HOME,ROGUEC_EXE,ext)
-      if (File(bin_filepath).exists) return
 
       local package = package_instance( "https://github.com/abepralle/rogue" )
       package.scan_repo_releases

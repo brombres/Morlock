@@ -25149,7 +25149,6 @@ void RogueBootstrap__configure__RogueValue( RogueBootstrap* THIS, RogueValue _au
   RogueInt32 _auto_local_pointer_fp_3 = TypeRogueFile.local_pointer_count;
 
   THIS->cmd = _auto_store_cmd_0;
-  RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str__Bootstrap_configure );
   if (RogueSystem__is_windows())
   {
     if (RogueProcess__run__RogueString_RogueLogical_RogueLogical( str_cl, 0, 0 )->exit_code != 0)
@@ -25192,7 +25191,6 @@ void RogueBootstrap__configure__RogueValue( RogueBootstrap* THIS, RogueValue _au
       }
     }
   }
-  RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str__Bootstrap_configure_1 );
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_8_17 );
   if (!RogueFile__is_folder((_auto_anchored_context_8_17=(RogueFile) {ROGUE_SINGLETON(RogueMorlock)->HOME})))
   {
@@ -25210,7 +25208,6 @@ void RogueBootstrap__configure__RogueValue( RogueBootstrap* THIS, RogueValue _au
       return;
     }
   }
-  RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str__Bootstrap_configure_2 );
   _auto_anchored_arg_0_10_19 = 0;
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_10_19 );
   _auto_anchored_arg_0_11_20 = 0;
@@ -25250,7 +25247,6 @@ void RogueBootstrap__configure__RogueValue( RogueBootstrap* THIS, RogueValue _au
     TypeRogueFile.local_pointer_count = _auto_local_pointer_fp_3;
     return;
   }
-  RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str__Bootstrap_configure_3 );
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &binpath_2 );
   _auto_anchored_arg_0_16_25 = 0;
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_16_25 );
@@ -25358,7 +25354,6 @@ void RogueBootstrap__configure__RogueValue( RogueBootstrap* THIS, RogueValue _au
   RogueMorlock__header(ROGUE_SINGLETON(RogueMorlock));
   RogueSystem__exit__RogueInt32( 1 );
   _auto_escape_1:;
-  RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str__Bootstrap_configure_4 );
   RogueBootstrap__install_rogue(THIS);
   if (Rogue_exception)
   {
@@ -25368,7 +25363,6 @@ void RogueBootstrap__configure__RogueValue( RogueBootstrap* THIS, RogueValue _au
     TypeRogueFile.local_pointer_count = _auto_local_pointer_fp_3;
     return;
   }
-  RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str__Bootstrap_configure_5 );
   RogueBootstrap__install_rogo(THIS);
   if (Rogue_exception)
   {
@@ -25378,7 +25372,6 @@ void RogueBootstrap__configure__RogueValue( RogueBootstrap* THIS, RogueValue _au
     TypeRogueFile.local_pointer_count = _auto_local_pointer_fp_3;
     return;
   }
-  RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str__Bootstrap_configure_6 );
   RogueBootstrap__install_morlock(THIS);
   if (Rogue_exception)
   {
@@ -25388,7 +25381,6 @@ void RogueBootstrap__configure__RogueValue( RogueBootstrap* THIS, RogueValue _au
     TypeRogueFile.local_pointer_count = _auto_local_pointer_fp_3;
     return;
   }
-  RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str__Bootstrap_configure_7 );
   RogueBootstrap__delete_unused_package_versions(THIS);
   TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
   TypeRogueOptionalString.local_pointer_count = _auto_local_pointer_fp_1;
@@ -25633,80 +25625,78 @@ void RogueBootstrap__install_morlock( RogueBootstrap* THIS )
   (void)src_13;
   RogueString* _auto_anchored_arg_0_0_14 = 0;
   (void)_auto_anchored_arg_0_0_14;
-  RogueFile _auto_anchored_context_1_15 = {0};
-  (void)_auto_anchored_context_1_15;
-  RoguePackage* _auto_call_2_16 = 0;
-  (void)_auto_call_2_16;
-  RogueString* _auto_anchored_arg_0_3_17 = 0;
-  (void)_auto_anchored_arg_0_3_17;
-  RogueString* _auto_anchored_arg_1_4_18 = 0;
-  (void)_auto_anchored_arg_1_4_18;
-  RoguePlatforms* _auto_anchored_arg_2_5_19 = 0;
-  (void)_auto_anchored_arg_2_5_19;
-  RogueFile _auto_anchored_context_6_20 = {0};
-  (void)_auto_anchored_context_6_20;
-  RogueLogical _auto_and_7_21 = 0;
-  (void)_auto_and_7_21;
-  RogueFile _auto_anchored_context_8_22 = {0};
-  (void)_auto_anchored_context_8_22;
-  RogueOptionalFilePattern _auto_anchored_arg_0_9_23 = {0};
-  (void)_auto_anchored_arg_0_9_23;
-  RogueStringList* _auto_anchored_context_10_24 = 0;
-  (void)_auto_anchored_context_10_24;
+  RoguePackage* _auto_call_1_15 = 0;
+  (void)_auto_call_1_15;
+  RogueString* _auto_anchored_arg_0_2_16 = 0;
+  (void)_auto_anchored_arg_0_2_16;
+  RogueString* _auto_anchored_arg_1_3_17 = 0;
+  (void)_auto_anchored_arg_1_3_17;
+  RoguePlatforms* _auto_anchored_arg_2_4_18 = 0;
+  (void)_auto_anchored_arg_2_4_18;
+  RogueFile _auto_anchored_context_5_19 = {0};
+  (void)_auto_anchored_context_5_19;
+  RogueLogical _auto_and_6_20 = 0;
+  (void)_auto_and_6_20;
+  RogueFile _auto_anchored_context_7_21 = {0};
+  (void)_auto_anchored_context_7_21;
+  RogueOptionalFilePattern _auto_anchored_arg_0_8_22 = {0};
+  (void)_auto_anchored_arg_0_8_22;
+  RogueStringList* _auto_anchored_context_9_23 = 0;
+  (void)_auto_anchored_context_9_23;
+  RogueString* _auto_anchored_arg_0_10_24 = 0;
+  (void)_auto_anchored_arg_0_10_24;
   RogueString* _auto_anchored_arg_0_11_25 = 0;
   (void)_auto_anchored_arg_0_11_25;
   RogueString* _auto_anchored_arg_0_12_26 = 0;
   (void)_auto_anchored_arg_0_12_26;
-  RogueString* _auto_anchored_arg_0_13_27 = 0;
-  (void)_auto_anchored_arg_0_13_27;
-  RogueFile _auto_anchored_context_14_28 = {0};
-  (void)_auto_anchored_context_14_28;
-  RogueString* _auto_anchored_arg_1_15_29 = 0;
-  (void)_auto_anchored_arg_1_15_29;
-  RogueFile _auto_anchored_context_16_30 = {0};
-  (void)_auto_anchored_context_16_30;
-  RogueOptionalFilePattern _auto_anchored_arg_0_17_31 = {0};
-  (void)_auto_anchored_arg_0_17_31;
-  RogueLogical _auto_condition_18_32 = 0;
-  (void)_auto_condition_18_32;
-  RogueFile _auto_anchored_context_19_33 = {0};
-  (void)_auto_anchored_context_19_33;
-  RogueError* _auto_obj_20_34 = 0;
-  (void)_auto_obj_20_34;
-  RogueString* _auto_anchored_arg_0_21_35 = 0;
-  (void)_auto_anchored_arg_0_21_35;
-  RogueFile _auto_anchored_context_22_36 = {0};
-  (void)_auto_anchored_context_22_36;
-  RogueString* _auto_anchored_arg_0_23_37 = 0;
-  (void)_auto_anchored_arg_0_23_37;
-  RogueString* _auto_anchored_arg_1_24_38 = 0;
-  (void)_auto_anchored_arg_1_24_38;
-  RogueString* _auto_anchored_arg_0_25_39 = 0;
-  (void)_auto_anchored_arg_0_25_39;
-  RogueString* _auto_anchored_arg_1_26_40 = 0;
-  (void)_auto_anchored_arg_1_26_40;
-  RogueString* _auto_anchored_arg_2_27_41 = 0;
-  (void)_auto_anchored_arg_2_27_41;
-  RogueString* _auto_anchored_arg_3_28_42 = 0;
-  (void)_auto_anchored_arg_3_28_42;
-  RogueString* _auto_anchored_arg_4_29_43 = 0;
-  (void)_auto_anchored_arg_4_29_43;
-  RogueFile _auto_anchored_context_30_44 = {0};
-  (void)_auto_anchored_context_30_44;
-  RogueString* _auto_anchored_arg_0_31_45 = 0;
-  (void)_auto_anchored_arg_0_31_45;
-  RogueFile _auto_anchored_context_32_46 = {0};
-  (void)_auto_anchored_context_32_46;
+  RogueFile _auto_anchored_context_13_27 = {0};
+  (void)_auto_anchored_context_13_27;
+  RogueString* _auto_anchored_arg_1_14_28 = 0;
+  (void)_auto_anchored_arg_1_14_28;
+  RogueFile _auto_anchored_context_15_29 = {0};
+  (void)_auto_anchored_context_15_29;
+  RogueOptionalFilePattern _auto_anchored_arg_0_16_30 = {0};
+  (void)_auto_anchored_arg_0_16_30;
+  RogueLogical _auto_condition_17_31 = 0;
+  (void)_auto_condition_17_31;
+  RogueFile _auto_anchored_context_18_32 = {0};
+  (void)_auto_anchored_context_18_32;
+  RogueError* _auto_obj_19_33 = 0;
+  (void)_auto_obj_19_33;
+  RogueString* _auto_anchored_arg_0_20_34 = 0;
+  (void)_auto_anchored_arg_0_20_34;
+  RogueFile _auto_anchored_context_21_35 = {0};
+  (void)_auto_anchored_context_21_35;
+  RogueString* _auto_anchored_arg_0_22_36 = 0;
+  (void)_auto_anchored_arg_0_22_36;
+  RogueString* _auto_anchored_arg_1_23_37 = 0;
+  (void)_auto_anchored_arg_1_23_37;
+  RogueString* _auto_anchored_arg_0_24_38 = 0;
+  (void)_auto_anchored_arg_0_24_38;
+  RogueString* _auto_anchored_arg_1_25_39 = 0;
+  (void)_auto_anchored_arg_1_25_39;
+  RogueString* _auto_anchored_arg_2_26_40 = 0;
+  (void)_auto_anchored_arg_2_26_40;
+  RogueString* _auto_anchored_arg_3_27_41 = 0;
+  (void)_auto_anchored_arg_3_27_41;
+  RogueString* _auto_anchored_arg_4_28_42 = 0;
+  (void)_auto_anchored_arg_4_28_42;
+  RogueFile _auto_anchored_context_29_43 = {0};
+  (void)_auto_anchored_context_29_43;
+  RogueString* _auto_anchored_arg_0_30_44 = 0;
+  (void)_auto_anchored_arg_0_30_44;
+  RogueFile _auto_anchored_context_31_45 = {0};
+  (void)_auto_anchored_context_31_45;
+  RogueString* _auto_anchored_arg_0_32_46 = 0;
+  (void)_auto_anchored_arg_0_32_46;
   RogueString* _auto_anchored_arg_0_33_47 = 0;
   (void)_auto_anchored_arg_0_33_47;
-  RogueString* _auto_anchored_arg_0_34_48 = 0;
+  RogueFile _auto_anchored_arg_0_34_48 = {0};
   (void)_auto_anchored_arg_0_34_48;
-  RogueFile _auto_anchored_arg_0_35_49 = {0};
-  (void)_auto_anchored_arg_0_35_49;
-  RoguePackageInfo* _auto_obj_36_50 = 0;
-  (void)_auto_obj_36_50;
-  RoguePackageInfo* _auto_anchored_context_37_51 = 0;
-  (void)_auto_anchored_context_37_51;
+  RoguePackageInfo* _auto_obj_35_49 = 0;
+  (void)_auto_obj_35_49;
+  RoguePackageInfo* _auto_anchored_context_36_50 = 0;
+  (void)_auto_anchored_context_36_50;
 
   RogueInt32 _auto_local_pointer_fp_0 = TypeRogueObject.local_pointer_count;
   RogueInt32 _auto_local_pointer_fp_1 = TypeRogueFile.local_pointer_count;
@@ -25724,17 +25714,9 @@ void RogueBootstrap__install_morlock( RogueBootstrap* THIS )
   RogueString__print__RogueString( _auto_context_block_0_1, ext_0 );
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &bin_filepath_2 );
   bin_filepath_2 = _auto_context_block_0_1;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_1_15 );
-  if (RogueFile__exists((_auto_anchored_context_1_15=(RogueFile) {bin_filepath_2})))
-  {
-    TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-    TypeRogueFile.local_pointer_count = _auto_local_pointer_fp_1;
-    TypeRogueOptionalFilePattern.local_pointer_count = _auto_local_pointer_fp_2;
-    return;
-  }
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &package_3 );
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_call_2_16 );
-  _auto_call_2_16 = RogueBootstrap__package_instance__RogueString( THIS, str_https___github_com_a_1 );
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_call_1_15 );
+  _auto_call_1_15 = RogueBootstrap__package_instance__RogueString( THIS, str_https___github_com_a_1 );
   if (Rogue_exception)
   {
     TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -25742,14 +25724,14 @@ void RogueBootstrap__install_morlock( RogueBootstrap* THIS )
     TypeRogueOptionalFilePattern.local_pointer_count = _auto_local_pointer_fp_2;
     return;
   }
-  package_3 = _auto_call_2_16;
-  _auto_anchored_arg_0_3_17 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_3_17 );
-  _auto_anchored_arg_1_4_18 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_4_18 );
-  _auto_anchored_arg_2_5_19 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_2_5_19 );
-  RoguePackage__scan_repo_releases__RogueString_RogueString_RoguePlatforms( package_3, (_auto_anchored_arg_0_3_17=0), (_auto_anchored_arg_1_4_18=0), (_auto_anchored_arg_2_5_19=0) );
+  package_3 = _auto_call_1_15;
+  _auto_anchored_arg_0_2_16 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_2_16 );
+  _auto_anchored_arg_1_3_17 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_3_17 );
+  _auto_anchored_arg_2_4_18 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_2_4_18 );
+  RoguePackage__scan_repo_releases__RogueString_RogueString_RoguePlatforms( package_3, (_auto_anchored_arg_0_2_16=0), (_auto_anchored_arg_1_3_17=0), (_auto_anchored_arg_2_4_18=0) );
   if (Rogue_exception)
   {
     TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -25765,28 +25747,28 @@ void RogueBootstrap__install_morlock( RogueBootstrap* THIS )
     TypeRogueOptionalFilePattern.local_pointer_count = _auto_local_pointer_fp_2;
     return;
   }
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_6_20 );
-  _auto_and_7_21 = RogueFile__exists((_auto_anchored_context_6_20=(RogueFile) {package_3->install_folder}));
-  if (_auto_and_7_21)
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_5_19 );
+  _auto_and_6_20 = RogueFile__exists((_auto_anchored_context_5_19=(RogueFile) {package_3->install_folder}));
+  if (_auto_and_6_20)
   {
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_8_22 );
-    _auto_anchored_arg_0_9_23 = (RogueOptionalFilePattern){0};
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueOptionalFilePattern, &_auto_anchored_arg_0_9_23 );
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_context_10_24 );
-    _auto_and_7_21 = !RogueStringList__is_empty((_auto_anchored_context_10_24=RogueFile__listing__RogueOptionalFilePattern_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical( (_auto_anchored_context_8_22=(RogueFile) {package_3->install_folder}), (_auto_anchored_arg_0_9_23=(RogueOptionalFilePattern) {0}), 0, 0, 0, 0, 0, 0, 0 )));
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_7_21 );
+    _auto_anchored_arg_0_8_22 = (RogueOptionalFilePattern){0};
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueOptionalFilePattern, &_auto_anchored_arg_0_8_22 );
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_context_9_23 );
+    _auto_and_6_20 = !RogueStringList__is_empty((_auto_anchored_context_9_23=RogueFile__listing__RogueOptionalFilePattern_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical( (_auto_anchored_context_7_21=(RogueFile) {package_3->install_folder}), (_auto_anchored_arg_0_8_22=(RogueOptionalFilePattern) {0}), 0, 0, 0, 0, 0, 0, 0 )));
   }
-  if (_auto_and_7_21)
+  if (_auto_and_6_20)
   {
     RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_context_block_1_4 );
     _auto_context_block_1_4 = ROGUE_CREATE_OBJECT( RogueString );
     RogueString__init(_auto_context_block_1_4);
+    _auto_anchored_arg_0_10_24 = 0;
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_10_24 );
+    RogueString__print__RogueString( _auto_context_block_1_4, (_auto_anchored_arg_0_10_24=package_3->name) );
+    RogueString__print__RogueString( _auto_context_block_1_4, str__v_1 );
     _auto_anchored_arg_0_11_25 = 0;
     RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_11_25 );
-    RogueString__print__RogueString( _auto_context_block_1_4, (_auto_anchored_arg_0_11_25=package_3->name) );
-    RogueString__print__RogueString( _auto_context_block_1_4, str__v_1 );
-    _auto_anchored_arg_0_12_26 = 0;
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_12_26 );
-    RogueString__print__RogueString( _auto_context_block_1_4, (_auto_anchored_arg_0_12_26=package_3->version) );
+    RogueString__print__RogueString( _auto_context_block_1_4, (_auto_anchored_arg_0_11_25=package_3->version) );
     RogueString__print__RogueString( _auto_context_block_1_4, str__is_already_installe );
     RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), _auto_context_block_1_4 );
     TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -25795,11 +25777,11 @@ void RogueBootstrap__install_morlock( RogueBootstrap* THIS )
     return;
   }
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &build_folder_5 );
-  _auto_anchored_arg_0_13_27 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_13_27 );
-  build_folder_5 = RogueString__operatorDIVIDE__RogueString_RogueString( (_auto_anchored_arg_0_13_27=ROGUE_SINGLETON(RogueMorlock)->HOME), str_build_abepralle_morl );
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_14_28 );
-  RogueFile__delete((_auto_anchored_context_14_28=(RogueFile) {build_folder_5}));
+  _auto_anchored_arg_0_12_26 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_12_26 );
+  build_folder_5 = RogueString__operatorDIVIDE__RogueString_RogueString( (_auto_anchored_arg_0_12_26=ROGUE_SINGLETON(RogueMorlock)->HOME), str_build_abepralle_morl );
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_13_27 );
+  RogueFile__delete((_auto_anchored_context_13_27=(RogueFile) {build_folder_5}));
   RogueMorlock__create_folder__RogueString_RogueLogical( ROGUE_SINGLETON(RogueMorlock), build_folder_5, 0 );
   if (Rogue_exception)
   {
@@ -25808,9 +25790,9 @@ void RogueBootstrap__install_morlock( RogueBootstrap* THIS )
     TypeRogueOptionalFilePattern.local_pointer_count = _auto_local_pointer_fp_2;
     return;
   }
-  _auto_anchored_arg_1_15_29 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_15_29 );
-  package_3->archive_filename = RogueString__operatorDIVIDE__RogueString_RogueString( build_folder_5, (_auto_anchored_arg_1_15_29=package_3->archive_filename) );
+  _auto_anchored_arg_1_14_28 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_14_28 );
+  package_3->archive_filename = RogueString__operatorDIVIDE__RogueString_RogueString( build_folder_5, (_auto_anchored_arg_1_14_28=package_3->archive_filename) );
   RoguePackage__download(package_3);
   if (Rogue_exception)
   {
@@ -25832,41 +25814,41 @@ void RogueBootstrap__install_morlock( RogueBootstrap* THIS )
   _auto_index_2_7 = 0;
   _auto_collection_3_8 = 0;
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_collection_3_8 );
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_16_30 );
-  _auto_anchored_arg_0_17_31 = (RogueOptionalFilePattern){0};
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueOptionalFilePattern, &_auto_anchored_arg_0_17_31 );
-  _auto_collection_3_8 = RogueFile__listing__RogueOptionalFilePattern_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical( (_auto_anchored_context_16_30=(RogueFile) {build_folder_5}), (_auto_anchored_arg_0_17_31=(RogueOptionalFilePattern) {0}), 0, 0, 0, 0, 1, 0, 0 );
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_15_29 );
+  _auto_anchored_arg_0_16_30 = (RogueOptionalFilePattern){0};
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueOptionalFilePattern, &_auto_anchored_arg_0_16_30 );
+  _auto_collection_3_8 = RogueFile__listing__RogueOptionalFilePattern_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical( (_auto_anchored_context_15_29=(RogueFile) {build_folder_5}), (_auto_anchored_arg_0_16_30=(RogueOptionalFilePattern) {0}), 0, 0, 0, 0, 1, 0, 0 );
   _auto_count_4_9 = 0;
   _auto_count_4_9 = _auto_collection_3_8->count;
   folder_10 = 0;
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &folder_10 );
-  _auto_condition_18_32 = _auto_index_2_7 < _auto_count_4_9;
+  _auto_condition_17_31 = _auto_index_2_7 < _auto_count_4_9;
   goto _auto_loop_condition_0;
   do
   {
     folder_10 = RogueStringList__get__RogueInt32( _auto_collection_3_8, _auto_index_2_7 );
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_19_33 );
-    if (RogueFile__exists((_auto_anchored_context_19_33=(RogueFile) {RogueString__operatorDIVIDE__RogueString_RogueString( folder_10, str_Build_rogue )})))
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_18_32 );
+    if (RogueFile__exists((_auto_anchored_context_18_32=(RogueFile) {RogueString__operatorDIVIDE__RogueString_RogueString( folder_10, str_Build_rogue )})))
     {
       archive_folder_6 = folder_10;
       goto _auto_escape_1;
     }
     ++_auto_index_2_7;
-    _auto_condition_18_32 = _auto_index_2_7 < _auto_count_4_9;
+    _auto_condition_17_31 = _auto_index_2_7 < _auto_count_4_9;
     _auto_loop_condition_0:;
   }
-  while (_auto_condition_18_32);
+  while (_auto_condition_17_31);
   _auto_escape_1:;
   if (!archive_folder_6)
   {
     Rogue_call_stack_push( "", "", -1 );
     ;
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_obj_20_34 );
-    _auto_obj_20_34 = ROGUE_CREATE_OBJECT( RogueError );
-    _auto_anchored_arg_0_21_35 = 0;
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_21_35 );
-    RogueException__init__RogueString( ((RogueException*)_auto_obj_20_34), (_auto_anchored_arg_0_21_35=RogueString__operatorPLUS__RogueString_RogueString( str_Failed_to_find_extra, build_folder_5 )) );
-    Rogue_exception = (RogueObject*)_auto_obj_20_34;
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_obj_19_33 );
+    _auto_obj_19_33 = ROGUE_CREATE_OBJECT( RogueError );
+    _auto_anchored_arg_0_20_34 = 0;
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_20_34 );
+    RogueException__init__RogueString( ((RogueException*)_auto_obj_19_33), (_auto_anchored_arg_0_20_34=RogueString__operatorPLUS__RogueString_RogueString( str_Failed_to_find_extra, build_folder_5 )) );
+    Rogue_exception = (RogueObject*)_auto_obj_19_33;
     Rogue_call_stack_pop();
 
     {
@@ -25892,14 +25874,14 @@ void RogueBootstrap__install_morlock( RogueBootstrap* THIS )
   _auto_context_block_6_12 = ROGUE_CREATE_OBJECT( RogueString );
   RogueString__init(_auto_context_block_6_12);
   RogueString__print__RogueString( _auto_context_block_6_12, str__cd_ );
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_22_36 );
-  _auto_anchored_arg_0_23_37 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_23_37 );
-  RogueString__print__RogueString( _auto_context_block_6_12, (_auto_anchored_arg_0_23_37=RogueFile__esc((_auto_anchored_context_22_36=(RogueFile) {archive_folder_6}))) );
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_21_35 );
+  _auto_anchored_arg_0_22_36 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_22_36 );
+  RogueString__print__RogueString( _auto_context_block_6_12, (_auto_anchored_arg_0_22_36=RogueFile__esc((_auto_anchored_context_21_35=(RogueFile) {archive_folder_6}))) );
   RogueString__print__RogueString( _auto_context_block_6_12, str_____rogo_build_ );
-  _auto_anchored_arg_1_24_38 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_24_38 );
-  RogueBootstrap__execute__RogueString_RogueString_RogueLogical_RogueLogical( THIS, _auto_context_block_6_12, (_auto_anchored_arg_1_24_38=0), 0, 0 );
+  _auto_anchored_arg_1_23_37 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_23_37 );
+  RogueBootstrap__execute__RogueString_RogueString_RogueLogical_RogueLogical( THIS, _auto_context_block_6_12, (_auto_anchored_arg_1_23_37=0), 0, 0 );
   if (Rogue_exception)
   {
     TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -25907,17 +25889,17 @@ void RogueBootstrap__install_morlock( RogueBootstrap* THIS )
     TypeRogueOptionalFilePattern.local_pointer_count = _auto_local_pointer_fp_2;
     return;
   }
-  _auto_anchored_arg_0_25_39 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_25_39 );
-  _auto_anchored_arg_1_26_40 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_26_40 );
-  _auto_anchored_arg_2_27_41 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_2_27_41 );
-  _auto_anchored_arg_3_28_42 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_3_28_42 );
-  _auto_anchored_arg_4_29_43 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_4_29_43 );
-  RoguePackage__install_executable__RogueString_RogueString_RogueString_RogueString_RogueString_RogueLogical( package_3, (_auto_anchored_arg_0_25_39=0), (_auto_anchored_arg_1_26_40=0), (_auto_anchored_arg_2_27_41=0), (_auto_anchored_arg_3_28_42=0), (_auto_anchored_arg_4_29_43=0), 1 );
+  _auto_anchored_arg_0_24_38 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_24_38 );
+  _auto_anchored_arg_1_25_39 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_25_39 );
+  _auto_anchored_arg_2_26_40 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_2_26_40 );
+  _auto_anchored_arg_3_27_41 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_3_27_41 );
+  _auto_anchored_arg_4_28_42 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_4_28_42 );
+  RoguePackage__install_executable__RogueString_RogueString_RogueString_RogueString_RogueString_RogueLogical( package_3, (_auto_anchored_arg_0_24_38=0), (_auto_anchored_arg_1_25_39=0), (_auto_anchored_arg_2_26_40=0), (_auto_anchored_arg_3_27_41=0), (_auto_anchored_arg_4_28_42=0), 1 );
   if (Rogue_exception)
   {
     TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -25925,24 +25907,24 @@ void RogueBootstrap__install_morlock( RogueBootstrap* THIS )
     TypeRogueOptionalFilePattern.local_pointer_count = _auto_local_pointer_fp_2;
     return;
   }
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_30_44 );
-  _auto_anchored_arg_0_31_45 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_31_45 );
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_32_46 );
-  _auto_anchored_arg_0_33_47 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_33_47 );
-  RogueFile__save__RogueString_RogueLogical( (_auto_anchored_context_32_46=(RogueFile) {RogueString__operatorDIVIDE__RogueString_RogueString( (_auto_anchored_arg_0_31_45=RogueFile__folder((_auto_anchored_context_30_44=(RogueFile) {package_3->install_folder}))), str_active_version_txt )}), (_auto_anchored_arg_0_33_47=package_3->version), 0 );
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_29_43 );
+  _auto_anchored_arg_0_30_44 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_30_44 );
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_31_45 );
+  _auto_anchored_arg_0_32_46 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_32_46 );
+  RogueFile__save__RogueString_RogueLogical( (_auto_anchored_context_31_45=(RogueFile) {RogueString__operatorDIVIDE__RogueString_RogueString( (_auto_anchored_arg_0_30_44=RogueFile__folder((_auto_anchored_context_29_43=(RogueFile) {package_3->install_folder}))), str_active_version_txt )}), (_auto_anchored_arg_0_32_46=package_3->version), 0 );
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &src_13 );
   src_13 = ROGUE_CREATE_OBJECT( RogueFiles );
-  _auto_anchored_arg_0_34_48 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_34_48 );
-  RogueFiles__init__RogueString_RogueString_RogueLogical_RogueLogical( src_13, (_auto_anchored_arg_0_34_48=RogueString__operatorDIVIDE__RogueString_RogueString( archive_folder_6, str_Source )), str___rogue, 1, 0 );
-  _auto_anchored_arg_0_35_49 = (RogueFile){0};
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_arg_0_35_49 );
-  RogueFiles__sync_to__RogueFile_RogueLogical_RogueLogical_RogueLogical_RogueLogical( src_13, (_auto_anchored_arg_0_35_49=(RogueFile) {RogueString__operatorDIVIDE__RogueString_RogueString( install_folder_11, str_Source )}), 0, 0, 0, 0 );
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_obj_36_50 );
-  _auto_obj_36_50 = ROGUE_CREATE_OBJECT( RoguePackageInfo );
-  RoguePackageInfo__init__RogueString_RogueLogical( _auto_obj_36_50, str_abepralle_morlock, 0 );
+  _auto_anchored_arg_0_33_47 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_33_47 );
+  RogueFiles__init__RogueString_RogueString_RogueLogical_RogueLogical( src_13, (_auto_anchored_arg_0_33_47=RogueString__operatorDIVIDE__RogueString_RogueString( archive_folder_6, str_Source )), str___rogue, 1, 0 );
+  _auto_anchored_arg_0_34_48 = (RogueFile){0};
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_arg_0_34_48 );
+  RogueFiles__sync_to__RogueFile_RogueLogical_RogueLogical_RogueLogical_RogueLogical( src_13, (_auto_anchored_arg_0_34_48=(RogueFile) {RogueString__operatorDIVIDE__RogueString_RogueString( install_folder_11, str_Source )}), 0, 0, 0, 0 );
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_obj_35_49 );
+  _auto_obj_35_49 = ROGUE_CREATE_OBJECT( RoguePackageInfo );
+  RoguePackageInfo__init__RogueString_RogueLogical( _auto_obj_35_49, str_abepralle_morlock, 0 );
   if (Rogue_exception)
   {
     TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -25950,8 +25932,8 @@ void RogueBootstrap__install_morlock( RogueBootstrap* THIS )
     TypeRogueOptionalFilePattern.local_pointer_count = _auto_local_pointer_fp_2;
     return;
   }
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_context_37_51 );
-  RoguePackageInfo__ensure_script_exists((_auto_anchored_context_37_51=_auto_obj_36_50));
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_context_36_50 );
+  RoguePackageInfo__ensure_script_exists((_auto_anchored_context_36_50=_auto_obj_35_49));
   if (Rogue_exception)
   {
     TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -25994,76 +25976,74 @@ void RogueBootstrap__install_rogo( RogueBootstrap* THIS )
   (void)_auto_context_block_6_12;
   RogueString* _auto_anchored_arg_0_0_13 = 0;
   (void)_auto_anchored_arg_0_0_13;
-  RogueFile _auto_anchored_context_1_14 = {0};
-  (void)_auto_anchored_context_1_14;
-  RoguePackage* _auto_call_2_15 = 0;
-  (void)_auto_call_2_15;
-  RogueString* _auto_anchored_arg_0_3_16 = 0;
-  (void)_auto_anchored_arg_0_3_16;
-  RogueString* _auto_anchored_arg_1_4_17 = 0;
-  (void)_auto_anchored_arg_1_4_17;
-  RoguePlatforms* _auto_anchored_arg_2_5_18 = 0;
-  (void)_auto_anchored_arg_2_5_18;
-  RogueFile _auto_anchored_context_6_19 = {0};
-  (void)_auto_anchored_context_6_19;
-  RogueLogical _auto_and_7_20 = 0;
-  (void)_auto_and_7_20;
-  RogueFile _auto_anchored_context_8_21 = {0};
-  (void)_auto_anchored_context_8_21;
-  RogueOptionalFilePattern _auto_anchored_arg_0_9_22 = {0};
-  (void)_auto_anchored_arg_0_9_22;
-  RogueStringList* _auto_anchored_context_10_23 = 0;
-  (void)_auto_anchored_context_10_23;
+  RoguePackage* _auto_call_1_14 = 0;
+  (void)_auto_call_1_14;
+  RogueString* _auto_anchored_arg_0_2_15 = 0;
+  (void)_auto_anchored_arg_0_2_15;
+  RogueString* _auto_anchored_arg_1_3_16 = 0;
+  (void)_auto_anchored_arg_1_3_16;
+  RoguePlatforms* _auto_anchored_arg_2_4_17 = 0;
+  (void)_auto_anchored_arg_2_4_17;
+  RogueFile _auto_anchored_context_5_18 = {0};
+  (void)_auto_anchored_context_5_18;
+  RogueLogical _auto_and_6_19 = 0;
+  (void)_auto_and_6_19;
+  RogueFile _auto_anchored_context_7_20 = {0};
+  (void)_auto_anchored_context_7_20;
+  RogueOptionalFilePattern _auto_anchored_arg_0_8_21 = {0};
+  (void)_auto_anchored_arg_0_8_21;
+  RogueStringList* _auto_anchored_context_9_22 = 0;
+  (void)_auto_anchored_context_9_22;
+  RogueString* _auto_anchored_arg_0_10_23 = 0;
+  (void)_auto_anchored_arg_0_10_23;
   RogueString* _auto_anchored_arg_0_11_24 = 0;
   (void)_auto_anchored_arg_0_11_24;
   RogueString* _auto_anchored_arg_0_12_25 = 0;
   (void)_auto_anchored_arg_0_12_25;
-  RogueString* _auto_anchored_arg_0_13_26 = 0;
-  (void)_auto_anchored_arg_0_13_26;
-  RogueFile _auto_anchored_context_14_27 = {0};
-  (void)_auto_anchored_context_14_27;
-  RogueString* _auto_anchored_arg_1_15_28 = 0;
-  (void)_auto_anchored_arg_1_15_28;
-  RogueFile _auto_anchored_context_16_29 = {0};
-  (void)_auto_anchored_context_16_29;
-  RogueOptionalFilePattern _auto_anchored_arg_0_17_30 = {0};
-  (void)_auto_anchored_arg_0_17_30;
-  RogueLogical _auto_condition_18_31 = 0;
-  (void)_auto_condition_18_31;
-  RogueFile _auto_anchored_context_19_32 = {0};
-  (void)_auto_anchored_context_19_32;
-  RogueError* _auto_obj_20_33 = 0;
-  (void)_auto_obj_20_33;
-  RogueString* _auto_anchored_arg_0_21_34 = 0;
-  (void)_auto_anchored_arg_0_21_34;
-  RogueFile _auto_anchored_context_22_35 = {0};
-  (void)_auto_anchored_context_22_35;
-  RogueString* _auto_anchored_arg_0_23_36 = 0;
-  (void)_auto_anchored_arg_0_23_36;
-  RogueString* _auto_anchored_arg_1_24_37 = 0;
-  (void)_auto_anchored_arg_1_24_37;
-  RogueString* _auto_anchored_arg_0_25_38 = 0;
-  (void)_auto_anchored_arg_0_25_38;
-  RogueString* _auto_anchored_arg_1_26_39 = 0;
-  (void)_auto_anchored_arg_1_26_39;
-  RogueString* _auto_anchored_arg_2_27_40 = 0;
-  (void)_auto_anchored_arg_2_27_40;
-  RogueString* _auto_anchored_arg_3_28_41 = 0;
-  (void)_auto_anchored_arg_3_28_41;
-  RogueString* _auto_anchored_arg_4_29_42 = 0;
-  (void)_auto_anchored_arg_4_29_42;
-  RogueFile _auto_anchored_context_30_43 = {0};
-  (void)_auto_anchored_context_30_43;
-  RogueString* _auto_anchored_arg_0_31_44 = 0;
-  (void)_auto_anchored_arg_0_31_44;
-  RogueFile _auto_anchored_context_32_45 = {0};
-  (void)_auto_anchored_context_32_45;
-  RogueString* _auto_anchored_arg_0_33_46 = 0;
-  (void)_auto_anchored_arg_0_33_46;
-  RoguePackageInfo* _auto_obj_34_47 = 0;
-  (void)_auto_obj_34_47;
-  RoguePackageInfo* _auto_anchored_context_35_48 = 0;
-  (void)_auto_anchored_context_35_48;
+  RogueFile _auto_anchored_context_13_26 = {0};
+  (void)_auto_anchored_context_13_26;
+  RogueString* _auto_anchored_arg_1_14_27 = 0;
+  (void)_auto_anchored_arg_1_14_27;
+  RogueFile _auto_anchored_context_15_28 = {0};
+  (void)_auto_anchored_context_15_28;
+  RogueOptionalFilePattern _auto_anchored_arg_0_16_29 = {0};
+  (void)_auto_anchored_arg_0_16_29;
+  RogueLogical _auto_condition_17_30 = 0;
+  (void)_auto_condition_17_30;
+  RogueFile _auto_anchored_context_18_31 = {0};
+  (void)_auto_anchored_context_18_31;
+  RogueError* _auto_obj_19_32 = 0;
+  (void)_auto_obj_19_32;
+  RogueString* _auto_anchored_arg_0_20_33 = 0;
+  (void)_auto_anchored_arg_0_20_33;
+  RogueFile _auto_anchored_context_21_34 = {0};
+  (void)_auto_anchored_context_21_34;
+  RogueString* _auto_anchored_arg_0_22_35 = 0;
+  (void)_auto_anchored_arg_0_22_35;
+  RogueString* _auto_anchored_arg_1_23_36 = 0;
+  (void)_auto_anchored_arg_1_23_36;
+  RogueString* _auto_anchored_arg_0_24_37 = 0;
+  (void)_auto_anchored_arg_0_24_37;
+  RogueString* _auto_anchored_arg_1_25_38 = 0;
+  (void)_auto_anchored_arg_1_25_38;
+  RogueString* _auto_anchored_arg_2_26_39 = 0;
+  (void)_auto_anchored_arg_2_26_39;
+  RogueString* _auto_anchored_arg_3_27_40 = 0;
+  (void)_auto_anchored_arg_3_27_40;
+  RogueString* _auto_anchored_arg_4_28_41 = 0;
+  (void)_auto_anchored_arg_4_28_41;
+  RogueFile _auto_anchored_context_29_42 = {0};
+  (void)_auto_anchored_context_29_42;
+  RogueString* _auto_anchored_arg_0_30_43 = 0;
+  (void)_auto_anchored_arg_0_30_43;
+  RogueFile _auto_anchored_context_31_44 = {0};
+  (void)_auto_anchored_context_31_44;
+  RogueString* _auto_anchored_arg_0_32_45 = 0;
+  (void)_auto_anchored_arg_0_32_45;
+  RoguePackageInfo* _auto_obj_33_46 = 0;
+  (void)_auto_obj_33_46;
+  RoguePackageInfo* _auto_anchored_context_34_47 = 0;
+  (void)_auto_anchored_context_34_47;
 
   RogueInt32 _auto_local_pointer_fp_0 = TypeRogueObject.local_pointer_count;
   RogueInt32 _auto_local_pointer_fp_1 = TypeRogueFile.local_pointer_count;
@@ -26081,17 +26061,9 @@ void RogueBootstrap__install_rogo( RogueBootstrap* THIS )
   RogueString__print__RogueString( _auto_context_block_0_1, ext_0 );
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &bin_filepath_2 );
   bin_filepath_2 = _auto_context_block_0_1;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_1_14 );
-  if (RogueFile__exists((_auto_anchored_context_1_14=(RogueFile) {bin_filepath_2})))
-  {
-    TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-    TypeRogueFile.local_pointer_count = _auto_local_pointer_fp_1;
-    TypeRogueOptionalFilePattern.local_pointer_count = _auto_local_pointer_fp_2;
-    return;
-  }
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &package_3 );
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_call_2_15 );
-  _auto_call_2_15 = RogueBootstrap__package_instance__RogueString( THIS, str_https___github_com_a_2 );
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_call_1_14 );
+  _auto_call_1_14 = RogueBootstrap__package_instance__RogueString( THIS, str_https___github_com_a_2 );
   if (Rogue_exception)
   {
     TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -26099,14 +26071,14 @@ void RogueBootstrap__install_rogo( RogueBootstrap* THIS )
     TypeRogueOptionalFilePattern.local_pointer_count = _auto_local_pointer_fp_2;
     return;
   }
-  package_3 = _auto_call_2_15;
-  _auto_anchored_arg_0_3_16 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_3_16 );
-  _auto_anchored_arg_1_4_17 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_4_17 );
-  _auto_anchored_arg_2_5_18 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_2_5_18 );
-  RoguePackage__scan_repo_releases__RogueString_RogueString_RoguePlatforms( package_3, (_auto_anchored_arg_0_3_16=0), (_auto_anchored_arg_1_4_17=0), (_auto_anchored_arg_2_5_18=0) );
+  package_3 = _auto_call_1_14;
+  _auto_anchored_arg_0_2_15 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_2_15 );
+  _auto_anchored_arg_1_3_16 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_3_16 );
+  _auto_anchored_arg_2_4_17 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_2_4_17 );
+  RoguePackage__scan_repo_releases__RogueString_RogueString_RoguePlatforms( package_3, (_auto_anchored_arg_0_2_15=0), (_auto_anchored_arg_1_3_16=0), (_auto_anchored_arg_2_4_17=0) );
   if (Rogue_exception)
   {
     TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -26122,28 +26094,28 @@ void RogueBootstrap__install_rogo( RogueBootstrap* THIS )
     TypeRogueOptionalFilePattern.local_pointer_count = _auto_local_pointer_fp_2;
     return;
   }
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_6_19 );
-  _auto_and_7_20 = RogueFile__exists((_auto_anchored_context_6_19=(RogueFile) {package_3->install_folder}));
-  if (_auto_and_7_20)
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_5_18 );
+  _auto_and_6_19 = RogueFile__exists((_auto_anchored_context_5_18=(RogueFile) {package_3->install_folder}));
+  if (_auto_and_6_19)
   {
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_8_21 );
-    _auto_anchored_arg_0_9_22 = (RogueOptionalFilePattern){0};
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueOptionalFilePattern, &_auto_anchored_arg_0_9_22 );
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_context_10_23 );
-    _auto_and_7_20 = !RogueStringList__is_empty((_auto_anchored_context_10_23=RogueFile__listing__RogueOptionalFilePattern_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical( (_auto_anchored_context_8_21=(RogueFile) {package_3->install_folder}), (_auto_anchored_arg_0_9_22=(RogueOptionalFilePattern) {0}), 0, 0, 0, 0, 0, 0, 0 )));
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_7_20 );
+    _auto_anchored_arg_0_8_21 = (RogueOptionalFilePattern){0};
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueOptionalFilePattern, &_auto_anchored_arg_0_8_21 );
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_context_9_22 );
+    _auto_and_6_19 = !RogueStringList__is_empty((_auto_anchored_context_9_22=RogueFile__listing__RogueOptionalFilePattern_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical( (_auto_anchored_context_7_20=(RogueFile) {package_3->install_folder}), (_auto_anchored_arg_0_8_21=(RogueOptionalFilePattern) {0}), 0, 0, 0, 0, 0, 0, 0 )));
   }
-  if (_auto_and_7_20)
+  if (_auto_and_6_19)
   {
     RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_context_block_1_4 );
     _auto_context_block_1_4 = ROGUE_CREATE_OBJECT( RogueString );
     RogueString__init(_auto_context_block_1_4);
+    _auto_anchored_arg_0_10_23 = 0;
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_10_23 );
+    RogueString__print__RogueString( _auto_context_block_1_4, (_auto_anchored_arg_0_10_23=package_3->name) );
+    RogueString__print__RogueString( _auto_context_block_1_4, str__v_1 );
     _auto_anchored_arg_0_11_24 = 0;
     RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_11_24 );
-    RogueString__print__RogueString( _auto_context_block_1_4, (_auto_anchored_arg_0_11_24=package_3->name) );
-    RogueString__print__RogueString( _auto_context_block_1_4, str__v_1 );
-    _auto_anchored_arg_0_12_25 = 0;
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_12_25 );
-    RogueString__print__RogueString( _auto_context_block_1_4, (_auto_anchored_arg_0_12_25=package_3->version) );
+    RogueString__print__RogueString( _auto_context_block_1_4, (_auto_anchored_arg_0_11_24=package_3->version) );
     RogueString__print__RogueString( _auto_context_block_1_4, str__is_already_installe );
     RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), _auto_context_block_1_4 );
     TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -26152,11 +26124,11 @@ void RogueBootstrap__install_rogo( RogueBootstrap* THIS )
     return;
   }
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &build_folder_5 );
-  _auto_anchored_arg_0_13_26 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_13_26 );
-  build_folder_5 = RogueString__operatorDIVIDE__RogueString_RogueString( (_auto_anchored_arg_0_13_26=ROGUE_SINGLETON(RogueMorlock)->HOME), str_build_abepralle_rogo );
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_14_27 );
-  RogueFile__delete((_auto_anchored_context_14_27=(RogueFile) {build_folder_5}));
+  _auto_anchored_arg_0_12_25 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_12_25 );
+  build_folder_5 = RogueString__operatorDIVIDE__RogueString_RogueString( (_auto_anchored_arg_0_12_25=ROGUE_SINGLETON(RogueMorlock)->HOME), str_build_abepralle_rogo );
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_13_26 );
+  RogueFile__delete((_auto_anchored_context_13_26=(RogueFile) {build_folder_5}));
   RogueMorlock__create_folder__RogueString_RogueLogical( ROGUE_SINGLETON(RogueMorlock), build_folder_5, 0 );
   if (Rogue_exception)
   {
@@ -26165,9 +26137,9 @@ void RogueBootstrap__install_rogo( RogueBootstrap* THIS )
     TypeRogueOptionalFilePattern.local_pointer_count = _auto_local_pointer_fp_2;
     return;
   }
-  _auto_anchored_arg_1_15_28 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_15_28 );
-  package_3->archive_filename = RogueString__operatorDIVIDE__RogueString_RogueString( build_folder_5, (_auto_anchored_arg_1_15_28=package_3->archive_filename) );
+  _auto_anchored_arg_1_14_27 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_14_27 );
+  package_3->archive_filename = RogueString__operatorDIVIDE__RogueString_RogueString( build_folder_5, (_auto_anchored_arg_1_14_27=package_3->archive_filename) );
   RoguePackage__download(package_3);
   if (Rogue_exception)
   {
@@ -26189,41 +26161,41 @@ void RogueBootstrap__install_rogo( RogueBootstrap* THIS )
   _auto_index_2_7 = 0;
   _auto_collection_3_8 = 0;
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_collection_3_8 );
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_16_29 );
-  _auto_anchored_arg_0_17_30 = (RogueOptionalFilePattern){0};
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueOptionalFilePattern, &_auto_anchored_arg_0_17_30 );
-  _auto_collection_3_8 = RogueFile__listing__RogueOptionalFilePattern_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical( (_auto_anchored_context_16_29=(RogueFile) {build_folder_5}), (_auto_anchored_arg_0_17_30=(RogueOptionalFilePattern) {0}), 0, 0, 0, 0, 1, 0, 0 );
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_15_28 );
+  _auto_anchored_arg_0_16_29 = (RogueOptionalFilePattern){0};
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueOptionalFilePattern, &_auto_anchored_arg_0_16_29 );
+  _auto_collection_3_8 = RogueFile__listing__RogueOptionalFilePattern_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical( (_auto_anchored_context_15_28=(RogueFile) {build_folder_5}), (_auto_anchored_arg_0_16_29=(RogueOptionalFilePattern) {0}), 0, 0, 0, 0, 1, 0, 0 );
   _auto_count_4_9 = 0;
   _auto_count_4_9 = _auto_collection_3_8->count;
   folder_10 = 0;
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &folder_10 );
-  _auto_condition_18_31 = _auto_index_2_7 < _auto_count_4_9;
+  _auto_condition_17_30 = _auto_index_2_7 < _auto_count_4_9;
   goto _auto_loop_condition_0;
   do
   {
     folder_10 = RogueStringList__get__RogueInt32( _auto_collection_3_8, _auto_index_2_7 );
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_19_32 );
-    if (RogueFile__exists((_auto_anchored_context_19_32=(RogueFile) {RogueString__operatorDIVIDE__RogueString_RogueString( folder_10, str_Makefile )})))
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_18_31 );
+    if (RogueFile__exists((_auto_anchored_context_18_31=(RogueFile) {RogueString__operatorDIVIDE__RogueString_RogueString( folder_10, str_Makefile )})))
     {
       archive_folder_6 = folder_10;
       goto _auto_escape_1;
     }
     ++_auto_index_2_7;
-    _auto_condition_18_31 = _auto_index_2_7 < _auto_count_4_9;
+    _auto_condition_17_30 = _auto_index_2_7 < _auto_count_4_9;
     _auto_loop_condition_0:;
   }
-  while (_auto_condition_18_31);
+  while (_auto_condition_17_30);
   _auto_escape_1:;
   if (!archive_folder_6)
   {
     Rogue_call_stack_push( "", "", -1 );
     ;
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_obj_20_33 );
-    _auto_obj_20_33 = ROGUE_CREATE_OBJECT( RogueError );
-    _auto_anchored_arg_0_21_34 = 0;
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_21_34 );
-    RogueException__init__RogueString( ((RogueException*)_auto_obj_20_33), (_auto_anchored_arg_0_21_34=RogueString__operatorPLUS__RogueString_RogueString( str_Failed_to_find_extra, build_folder_5 )) );
-    Rogue_exception = (RogueObject*)_auto_obj_20_33;
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_obj_19_32 );
+    _auto_obj_19_32 = ROGUE_CREATE_OBJECT( RogueError );
+    _auto_anchored_arg_0_20_33 = 0;
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_20_33 );
+    RogueException__init__RogueString( ((RogueException*)_auto_obj_19_32), (_auto_anchored_arg_0_20_33=RogueString__operatorPLUS__RogueString_RogueString( str_Failed_to_find_extra, build_folder_5 )) );
+    Rogue_exception = (RogueObject*)_auto_obj_19_32;
     Rogue_call_stack_pop();
 
     {
@@ -26249,14 +26221,14 @@ void RogueBootstrap__install_rogo( RogueBootstrap* THIS )
   _auto_context_block_6_12 = ROGUE_CREATE_OBJECT( RogueString );
   RogueString__init(_auto_context_block_6_12);
   RogueString__print__RogueString( _auto_context_block_6_12, str__cd_ );
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_22_35 );
-  _auto_anchored_arg_0_23_36 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_23_36 );
-  RogueString__print__RogueString( _auto_context_block_6_12, (_auto_anchored_arg_0_23_36=RogueFile__esc((_auto_anchored_context_22_35=(RogueFile) {archive_folder_6}))) );
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_21_34 );
+  _auto_anchored_arg_0_22_35 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_22_35 );
+  RogueString__print__RogueString( _auto_context_block_6_12, (_auto_anchored_arg_0_22_35=RogueFile__esc((_auto_anchored_context_21_34=(RogueFile) {archive_folder_6}))) );
   RogueString__print__RogueString( _auto_context_block_6_12, str_____make_build_ );
-  _auto_anchored_arg_1_24_37 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_24_37 );
-  RogueBootstrap__execute__RogueString_RogueString_RogueLogical_RogueLogical( THIS, _auto_context_block_6_12, (_auto_anchored_arg_1_24_37=0), 0, 0 );
+  _auto_anchored_arg_1_23_36 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_23_36 );
+  RogueBootstrap__execute__RogueString_RogueString_RogueLogical_RogueLogical( THIS, _auto_context_block_6_12, (_auto_anchored_arg_1_23_36=0), 0, 0 );
   if (Rogue_exception)
   {
     TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -26264,17 +26236,17 @@ void RogueBootstrap__install_rogo( RogueBootstrap* THIS )
     TypeRogueOptionalFilePattern.local_pointer_count = _auto_local_pointer_fp_2;
     return;
   }
-  _auto_anchored_arg_0_25_38 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_25_38 );
-  _auto_anchored_arg_1_26_39 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_26_39 );
-  _auto_anchored_arg_2_27_40 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_2_27_40 );
-  _auto_anchored_arg_3_28_41 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_3_28_41 );
-  _auto_anchored_arg_4_29_42 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_4_29_42 );
-  RoguePackage__install_executable__RogueString_RogueString_RogueString_RogueString_RogueString_RogueLogical( package_3, (_auto_anchored_arg_0_25_38=0), (_auto_anchored_arg_1_26_39=0), (_auto_anchored_arg_2_27_40=0), (_auto_anchored_arg_3_28_41=0), (_auto_anchored_arg_4_29_42=0), 1 );
+  _auto_anchored_arg_0_24_37 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_24_37 );
+  _auto_anchored_arg_1_25_38 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_25_38 );
+  _auto_anchored_arg_2_26_39 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_2_26_39 );
+  _auto_anchored_arg_3_27_40 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_3_27_40 );
+  _auto_anchored_arg_4_28_41 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_4_28_41 );
+  RoguePackage__install_executable__RogueString_RogueString_RogueString_RogueString_RogueString_RogueLogical( package_3, (_auto_anchored_arg_0_24_37=0), (_auto_anchored_arg_1_25_38=0), (_auto_anchored_arg_2_26_39=0), (_auto_anchored_arg_3_27_40=0), (_auto_anchored_arg_4_28_41=0), 1 );
   if (Rogue_exception)
   {
     TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -26282,16 +26254,16 @@ void RogueBootstrap__install_rogo( RogueBootstrap* THIS )
     TypeRogueOptionalFilePattern.local_pointer_count = _auto_local_pointer_fp_2;
     return;
   }
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_30_43 );
-  _auto_anchored_arg_0_31_44 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_31_44 );
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_32_45 );
-  _auto_anchored_arg_0_33_46 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_33_46 );
-  RogueFile__save__RogueString_RogueLogical( (_auto_anchored_context_32_45=(RogueFile) {RogueString__operatorDIVIDE__RogueString_RogueString( (_auto_anchored_arg_0_31_44=RogueFile__folder((_auto_anchored_context_30_43=(RogueFile) {package_3->install_folder}))), str_active_version_txt )}), (_auto_anchored_arg_0_33_46=package_3->version), 0 );
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_obj_34_47 );
-  _auto_obj_34_47 = ROGUE_CREATE_OBJECT( RoguePackageInfo );
-  RoguePackageInfo__init__RogueString_RogueLogical( _auto_obj_34_47, str_abepralle_rogo, 0 );
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_29_42 );
+  _auto_anchored_arg_0_30_43 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_30_43 );
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_31_44 );
+  _auto_anchored_arg_0_32_45 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_32_45 );
+  RogueFile__save__RogueString_RogueLogical( (_auto_anchored_context_31_44=(RogueFile) {RogueString__operatorDIVIDE__RogueString_RogueString( (_auto_anchored_arg_0_30_43=RogueFile__folder((_auto_anchored_context_29_42=(RogueFile) {package_3->install_folder}))), str_active_version_txt )}), (_auto_anchored_arg_0_32_45=package_3->version), 0 );
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_obj_33_46 );
+  _auto_obj_33_46 = ROGUE_CREATE_OBJECT( RoguePackageInfo );
+  RoguePackageInfo__init__RogueString_RogueLogical( _auto_obj_33_46, str_abepralle_rogo, 0 );
   if (Rogue_exception)
   {
     TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -26299,8 +26271,8 @@ void RogueBootstrap__install_rogo( RogueBootstrap* THIS )
     TypeRogueOptionalFilePattern.local_pointer_count = _auto_local_pointer_fp_2;
     return;
   }
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_context_35_48 );
-  RoguePackageInfo__ensure_script_exists((_auto_anchored_context_35_48=_auto_obj_34_47));
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_context_34_47 );
+  RoguePackageInfo__ensure_script_exists((_auto_anchored_context_34_47=_auto_obj_33_46));
   if (Rogue_exception)
   {
     TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -26361,94 +26333,92 @@ void RogueBootstrap__install_rogue( RogueBootstrap* THIS )
   (void)dest_filename_21;
   RogueString* _auto_anchored_arg_0_0_22 = 0;
   (void)_auto_anchored_arg_0_0_22;
-  RogueFile _auto_anchored_context_1_23 = {0};
-  (void)_auto_anchored_context_1_23;
-  RoguePackage* _auto_call_2_24 = 0;
-  (void)_auto_call_2_24;
-  RogueString* _auto_anchored_arg_0_3_25 = 0;
-  (void)_auto_anchored_arg_0_3_25;
-  RogueString* _auto_anchored_arg_1_4_26 = 0;
-  (void)_auto_anchored_arg_1_4_26;
-  RoguePlatforms* _auto_anchored_arg_2_5_27 = 0;
-  (void)_auto_anchored_arg_2_5_27;
-  RogueFile _auto_anchored_context_6_28 = {0};
-  (void)_auto_anchored_context_6_28;
-  RogueLogical _auto_and_7_29 = 0;
-  (void)_auto_and_7_29;
-  RogueFile _auto_anchored_context_8_30 = {0};
-  (void)_auto_anchored_context_8_30;
-  RogueOptionalFilePattern _auto_anchored_arg_0_9_31 = {0};
-  (void)_auto_anchored_arg_0_9_31;
-  RogueStringList* _auto_anchored_context_10_32 = 0;
-  (void)_auto_anchored_context_10_32;
+  RoguePackage* _auto_call_1_23 = 0;
+  (void)_auto_call_1_23;
+  RogueString* _auto_anchored_arg_0_2_24 = 0;
+  (void)_auto_anchored_arg_0_2_24;
+  RogueString* _auto_anchored_arg_1_3_25 = 0;
+  (void)_auto_anchored_arg_1_3_25;
+  RoguePlatforms* _auto_anchored_arg_2_4_26 = 0;
+  (void)_auto_anchored_arg_2_4_26;
+  RogueFile _auto_anchored_context_5_27 = {0};
+  (void)_auto_anchored_context_5_27;
+  RogueLogical _auto_and_6_28 = 0;
+  (void)_auto_and_6_28;
+  RogueFile _auto_anchored_context_7_29 = {0};
+  (void)_auto_anchored_context_7_29;
+  RogueOptionalFilePattern _auto_anchored_arg_0_8_30 = {0};
+  (void)_auto_anchored_arg_0_8_30;
+  RogueStringList* _auto_anchored_context_9_31 = 0;
+  (void)_auto_anchored_context_9_31;
+  RogueString* _auto_anchored_arg_0_10_32 = 0;
+  (void)_auto_anchored_arg_0_10_32;
   RogueString* _auto_anchored_arg_0_11_33 = 0;
   (void)_auto_anchored_arg_0_11_33;
   RogueString* _auto_anchored_arg_0_12_34 = 0;
   (void)_auto_anchored_arg_0_12_34;
-  RogueString* _auto_anchored_arg_0_13_35 = 0;
-  (void)_auto_anchored_arg_0_13_35;
-  RogueFile _auto_anchored_context_14_36 = {0};
-  (void)_auto_anchored_context_14_36;
-  RogueString* _auto_anchored_arg_1_15_37 = 0;
-  (void)_auto_anchored_arg_1_15_37;
-  RogueFile _auto_anchored_context_16_38 = {0};
-  (void)_auto_anchored_context_16_38;
-  RogueOptionalFilePattern _auto_anchored_arg_0_17_39 = {0};
-  (void)_auto_anchored_arg_0_17_39;
-  RogueLogical _auto_condition_18_40 = 0;
-  (void)_auto_condition_18_40;
-  RogueFile _auto_anchored_context_19_41 = {0};
-  (void)_auto_anchored_context_19_41;
-  RogueError* _auto_obj_20_42 = 0;
-  (void)_auto_obj_20_42;
-  RogueString* _auto_anchored_arg_0_21_43 = 0;
-  (void)_auto_anchored_arg_0_21_43;
-  RogueFile _auto_anchored_context_22_44 = {0};
-  (void)_auto_anchored_context_22_44;
-  RogueString* _auto_anchored_arg_0_23_45 = 0;
-  (void)_auto_anchored_arg_0_23_45;
-  RogueString* _auto_anchored_arg_1_24_46 = 0;
-  (void)_auto_anchored_arg_1_24_46;
-  RogueFile _auto_anchored_context_25_47 = {0};
-  (void)_auto_anchored_context_25_47;
-  RogueString* _auto_anchored_arg_0_26_48 = 0;
-  (void)_auto_anchored_arg_0_26_48;
-  RogueFile _auto_anchored_context_27_49 = {0};
-  (void)_auto_anchored_context_27_49;
-  RogueString* _auto_anchored_arg_0_28_50 = 0;
-  (void)_auto_anchored_arg_0_28_50;
-  RogueString* _auto_anchored_arg_1_29_51 = 0;
-  (void)_auto_anchored_arg_1_29_51;
-  RogueFile _auto_anchored_context_30_52 = {0};
-  (void)_auto_anchored_context_30_52;
-  RogueString* _auto_anchored_arg_0_31_53 = 0;
-  (void)_auto_anchored_arg_0_31_53;
-  RogueFile _auto_anchored_context_32_54 = {0};
-  (void)_auto_anchored_context_32_54;
-  RogueString* _auto_anchored_arg_0_33_55 = 0;
-  (void)_auto_anchored_arg_0_33_55;
-  RogueString* _auto_anchored_arg_1_34_56 = 0;
-  (void)_auto_anchored_arg_1_34_56;
-  RogueString* _auto_anchored_arg_0_35_57 = 0;
-  (void)_auto_anchored_arg_0_35_57;
-  RogueString* _auto_anchored_arg_1_36_58 = 0;
-  (void)_auto_anchored_arg_1_36_58;
-  RogueString* _auto_anchored_arg_2_37_59 = 0;
-  (void)_auto_anchored_arg_2_37_59;
-  RogueString* _auto_anchored_arg_3_38_60 = 0;
-  (void)_auto_anchored_arg_3_38_60;
-  RogueFile _auto_anchored_context_39_61 = {0};
-  (void)_auto_anchored_context_39_61;
-  RogueString* _auto_anchored_arg_0_40_62 = 0;
-  (void)_auto_anchored_arg_0_40_62;
-  RogueFile _auto_anchored_context_41_63 = {0};
-  (void)_auto_anchored_context_41_63;
-  RogueString* _auto_anchored_arg_0_42_64 = 0;
-  (void)_auto_anchored_arg_0_42_64;
-  RoguePackageInfo* _auto_obj_43_65 = 0;
-  (void)_auto_obj_43_65;
-  RoguePackageInfo* _auto_anchored_context_44_66 = 0;
-  (void)_auto_anchored_context_44_66;
+  RogueFile _auto_anchored_context_13_35 = {0};
+  (void)_auto_anchored_context_13_35;
+  RogueString* _auto_anchored_arg_1_14_36 = 0;
+  (void)_auto_anchored_arg_1_14_36;
+  RogueFile _auto_anchored_context_15_37 = {0};
+  (void)_auto_anchored_context_15_37;
+  RogueOptionalFilePattern _auto_anchored_arg_0_16_38 = {0};
+  (void)_auto_anchored_arg_0_16_38;
+  RogueLogical _auto_condition_17_39 = 0;
+  (void)_auto_condition_17_39;
+  RogueFile _auto_anchored_context_18_40 = {0};
+  (void)_auto_anchored_context_18_40;
+  RogueError* _auto_obj_19_41 = 0;
+  (void)_auto_obj_19_41;
+  RogueString* _auto_anchored_arg_0_20_42 = 0;
+  (void)_auto_anchored_arg_0_20_42;
+  RogueFile _auto_anchored_context_21_43 = {0};
+  (void)_auto_anchored_context_21_43;
+  RogueString* _auto_anchored_arg_0_22_44 = 0;
+  (void)_auto_anchored_arg_0_22_44;
+  RogueString* _auto_anchored_arg_1_23_45 = 0;
+  (void)_auto_anchored_arg_1_23_45;
+  RogueFile _auto_anchored_context_24_46 = {0};
+  (void)_auto_anchored_context_24_46;
+  RogueString* _auto_anchored_arg_0_25_47 = 0;
+  (void)_auto_anchored_arg_0_25_47;
+  RogueFile _auto_anchored_context_26_48 = {0};
+  (void)_auto_anchored_context_26_48;
+  RogueString* _auto_anchored_arg_0_27_49 = 0;
+  (void)_auto_anchored_arg_0_27_49;
+  RogueString* _auto_anchored_arg_1_28_50 = 0;
+  (void)_auto_anchored_arg_1_28_50;
+  RogueFile _auto_anchored_context_29_51 = {0};
+  (void)_auto_anchored_context_29_51;
+  RogueString* _auto_anchored_arg_0_30_52 = 0;
+  (void)_auto_anchored_arg_0_30_52;
+  RogueFile _auto_anchored_context_31_53 = {0};
+  (void)_auto_anchored_context_31_53;
+  RogueString* _auto_anchored_arg_0_32_54 = 0;
+  (void)_auto_anchored_arg_0_32_54;
+  RogueString* _auto_anchored_arg_1_33_55 = 0;
+  (void)_auto_anchored_arg_1_33_55;
+  RogueString* _auto_anchored_arg_0_34_56 = 0;
+  (void)_auto_anchored_arg_0_34_56;
+  RogueString* _auto_anchored_arg_1_35_57 = 0;
+  (void)_auto_anchored_arg_1_35_57;
+  RogueString* _auto_anchored_arg_2_36_58 = 0;
+  (void)_auto_anchored_arg_2_36_58;
+  RogueString* _auto_anchored_arg_3_37_59 = 0;
+  (void)_auto_anchored_arg_3_37_59;
+  RogueFile _auto_anchored_context_38_60 = {0};
+  (void)_auto_anchored_context_38_60;
+  RogueString* _auto_anchored_arg_0_39_61 = 0;
+  (void)_auto_anchored_arg_0_39_61;
+  RogueFile _auto_anchored_context_40_62 = {0};
+  (void)_auto_anchored_context_40_62;
+  RogueString* _auto_anchored_arg_0_41_63 = 0;
+  (void)_auto_anchored_arg_0_41_63;
+  RoguePackageInfo* _auto_obj_42_64 = 0;
+  (void)_auto_obj_42_64;
+  RoguePackageInfo* _auto_anchored_context_43_65 = 0;
+  (void)_auto_anchored_context_43_65;
 
   RogueInt32 _auto_local_pointer_fp_0 = TypeRogueObject.local_pointer_count;
   RogueInt32 _auto_local_pointer_fp_1 = TypeRogueFile.local_pointer_count;
@@ -26467,17 +26437,9 @@ void RogueBootstrap__install_rogue( RogueBootstrap* THIS )
   RogueString__print__RogueString( _auto_context_block_0_1, ext_0 );
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &bin_filepath_2 );
   bin_filepath_2 = _auto_context_block_0_1;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_1_23 );
-  if (RogueFile__exists((_auto_anchored_context_1_23=(RogueFile) {bin_filepath_2})))
-  {
-    TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-    TypeRogueFile.local_pointer_count = _auto_local_pointer_fp_1;
-    TypeRogueOptionalFilePattern.local_pointer_count = _auto_local_pointer_fp_2;
-    return;
-  }
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &package_3 );
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_call_2_24 );
-  _auto_call_2_24 = RogueBootstrap__package_instance__RogueString( THIS, str_https___github_com_a_3 );
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_call_1_23 );
+  _auto_call_1_23 = RogueBootstrap__package_instance__RogueString( THIS, str_https___github_com_a_3 );
   if (Rogue_exception)
   {
     TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -26485,14 +26447,14 @@ void RogueBootstrap__install_rogue( RogueBootstrap* THIS )
     TypeRogueOptionalFilePattern.local_pointer_count = _auto_local_pointer_fp_2;
     return;
   }
-  package_3 = _auto_call_2_24;
-  _auto_anchored_arg_0_3_25 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_3_25 );
-  _auto_anchored_arg_1_4_26 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_4_26 );
-  _auto_anchored_arg_2_5_27 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_2_5_27 );
-  RoguePackage__scan_repo_releases__RogueString_RogueString_RoguePlatforms( package_3, (_auto_anchored_arg_0_3_25=0), (_auto_anchored_arg_1_4_26=0), (_auto_anchored_arg_2_5_27=0) );
+  package_3 = _auto_call_1_23;
+  _auto_anchored_arg_0_2_24 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_2_24 );
+  _auto_anchored_arg_1_3_25 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_3_25 );
+  _auto_anchored_arg_2_4_26 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_2_4_26 );
+  RoguePackage__scan_repo_releases__RogueString_RogueString_RoguePlatforms( package_3, (_auto_anchored_arg_0_2_24=0), (_auto_anchored_arg_1_3_25=0), (_auto_anchored_arg_2_4_26=0) );
   if (Rogue_exception)
   {
     TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -26508,28 +26470,28 @@ void RogueBootstrap__install_rogue( RogueBootstrap* THIS )
     TypeRogueOptionalFilePattern.local_pointer_count = _auto_local_pointer_fp_2;
     return;
   }
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_6_28 );
-  _auto_and_7_29 = RogueFile__exists((_auto_anchored_context_6_28=(RogueFile) {package_3->install_folder}));
-  if (_auto_and_7_29)
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_5_27 );
+  _auto_and_6_28 = RogueFile__exists((_auto_anchored_context_5_27=(RogueFile) {package_3->install_folder}));
+  if (_auto_and_6_28)
   {
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_8_30 );
-    _auto_anchored_arg_0_9_31 = (RogueOptionalFilePattern){0};
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueOptionalFilePattern, &_auto_anchored_arg_0_9_31 );
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_context_10_32 );
-    _auto_and_7_29 = !RogueStringList__is_empty((_auto_anchored_context_10_32=RogueFile__listing__RogueOptionalFilePattern_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical( (_auto_anchored_context_8_30=(RogueFile) {package_3->install_folder}), (_auto_anchored_arg_0_9_31=(RogueOptionalFilePattern) {0}), 0, 0, 0, 0, 0, 0, 0 )));
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_7_29 );
+    _auto_anchored_arg_0_8_30 = (RogueOptionalFilePattern){0};
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueOptionalFilePattern, &_auto_anchored_arg_0_8_30 );
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_context_9_31 );
+    _auto_and_6_28 = !RogueStringList__is_empty((_auto_anchored_context_9_31=RogueFile__listing__RogueOptionalFilePattern_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical( (_auto_anchored_context_7_29=(RogueFile) {package_3->install_folder}), (_auto_anchored_arg_0_8_30=(RogueOptionalFilePattern) {0}), 0, 0, 0, 0, 0, 0, 0 )));
   }
-  if (_auto_and_7_29)
+  if (_auto_and_6_28)
   {
     RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_context_block_1_4 );
     _auto_context_block_1_4 = ROGUE_CREATE_OBJECT( RogueString );
     RogueString__init(_auto_context_block_1_4);
+    _auto_anchored_arg_0_10_32 = 0;
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_10_32 );
+    RogueString__print__RogueString( _auto_context_block_1_4, (_auto_anchored_arg_0_10_32=package_3->name) );
+    RogueString__print__RogueString( _auto_context_block_1_4, str__v_1 );
     _auto_anchored_arg_0_11_33 = 0;
     RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_11_33 );
-    RogueString__print__RogueString( _auto_context_block_1_4, (_auto_anchored_arg_0_11_33=package_3->name) );
-    RogueString__print__RogueString( _auto_context_block_1_4, str__v_1 );
-    _auto_anchored_arg_0_12_34 = 0;
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_12_34 );
-    RogueString__print__RogueString( _auto_context_block_1_4, (_auto_anchored_arg_0_12_34=package_3->version) );
+    RogueString__print__RogueString( _auto_context_block_1_4, (_auto_anchored_arg_0_11_33=package_3->version) );
     RogueString__print__RogueString( _auto_context_block_1_4, str__is_already_installe );
     RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), _auto_context_block_1_4 );
     TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -26538,11 +26500,11 @@ void RogueBootstrap__install_rogue( RogueBootstrap* THIS )
     return;
   }
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &build_folder_5 );
-  _auto_anchored_arg_0_13_35 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_13_35 );
-  build_folder_5 = RogueString__operatorDIVIDE__RogueString_RogueString( (_auto_anchored_arg_0_13_35=ROGUE_SINGLETON(RogueMorlock)->HOME), str_build_abepralle_rogu );
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_14_36 );
-  RogueFile__delete((_auto_anchored_context_14_36=(RogueFile) {build_folder_5}));
+  _auto_anchored_arg_0_12_34 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_12_34 );
+  build_folder_5 = RogueString__operatorDIVIDE__RogueString_RogueString( (_auto_anchored_arg_0_12_34=ROGUE_SINGLETON(RogueMorlock)->HOME), str_build_abepralle_rogu );
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_13_35 );
+  RogueFile__delete((_auto_anchored_context_13_35=(RogueFile) {build_folder_5}));
   RogueMorlock__create_folder__RogueString_RogueLogical( ROGUE_SINGLETON(RogueMorlock), build_folder_5, 0 );
   if (Rogue_exception)
   {
@@ -26551,9 +26513,9 @@ void RogueBootstrap__install_rogue( RogueBootstrap* THIS )
     TypeRogueOptionalFilePattern.local_pointer_count = _auto_local_pointer_fp_2;
     return;
   }
-  _auto_anchored_arg_1_15_37 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_15_37 );
-  package_3->archive_filename = RogueString__operatorDIVIDE__RogueString_RogueString( build_folder_5, (_auto_anchored_arg_1_15_37=package_3->archive_filename) );
+  _auto_anchored_arg_1_14_36 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_14_36 );
+  package_3->archive_filename = RogueString__operatorDIVIDE__RogueString_RogueString( build_folder_5, (_auto_anchored_arg_1_14_36=package_3->archive_filename) );
   RoguePackage__download(package_3);
   if (Rogue_exception)
   {
@@ -26577,41 +26539,41 @@ void RogueBootstrap__install_rogue( RogueBootstrap* THIS )
   _auto_index_2_8 = 0;
   _auto_collection_3_9 = 0;
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_collection_3_9 );
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_16_38 );
-  _auto_anchored_arg_0_17_39 = (RogueOptionalFilePattern){0};
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueOptionalFilePattern, &_auto_anchored_arg_0_17_39 );
-  _auto_collection_3_9 = RogueFile__listing__RogueOptionalFilePattern_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical( (_auto_anchored_context_16_38=(RogueFile) {build_folder_5}), (_auto_anchored_arg_0_17_39=(RogueOptionalFilePattern) {0}), 0, 0, 0, 0, 1, 0, 0 );
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_15_37 );
+  _auto_anchored_arg_0_16_38 = (RogueOptionalFilePattern){0};
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueOptionalFilePattern, &_auto_anchored_arg_0_16_38 );
+  _auto_collection_3_9 = RogueFile__listing__RogueOptionalFilePattern_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical( (_auto_anchored_context_15_37=(RogueFile) {build_folder_5}), (_auto_anchored_arg_0_16_38=(RogueOptionalFilePattern) {0}), 0, 0, 0, 0, 1, 0, 0 );
   _auto_count_4_10 = 0;
   _auto_count_4_10 = _auto_collection_3_9->count;
   folder_11 = 0;
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &folder_11 );
-  _auto_condition_18_40 = _auto_index_2_8 < _auto_count_4_10;
+  _auto_condition_17_39 = _auto_index_2_8 < _auto_count_4_10;
   goto _auto_loop_condition_0;
   do
   {
     folder_11 = RogueStringList__get__RogueInt32( _auto_collection_3_9, _auto_index_2_8 );
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_19_41 );
-    if (RogueFile__exists((_auto_anchored_context_19_41=(RogueFile) {RogueString__operatorDIVIDE__RogueString_RogueString( folder_11, makefile_7 )})))
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_18_40 );
+    if (RogueFile__exists((_auto_anchored_context_18_40=(RogueFile) {RogueString__operatorDIVIDE__RogueString_RogueString( folder_11, makefile_7 )})))
     {
       archive_folder_6 = folder_11;
       goto _auto_escape_1;
     }
     ++_auto_index_2_8;
-    _auto_condition_18_40 = _auto_index_2_8 < _auto_count_4_10;
+    _auto_condition_17_39 = _auto_index_2_8 < _auto_count_4_10;
     _auto_loop_condition_0:;
   }
-  while (_auto_condition_18_40);
+  while (_auto_condition_17_39);
   _auto_escape_1:;
   if (!archive_folder_6)
   {
     Rogue_call_stack_push( "", "", -1 );
     ;
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_obj_20_42 );
-    _auto_obj_20_42 = ROGUE_CREATE_OBJECT( RogueError );
-    _auto_anchored_arg_0_21_43 = 0;
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_21_43 );
-    RogueException__init__RogueString( ((RogueException*)_auto_obj_20_42), (_auto_anchored_arg_0_21_43=RogueString__operatorPLUS__RogueString_RogueString( str_Failed_to_find_extra, build_folder_5 )) );
-    Rogue_exception = (RogueObject*)_auto_obj_20_42;
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_obj_19_41 );
+    _auto_obj_19_41 = ROGUE_CREATE_OBJECT( RogueError );
+    _auto_anchored_arg_0_20_42 = 0;
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_20_42 );
+    RogueException__init__RogueString( ((RogueException*)_auto_obj_19_41), (_auto_anchored_arg_0_20_42=RogueString__operatorPLUS__RogueString_RogueString( str_Failed_to_find_extra, build_folder_5 )) );
+    Rogue_exception = (RogueObject*)_auto_obj_19_41;
     Rogue_call_stack_pop();
 
     {
@@ -26662,14 +26624,14 @@ void RogueBootstrap__install_rogue( RogueBootstrap* THIS )
     _auto_context_block_8_16 = ROGUE_CREATE_OBJECT( RogueString );
     RogueString__init(_auto_context_block_8_16);
     RogueString__print__RogueString( _auto_context_block_8_16, str_cd_ );
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_22_44 );
-    _auto_anchored_arg_0_23_45 = 0;
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_23_45 );
-    RogueString__print__RogueString( _auto_context_block_8_16, (_auto_anchored_arg_0_23_45=RogueFile__esc((_auto_anchored_context_22_44=(RogueFile) {archive_folder_6}))) );
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_21_43 );
+    _auto_anchored_arg_0_22_44 = 0;
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_22_44 );
+    RogueString__print__RogueString( _auto_context_block_8_16, (_auto_anchored_arg_0_22_44=RogueFile__esc((_auto_anchored_context_21_43=(RogueFile) {archive_folder_6}))) );
     RogueString__print__RogueString( _auto_context_block_8_16, str_____make_build );
-    _auto_anchored_arg_1_24_46 = 0;
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_24_46 );
-    RogueBootstrap__execute__RogueString_RogueString_RogueLogical_RogueLogical( THIS, _auto_context_block_8_16, (_auto_anchored_arg_1_24_46=0), 0, 0 );
+    _auto_anchored_arg_1_23_45 = 0;
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_23_45 );
+    RogueBootstrap__execute__RogueString_RogueString_RogueLogical_RogueLogical( THIS, _auto_context_block_8_16, (_auto_anchored_arg_1_23_45=0), 0, 0 );
     if (Rogue_exception)
     {
       TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -26681,18 +26643,18 @@ void RogueBootstrap__install_rogue( RogueBootstrap* THIS )
     _auto_context_block_9_17 = ROGUE_CREATE_OBJECT( RogueString );
     RogueString__init(_auto_context_block_9_17);
     RogueString__print__RogueString( _auto_context_block_9_17, str_xcopy__I__S__Q__Y_ );
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_25_47 );
-    _auto_anchored_arg_0_26_48 = 0;
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_26_48 );
-    RogueString__print__RogueString( _auto_context_block_9_17, (_auto_anchored_arg_0_26_48=RogueFile__esc((_auto_anchored_context_25_47=(RogueFile) {RogueString__operatorDIVIDE__RogueString_RogueString( archive_folder_6, str_Source_Libraries )}))) );
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_24_46 );
+    _auto_anchored_arg_0_25_47 = 0;
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_25_47 );
+    RogueString__print__RogueString( _auto_context_block_9_17, (_auto_anchored_arg_0_25_47=RogueFile__esc((_auto_anchored_context_24_46=(RogueFile) {RogueString__operatorDIVIDE__RogueString_RogueString( archive_folder_6, str_Source_Libraries )}))) );
     RogueString__print__RogueString( _auto_context_block_9_17, str___9 );
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_27_49 );
-    _auto_anchored_arg_0_28_50 = 0;
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_28_50 );
-    RogueString__print__RogueString( _auto_context_block_9_17, (_auto_anchored_arg_0_28_50=RogueFile__esc((_auto_anchored_context_27_49=(RogueFile) {RogueString__operatorDIVIDE__RogueString_RogueString( install_folder_12, str_Libraries )}))) );
-    _auto_anchored_arg_1_29_51 = 0;
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_29_51 );
-    RogueBootstrap__execute__RogueString_RogueString_RogueLogical_RogueLogical( THIS, _auto_context_block_9_17, (_auto_anchored_arg_1_29_51=0), 0, 0 );
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_26_48 );
+    _auto_anchored_arg_0_27_49 = 0;
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_27_49 );
+    RogueString__print__RogueString( _auto_context_block_9_17, (_auto_anchored_arg_0_27_49=RogueFile__esc((_auto_anchored_context_26_48=(RogueFile) {RogueString__operatorDIVIDE__RogueString_RogueString( install_folder_12, str_Libraries )}))) );
+    _auto_anchored_arg_1_28_50 = 0;
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_28_50 );
+    RogueBootstrap__execute__RogueString_RogueString_RogueLogical_RogueLogical( THIS, _auto_context_block_9_17, (_auto_anchored_arg_1_28_50=0), 0, 0 );
     if (Rogue_exception)
     {
       TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -26708,19 +26670,19 @@ void RogueBootstrap__install_rogue( RogueBootstrap* THIS )
       _auto_context_block_10_18 = ROGUE_CREATE_OBJECT( RogueString );
       RogueString__init(_auto_context_block_10_18);
       RogueString__print__RogueString( _auto_context_block_10_18, str__cd_ );
-      RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_30_52 );
-      _auto_anchored_arg_0_31_53 = 0;
-      RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_31_53 );
-      RogueString__print__RogueString( _auto_context_block_10_18, (_auto_anchored_arg_0_31_53=RogueFile__esc((_auto_anchored_context_30_52=(RogueFile) {archive_folder_6}))) );
+      RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_29_51 );
+      _auto_anchored_arg_0_30_52 = 0;
+      RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_30_52 );
+      RogueString__print__RogueString( _auto_context_block_10_18, (_auto_anchored_arg_0_30_52=RogueFile__esc((_auto_anchored_context_29_51=(RogueFile) {archive_folder_6}))) );
       RogueString__print__RogueString( _auto_context_block_10_18, str_____make_build_LIBRA );
-      RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_32_54 );
-      _auto_anchored_arg_0_33_55 = 0;
-      RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_33_55 );
-      RogueString__print__RogueString( _auto_context_block_10_18, (_auto_anchored_arg_0_33_55=RogueFile__esc((_auto_anchored_context_32_54=(RogueFile) {install_folder_12}))) );
+      RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_31_53 );
+      _auto_anchored_arg_0_32_54 = 0;
+      RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_32_54 );
+      RogueString__print__RogueString( _auto_context_block_10_18, (_auto_anchored_arg_0_32_54=RogueFile__esc((_auto_anchored_context_31_53=(RogueFile) {install_folder_12}))) );
       RogueString__print__RogueString( _auto_context_block_10_18, str___18 );
-      _auto_anchored_arg_1_34_56 = 0;
-      RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_34_56 );
-      RogueBootstrap__execute__RogueString_RogueString_RogueLogical_RogueLogical( THIS, _auto_context_block_10_18, (_auto_anchored_arg_1_34_56=0), 0, 0 );
+      _auto_anchored_arg_1_33_55 = 0;
+      RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_33_55 );
+      RogueBootstrap__execute__RogueString_RogueString_RogueLogical_RogueLogical( THIS, _auto_context_block_10_18, (_auto_anchored_arg_1_33_55=0), 0, 0 );
       if (Rogue_exception)
       {
         TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -26741,15 +26703,15 @@ void RogueBootstrap__install_rogue( RogueBootstrap* THIS )
   RogueString__print__RogueString( _auto_context_block_12_20, str_roguec );
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &dest_filename_21 );
   dest_filename_21 = (RogueSystem__is_windows() ? _auto_context_block_11_19 : _auto_context_block_12_20);
-  _auto_anchored_arg_0_35_57 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_35_57 );
-  _auto_anchored_arg_1_36_58 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_36_58 );
-  _auto_anchored_arg_2_37_59 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_2_37_59 );
-  _auto_anchored_arg_3_38_60 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_3_38_60 );
-  RoguePackage__install_executable__RogueString_RogueString_RogueString_RogueString_RogueString_RogueLogical( package_3, (_auto_anchored_arg_0_35_57=0), (_auto_anchored_arg_1_36_58=0), (_auto_anchored_arg_2_37_59=0), (_auto_anchored_arg_3_38_60=0), dest_filename_21, 1 );
+  _auto_anchored_arg_0_34_56 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_34_56 );
+  _auto_anchored_arg_1_35_57 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_35_57 );
+  _auto_anchored_arg_2_36_58 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_2_36_58 );
+  _auto_anchored_arg_3_37_59 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_3_37_59 );
+  RoguePackage__install_executable__RogueString_RogueString_RogueString_RogueString_RogueString_RogueLogical( package_3, (_auto_anchored_arg_0_34_56=0), (_auto_anchored_arg_1_35_57=0), (_auto_anchored_arg_2_36_58=0), (_auto_anchored_arg_3_37_59=0), dest_filename_21, 1 );
   if (Rogue_exception)
   {
     TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -26757,16 +26719,16 @@ void RogueBootstrap__install_rogue( RogueBootstrap* THIS )
     TypeRogueOptionalFilePattern.local_pointer_count = _auto_local_pointer_fp_2;
     return;
   }
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_39_61 );
-  _auto_anchored_arg_0_40_62 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_40_62 );
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_41_63 );
-  _auto_anchored_arg_0_42_64 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_42_64 );
-  RogueFile__save__RogueString_RogueLogical( (_auto_anchored_context_41_63=(RogueFile) {RogueString__operatorDIVIDE__RogueString_RogueString( (_auto_anchored_arg_0_40_62=RogueFile__folder((_auto_anchored_context_39_61=(RogueFile) {package_3->install_folder}))), str_active_version_txt )}), (_auto_anchored_arg_0_42_64=package_3->version), 0 );
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_obj_43_65 );
-  _auto_obj_43_65 = ROGUE_CREATE_OBJECT( RoguePackageInfo );
-  RoguePackageInfo__init__RogueString_RogueLogical( _auto_obj_43_65, str_abepralle_rogue, 0 );
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_38_60 );
+  _auto_anchored_arg_0_39_61 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_39_61 );
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_40_62 );
+  _auto_anchored_arg_0_41_63 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_41_63 );
+  RogueFile__save__RogueString_RogueLogical( (_auto_anchored_context_40_62=(RogueFile) {RogueString__operatorDIVIDE__RogueString_RogueString( (_auto_anchored_arg_0_39_61=RogueFile__folder((_auto_anchored_context_38_60=(RogueFile) {package_3->install_folder}))), str_active_version_txt )}), (_auto_anchored_arg_0_41_63=package_3->version), 0 );
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_obj_42_64 );
+  _auto_obj_42_64 = ROGUE_CREATE_OBJECT( RoguePackageInfo );
+  RoguePackageInfo__init__RogueString_RogueLogical( _auto_obj_42_64, str_abepralle_rogue, 0 );
   if (Rogue_exception)
   {
     TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -26774,8 +26736,8 @@ void RogueBootstrap__install_rogue( RogueBootstrap* THIS )
     TypeRogueOptionalFilePattern.local_pointer_count = _auto_local_pointer_fp_2;
     return;
   }
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_context_44_66 );
-  RoguePackageInfo__ensure_script_exists((_auto_anchored_context_44_66=_auto_obj_43_65));
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_context_43_65 );
+  RoguePackageInfo__ensure_script_exists((_auto_anchored_context_43_65=_auto_obj_42_64));
   if (Rogue_exception)
   {
     TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -35877,7 +35839,7 @@ void* Rogue_dispatch_print_to__RogueString__RogueObject( void* THIS, RogueString
   }
 }
 
-RogueString* Rogue_string_table[467];
+RogueString* Rogue_string_table[459];
 RogueString* str_true;
 RogueString* str_false;
 RogueString* str___;
@@ -36185,18 +36147,14 @@ RogueString* str__name_______;
 RogueString* str_Failed_to_parse_pack;
 RogueString* str__build_;
 RogueString* str____16;
-RogueString* str__Bootstrap_configure;
 RogueString* str_cl;
 RogueString* str_This_command_must_be;
 RogueString* str_installer;
 RogueString* str_Open_a_Developer_Com;
 RogueString* str_Open_a_Developer_Com_1;
-RogueString* str__Bootstrap_configure_1;
 RogueString* str_Creating_home_folder;
-RogueString* str__Bootstrap_configure_2;
 RogueString* str_build;
 RogueString* str_packages;
-RogueString* str__Bootstrap_configure_3;
 RogueString* str_Add_the_following_fo;
 RogueString* str_1__Start___Search_fo;
 RogueString* str_2__Click__Environmen;
@@ -36218,10 +36176,6 @@ RogueString* str_Make_the_change_by_a;
 RogueString* str_terminal_;
 RogueString* str_export_PATH__;
 RogueString* str____PATH;
-RogueString* str__Bootstrap_configure_4;
-RogueString* str__Bootstrap_configure_5;
-RogueString* str__Bootstrap_configure_6;
-RogueString* str__Bootstrap_configure_7;
 RogueString* str_packages____;
 RogueString* str_active_version_txt;
 RogueString* str__bin_morlock;
@@ -36856,18 +36810,14 @@ int Rogue_launch()
   str_Failed_to_parse_pack = RogueString_create_string_table_entry( "Failed to parse package name from PROPERTIES. Required: name = \"provider/app-name\"");
   str__build_ = RogueString_create_string_table_entry( "/build/");
   str____16 = RogueString_create_string_table_entry( "--");
-  str__Bootstrap_configure = RogueString_create_string_table_entry( "[Bootstrap.configure() Bootstrap.rogue:19] ");
   str_cl = RogueString_create_string_table_entry( "cl");
   str_This_command_must_be = RogueString_create_string_table_entry( "This command must be run from a Visual Studio Developer Command Prompt that supports C++. ");
   str_installer = RogueString_create_string_table_entry( "installer");
   str_Open_a_Developer_Com = RogueString_create_string_table_entry( "Open a Developer Command Prompt and re-run:\n");
   str_Open_a_Developer_Com_1 = RogueString_create_string_table_entry( "Open a Developer Command Prompt and re-run morlock.");
-  str__Bootstrap_configure_1 = RogueString_create_string_table_entry( "[Bootstrap.configure() Bootstrap.rogue:33] ");
   str_Creating_home_folder = RogueString_create_string_table_entry( "Creating home folder...");
-  str__Bootstrap_configure_2 = RogueString_create_string_table_entry( "[Bootstrap.configure() Bootstrap.rogue:41] ");
   str_build = RogueString_create_string_table_entry( "build");
   str_packages = RogueString_create_string_table_entry( "packages");
-  str__Bootstrap_configure_3 = RogueString_create_string_table_entry( "[Bootstrap.configure() Bootstrap.rogue:47] ");
   str_Add_the_following_fo = RogueString_create_string_table_entry( "Add the following folder to your system Path:");
   str_1__Start___Search_fo = RogueString_create_string_table_entry( "1. Start > Search for \"env\" > run \"Edit the system environment variables\".");
   str_2__Click__Environmen = RogueString_create_string_table_entry( "2. Click \"Environment Variables...\" near the bottom.");
@@ -36889,10 +36839,6 @@ int Rogue_launch()
   str_terminal_ = RogueString_create_string_table_entry( "terminal:");
   str_export_PATH__ = RogueString_create_string_table_entry( "export PATH=\"");
   str____PATH = RogueString_create_string_table_entry( "\":$PATH");
-  str__Bootstrap_configure_4 = RogueString_create_string_table_entry( "[Bootstrap.configure() Bootstrap.rogue:99] ");
-  str__Bootstrap_configure_5 = RogueString_create_string_table_entry( "[Bootstrap.configure() Bootstrap.rogue:101] ");
-  str__Bootstrap_configure_6 = RogueString_create_string_table_entry( "[Bootstrap.configure() Bootstrap.rogue:103] ");
-  str__Bootstrap_configure_7 = RogueString_create_string_table_entry( "[Bootstrap.configure() Bootstrap.rogue:105] ");
   str_packages____ = RogueString_create_string_table_entry( "packages/*/*");
   str_active_version_txt = RogueString_create_string_table_entry( "active_version.txt");
   str__bin_morlock = RogueString_create_string_table_entry( "/bin/morlock");

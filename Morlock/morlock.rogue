@@ -6,7 +6,7 @@ class MorlockPackage : Package
 
   METHODS
     method init
-      dependency( "abepralle/rogue@2.0.0" )
+      dependency( "abepralle/rogue@2.0.1" )
       scan_repo_releases
 
     method install
