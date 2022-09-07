@@ -323,10 +323,20 @@ class Morlock [singleton]
           necessary (crc32->String == String(File(crc32_filepath)).trimmed)
 
         unsatisfied
-          local cmd = "$ $ $ $ --debug --api --compile --quiet --output=$" ...
+          local cmd = "$ $ $ $ --debug --api --main --output=$" ...
             (ROGUEC_EXE,File(info.filepath).esc, File(script_launcher_filepath).esc, ...
             File(package_filepath).esc, File(info.build_folder/info.app_name).esc)
           execute( cmd, &quiet, &exit_on_error )
+
+          local build_filepath = File(info.build_folder/info.app_name).esc
+          local local_exe      = File(info.build_folder/exe_filename).esc
+          if (System.is_windows)
+            cmd = "cl /EHsc /nologo $.c /Fo$.obj /Fe$"(build_filepath,build_filepath,local_exe)
+          else
+            cmd = "cc -O3 -Wall -fno-strict-aliasing $.c -o $ -lm"(build_filepath,local_exe)
+          endIf
+          execute( cmd, &quiet, &exit_on_error )
+
           File( exe_filepath ).delete
           File( info.build_folder/exe_filename ).copy_to( exe_filepath )
           if (not System.is_windows) execute( "chmod u+x $" (File(exe_filepath).esc), &quiet )

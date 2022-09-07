@@ -1,5 +1,6 @@
 uses Math/Best
 uses Codec/Zip
+uses Utility/VersionNumber
 
 class Package
   # Note: the "current folder" (".") is a temporary build folder.
@@ -35,7 +36,7 @@ class Package
       scan_repo_releases
 
     method init( args:String[] )
-      require args.count
+      assert args.count
       init( JSON.parse(args.first) )
 
     method init( name, properties:Value )
@@ -82,7 +83,7 @@ class Package
     method build
       # Attempts to automatically figure out how build the downloaded & unpacked
       # archive and launches the appropriate commands.
-      forEach (folder in File(".",&folders,&ignore_hidden).listing)
+      forEach (folder in File(".").listing(&folders,&ignore_hidden))
         if (File(folder/"Build.rogue").exists)
           execute "cd $ && rogo build" (File(folder).esc)
           archive_folder = folder
@@ -457,7 +458,7 @@ class PackageError( package_name:String, message ) : Error
   METHODS
     method description->String
       local builder = String()
-      local w1 = message.longest_line
+      local w1 = longest_line
       local w2 = Console.width
       local w = w1.or_larger(80).or_smaller( w2 )
       local hr = "=" * w
@@ -466,6 +467,20 @@ class PackageError( package_name:String, message ) : Error
       builder.println message
       builder.println hr
       return builder
+
+    method longest_line->Int32
+      local longest = 0
+      local cur = 0
+
+      forEach (ch in message)
+        which (ch)
+          case '\r': nextIteration
+          case '\n': longest .= or_larger(cur); cur = 0
+          others:    ++cur
+        endWhich
+      endForEach
+
+      return longest.or_larger( cur )
 endClass
 
 class Platforms
