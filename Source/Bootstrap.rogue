@@ -92,9 +92,13 @@ class Bootstrap [singleton]
         System.exit 1
       endContingent
 
+trace
       install_rogue
+trace
       install_rogo
+trace
       install_morlock
+trace
 
       delete_unused_package_versions
 

@@ -25354,6 +25354,7 @@ void RogueBootstrap__configure__RogueValue( RogueBootstrap* THIS, RogueValue _au
   RogueMorlock__header(ROGUE_SINGLETON(RogueMorlock));
   RogueSystem__exit__RogueInt32( 1 );
   _auto_escape_1:;
+  RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str__Bootstrap_configure );
   RogueBootstrap__install_rogue(THIS);
   if (Rogue_exception)
   {
@@ -25363,6 +25364,7 @@ void RogueBootstrap__configure__RogueValue( RogueBootstrap* THIS, RogueValue _au
     TypeRogueFile.local_pointer_count = _auto_local_pointer_fp_3;
     return;
   }
+  RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str__Bootstrap_configure_1 );
   RogueBootstrap__install_rogo(THIS);
   if (Rogue_exception)
   {
@@ -25372,6 +25374,7 @@ void RogueBootstrap__configure__RogueValue( RogueBootstrap* THIS, RogueValue _au
     TypeRogueFile.local_pointer_count = _auto_local_pointer_fp_3;
     return;
   }
+  RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str__Bootstrap_configure_2 );
   RogueBootstrap__install_morlock(THIS);
   if (Rogue_exception)
   {
@@ -25381,6 +25384,7 @@ void RogueBootstrap__configure__RogueValue( RogueBootstrap* THIS, RogueValue _au
     TypeRogueFile.local_pointer_count = _auto_local_pointer_fp_3;
     return;
   }
+  RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str__Bootstrap_configure_3 );
   RogueBootstrap__delete_unused_package_versions(THIS);
   TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
   TypeRogueOptionalString.local_pointer_count = _auto_local_pointer_fp_1;
@@ -34981,7 +34985,7 @@ void RogueImmediateConsoleMode___fill_event_queue_windows_process_next( RogueImm
       {
         if (!!(event_flags_1 & MOUSE_WHEELED))
         {
-          if ((new_button_state_2 & -65536) > 0)
+          if ((new_button_state_2 & 2147483647) > 0)
           {
             RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_context_3_9 );
             RogueConsoleEventList__add__RogueConsoleEvent( (_auto_anchored_context_3_9=THIS->events), (RogueConsoleEvent) {(RogueConsoleEventType) {5},x_3,y_4} );
@@ -35869,7 +35873,7 @@ void* Rogue_dispatch_print_to__RogueString__RogueObject( void* THIS, RogueString
   }
 }
 
-RogueString* Rogue_string_table[459];
+RogueString* Rogue_string_table[463];
 RogueString* str_true;
 RogueString* str_false;
 RogueString* str___;
@@ -36206,6 +36210,10 @@ RogueString* str_Make_the_change_by_a;
 RogueString* str_terminal_;
 RogueString* str_export_PATH__;
 RogueString* str____PATH;
+RogueString* str__Bootstrap_configure;
+RogueString* str__Bootstrap_configure_1;
+RogueString* str__Bootstrap_configure_2;
+RogueString* str__Bootstrap_configure_3;
 RogueString* str_packages____;
 RogueString* str_active_version_txt;
 RogueString* str__bin_morlock;
@@ -36869,6 +36877,10 @@ int Rogue_launch()
   str_terminal_ = RogueString_create_string_table_entry( "terminal:");
   str_export_PATH__ = RogueString_create_string_table_entry( "export PATH=\"");
   str____PATH = RogueString_create_string_table_entry( "\":$PATH");
+  str__Bootstrap_configure = RogueString_create_string_table_entry( "[Bootstrap.configure() Bootstrap.rogue:95] ");
+  str__Bootstrap_configure_1 = RogueString_create_string_table_entry( "[Bootstrap.configure() Bootstrap.rogue:97] ");
+  str__Bootstrap_configure_2 = RogueString_create_string_table_entry( "[Bootstrap.configure() Bootstrap.rogue:99] ");
+  str__Bootstrap_configure_3 = RogueString_create_string_table_entry( "[Bootstrap.configure() Bootstrap.rogue:101] ");
   str_packages____ = RogueString_create_string_table_entry( "packages/*/*");
   str_active_version_txt = RogueString_create_string_table_entry( "active_version.txt");
   str__bin_morlock = RogueString_create_string_table_entry( "/bin/morlock");

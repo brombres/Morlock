@@ -10,17 +10,16 @@
 @mkdir "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock"
 :CREATED_BUILD
 
-@if exist "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\download-v2.success" goto DOWNLOADED_EXE
-@echo Downloading Morlock bootstrap source...
-@curl -fsSL https://github.com/AbePralle/Morlock/main/Source/Bootstrap/Morlock.h -o "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\Morlock.h"
+@echo Downloading Morlock.h bootstrap source...
+@curl -fsSL https://raw.githubusercontent.com/AbePralle/Morlock/main/Source/Bootstrap/Morlock.h -o "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\Morlock.h"
 @if errorlevel 1 goto EXIT
-@curl -fsSL https://github.com/AbePralle/Morlock/main/Source/Bootstrap/Morlock.c -o "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\Morlock.c"
+
+@echo Downloading Morlock.c bootstrap source...
+@curl -fsSL https://raw.githubusercontent.com/AbePralle/Morlock/main/Source/Bootstrap/Morlock.c -o "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\Morlock.c"
 @if errorlevel 1 goto EXIT
-@echo Success > "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\download-v2.success"
-:DOWNLOADED_EXE
 
 @if exist "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\morlock-v2.exe" goto COMPILED
-@cl /EHsc /nologo Build\RogueC-Windows.c /Fo"%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\morlock-v2.obj" /Fe"%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\morlock-v2.exe"
+@cl /EHsc /nologo "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\Morlock.c" /Fo"%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\morlock-v2.obj" /Fe"%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\morlock-v2.exe"
 :COMPILED
 
 "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\morlock-v2.exe" bootstrap --installer="%0"
