@@ -20834,10 +20834,28 @@ RogueValue RogueMorlock__parse_args__RogueStringList( RogueMorlock* THIS, RogueS
 
 void RogueMorlock__print_usage( RogueMorlock* THIS )
 {
-  RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str_2_0 );
-  RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str_November_24__2021_by );
+  RogueString* _auto_context_block_0_0 = 0;
+  (void)_auto_context_block_0_0;
+  RogueString* _auto_context_block_1_1 = 0;
+  (void)_auto_context_block_1_1;
+
+  RogueInt32 _auto_local_pointer_fp_0 = TypeRogueObject.local_pointer_count;
+
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_context_block_0_0 );
+  _auto_context_block_0_0 = ROGUE_CREATE_OBJECT( RogueString );
+  RogueString__init(_auto_context_block_0_0);
+  RogueString__print__RogueString( _auto_context_block_0_0, str_Morlock_v );
+  RogueString__print__RogueString( _auto_context_block_0_0, str_2_0_1 );
+  RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), _auto_context_block_0_0 );
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_context_block_1_1 );
+  _auto_context_block_1_1 = ROGUE_CREATE_OBJECT( RogueString );
+  RogueString__init(_auto_context_block_1_1);
+  RogueString__print__RogueString( _auto_context_block_1_1, str_September_7__2022 );
+  RogueString__print__RogueString( _auto_context_block_1_1, str__by_Abe_Pralle );
+  RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), _auto_context_block_1_1 );
   RogueGlobal__println(ROGUE_SINGLETON(RogueGlobal));
   RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str_USAGE___morlock__com );
+  TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
 }
 
 void RogueMorlock__init_object( RogueMorlock* THIS )
@@ -34951,7 +34969,7 @@ void RogueImmediateConsoleMode___fill_event_queue_windows_process_next( RogueImm
       {
         if (!!(event_flags_1 & MOUSE_WHEELED))
         {
-          if ((new_button_state_2 & 2147483647) > 0)
+          if ((new_button_state_2 & -65536) > 0)
           {
             RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_context_3_9 );
             RogueConsoleEventList__add__RogueConsoleEvent( (_auto_anchored_context_3_9=THIS->events), (RogueConsoleEvent) {(RogueConsoleEventType) {5},x_3,y_4} );
@@ -35839,7 +35857,7 @@ void* Rogue_dispatch_print_to__RogueString__RogueObject( void* THIS, RogueString
   }
 }
 
-RogueString* Rogue_string_table[459];
+RogueString* Rogue_string_table[461];
 RogueString* str_true;
 RogueString* str_false;
 RogueString* str___;
@@ -36095,8 +36113,10 @@ RogueString* str__i;
 RogueString* str_options;
 RogueString* str_home;
 RogueString* str_dependency;
-RogueString* str_2_0;
-RogueString* str_November_24__2021_by;
+RogueString* str_Morlock_v;
+RogueString* str_2_0_1;
+RogueString* str_September_7__2022;
+RogueString* str__by_Abe_Pralle;
 RogueString* str_USAGE___morlock__com;
 RogueString* str_curl__fsSL_;
 RogueString* str_Download_failed__;
@@ -36758,8 +36778,10 @@ int Rogue_launch()
   str_options = RogueString_create_string_table_entry( "options");
   str_home = RogueString_create_string_table_entry( "home");
   str_dependency = RogueString_create_string_table_entry( "dependency");
-  str_2_0 = RogueString_create_string_table_entry( "2.0");
-  str_November_24__2021_by = RogueString_create_string_table_entry( "November 24, 2021 by Abe Pralle");
+  str_Morlock_v = RogueString_create_string_table_entry( "Morlock v");
+  str_2_0_1 = RogueString_create_string_table_entry( "2.0.1");
+  str_September_7__2022 = RogueString_create_string_table_entry( "September 7, 2022");
+  str__by_Abe_Pralle = RogueString_create_string_table_entry( " by Abe Pralle");
   str_USAGE___morlock__com = RogueString_create_string_table_entry( "USAGE\n  morlock <command>\n\nCOMMANDS\n  help\n    Show this help text.\n\n  create <provider>/<app-name>\n    For example, `create mygithub/myapp` will create a template install script\n    `myapp.rogue`. Edit it and move it to a root subfolder called `Morlock/`\n    (or `morlock/`).\n\n  install <package>\n    'morlock install user/repo/app-name' - installs package user/app-name\n    'morlock install user/app-name'      - shorthand for user/app-name/app-name\n\n  link <package>\n    Re-links the launchers for the specified package.\n\n  link <launcher-name> <exe-filepath>\n    Links an arbitrary launcher on the Morlock path to an arbitrary executable.\n    For example: 'morlock link myprog ~/MyProject/Build/myprog.exe'.\n\n  list\n    Shows list of all installed packages.\n\n  uninstall <package>\n    Uninstalls the specified package.\n\n  unlink <package-name-or-launcher-name>\n    Unlinks launchers so they're no longer on the Morlock binpath.\n\n  update [package-a [package-b ...]]\n    Updates listed packages or else all packages, including Morlock, Rogue,\n    and Rogo.\n\nPACKAGE FORMAT\n  provider/repo/app-name\n  provider/repo\n  repo\n  https://github.com/provider/repo/morlock/app-name.rogue");
   str_curl__fsSL_ = RogueString_create_string_table_entry( "curl -fsSL ");
   str_Download_failed__ = RogueString_create_string_table_entry( "Download failed: ");
