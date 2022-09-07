@@ -16,6 +16,7 @@ class Bootstrap [singleton]
     method configure( cmd )
       # Windows: make sure we're running from a developer command prompt with
       # command-line C++ support.
+trace
       if (System.is_windows)
         if (Process.run("cl").exit_code != 0)
           local mesg = "This command must be run from a Visual Studio Developer Command Prompt that supports C++. "
@@ -29,6 +30,7 @@ class Bootstrap [singleton]
         endIf
       endIf
 
+trace
       # Create the Morlock home folder
       if (not File(Morlock.HOME).is_folder)
         print_installing_header
@@ -36,11 +38,13 @@ class Bootstrap [singleton]
         Morlock.create_folder( Morlock.HOME, &chown )
       endIf
 
+trace
       # Create primary subfolders
       Morlock.create_folder( Morlock.HOME/"bin" )
       Morlock.create_folder( Morlock.HOME/"build" )
       Morlock.create_folder( Morlock.HOME/"packages" )
 
+trace
       # Make sure Morlock.HOME/bin is on the system PATH before proceeding.
       local binpath = File( Morlock.HOME/"bin" ).conventional_filepath
       contingent

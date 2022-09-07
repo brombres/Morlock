@@ -25149,6 +25149,7 @@ void RogueBootstrap__configure__RogueValue( RogueBootstrap* THIS, RogueValue _au
   RogueInt32 _auto_local_pointer_fp_3 = TypeRogueFile.local_pointer_count;
 
   THIS->cmd = _auto_store_cmd_0;
+  RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str__Bootstrap_configure );
   if (RogueSystem__is_windows())
   {
     if (RogueProcess__run__RogueString_RogueLogical_RogueLogical( str_cl, 0, 0 )->exit_code != 0)
@@ -25191,6 +25192,7 @@ void RogueBootstrap__configure__RogueValue( RogueBootstrap* THIS, RogueValue _au
       }
     }
   }
+  RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str__Bootstrap_configure_1 );
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_8_17 );
   if (!RogueFile__is_folder((_auto_anchored_context_8_17=(RogueFile) {ROGUE_SINGLETON(RogueMorlock)->HOME})))
   {
@@ -25208,6 +25210,7 @@ void RogueBootstrap__configure__RogueValue( RogueBootstrap* THIS, RogueValue _au
       return;
     }
   }
+  RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str__Bootstrap_configure_2 );
   _auto_anchored_arg_0_10_19 = 0;
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_10_19 );
   _auto_anchored_arg_0_11_20 = 0;
@@ -25247,6 +25250,7 @@ void RogueBootstrap__configure__RogueValue( RogueBootstrap* THIS, RogueValue _au
     TypeRogueFile.local_pointer_count = _auto_local_pointer_fp_3;
     return;
   }
+  RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str__Bootstrap_configure_3 );
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &binpath_2 );
   _auto_anchored_arg_0_16_25 = 0;
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_16_25 );
@@ -25354,7 +25358,7 @@ void RogueBootstrap__configure__RogueValue( RogueBootstrap* THIS, RogueValue _au
   RogueMorlock__header(ROGUE_SINGLETON(RogueMorlock));
   RogueSystem__exit__RogueInt32( 1 );
   _auto_escape_1:;
-  RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str__Bootstrap_configure );
+  RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str__Bootstrap_configure_4 );
   RogueBootstrap__install_rogue(THIS);
   if (Rogue_exception)
   {
@@ -25364,7 +25368,7 @@ void RogueBootstrap__configure__RogueValue( RogueBootstrap* THIS, RogueValue _au
     TypeRogueFile.local_pointer_count = _auto_local_pointer_fp_3;
     return;
   }
-  RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str__Bootstrap_configure_1 );
+  RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str__Bootstrap_configure_5 );
   RogueBootstrap__install_rogo(THIS);
   if (Rogue_exception)
   {
@@ -25374,7 +25378,7 @@ void RogueBootstrap__configure__RogueValue( RogueBootstrap* THIS, RogueValue _au
     TypeRogueFile.local_pointer_count = _auto_local_pointer_fp_3;
     return;
   }
-  RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str__Bootstrap_configure_2 );
+  RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str__Bootstrap_configure_6 );
   RogueBootstrap__install_morlock(THIS);
   if (Rogue_exception)
   {
@@ -25384,7 +25388,7 @@ void RogueBootstrap__configure__RogueValue( RogueBootstrap* THIS, RogueValue _au
     TypeRogueFile.local_pointer_count = _auto_local_pointer_fp_3;
     return;
   }
-  RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str__Bootstrap_configure_3 );
+  RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str__Bootstrap_configure_7 );
   RogueBootstrap__delete_unused_package_versions(THIS);
   TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
   TypeRogueOptionalString.local_pointer_count = _auto_local_pointer_fp_1;
@@ -35873,7 +35877,7 @@ void* Rogue_dispatch_print_to__RogueString__RogueObject( void* THIS, RogueString
   }
 }
 
-RogueString* Rogue_string_table[463];
+RogueString* Rogue_string_table[467];
 RogueString* str_true;
 RogueString* str_false;
 RogueString* str___;
@@ -36181,14 +36185,18 @@ RogueString* str__name_______;
 RogueString* str_Failed_to_parse_pack;
 RogueString* str__build_;
 RogueString* str____16;
+RogueString* str__Bootstrap_configure;
 RogueString* str_cl;
 RogueString* str_This_command_must_be;
 RogueString* str_installer;
 RogueString* str_Open_a_Developer_Com;
 RogueString* str_Open_a_Developer_Com_1;
+RogueString* str__Bootstrap_configure_1;
 RogueString* str_Creating_home_folder;
+RogueString* str__Bootstrap_configure_2;
 RogueString* str_build;
 RogueString* str_packages;
+RogueString* str__Bootstrap_configure_3;
 RogueString* str_Add_the_following_fo;
 RogueString* str_1__Start___Search_fo;
 RogueString* str_2__Click__Environmen;
@@ -36210,10 +36218,10 @@ RogueString* str_Make_the_change_by_a;
 RogueString* str_terminal_;
 RogueString* str_export_PATH__;
 RogueString* str____PATH;
-RogueString* str__Bootstrap_configure;
-RogueString* str__Bootstrap_configure_1;
-RogueString* str__Bootstrap_configure_2;
-RogueString* str__Bootstrap_configure_3;
+RogueString* str__Bootstrap_configure_4;
+RogueString* str__Bootstrap_configure_5;
+RogueString* str__Bootstrap_configure_6;
+RogueString* str__Bootstrap_configure_7;
 RogueString* str_packages____;
 RogueString* str_active_version_txt;
 RogueString* str__bin_morlock;
@@ -36848,14 +36856,18 @@ int Rogue_launch()
   str_Failed_to_parse_pack = RogueString_create_string_table_entry( "Failed to parse package name from PROPERTIES. Required: name = \"provider/app-name\"");
   str__build_ = RogueString_create_string_table_entry( "/build/");
   str____16 = RogueString_create_string_table_entry( "--");
+  str__Bootstrap_configure = RogueString_create_string_table_entry( "[Bootstrap.configure() Bootstrap.rogue:19] ");
   str_cl = RogueString_create_string_table_entry( "cl");
   str_This_command_must_be = RogueString_create_string_table_entry( "This command must be run from a Visual Studio Developer Command Prompt that supports C++. ");
   str_installer = RogueString_create_string_table_entry( "installer");
   str_Open_a_Developer_Com = RogueString_create_string_table_entry( "Open a Developer Command Prompt and re-run:\n");
   str_Open_a_Developer_Com_1 = RogueString_create_string_table_entry( "Open a Developer Command Prompt and re-run morlock.");
+  str__Bootstrap_configure_1 = RogueString_create_string_table_entry( "[Bootstrap.configure() Bootstrap.rogue:33] ");
   str_Creating_home_folder = RogueString_create_string_table_entry( "Creating home folder...");
+  str__Bootstrap_configure_2 = RogueString_create_string_table_entry( "[Bootstrap.configure() Bootstrap.rogue:41] ");
   str_build = RogueString_create_string_table_entry( "build");
   str_packages = RogueString_create_string_table_entry( "packages");
+  str__Bootstrap_configure_3 = RogueString_create_string_table_entry( "[Bootstrap.configure() Bootstrap.rogue:47] ");
   str_Add_the_following_fo = RogueString_create_string_table_entry( "Add the following folder to your system Path:");
   str_1__Start___Search_fo = RogueString_create_string_table_entry( "1. Start > Search for \"env\" > run \"Edit the system environment variables\".");
   str_2__Click__Environmen = RogueString_create_string_table_entry( "2. Click \"Environment Variables...\" near the bottom.");
@@ -36877,10 +36889,10 @@ int Rogue_launch()
   str_terminal_ = RogueString_create_string_table_entry( "terminal:");
   str_export_PATH__ = RogueString_create_string_table_entry( "export PATH=\"");
   str____PATH = RogueString_create_string_table_entry( "\":$PATH");
-  str__Bootstrap_configure = RogueString_create_string_table_entry( "[Bootstrap.configure() Bootstrap.rogue:95] ");
-  str__Bootstrap_configure_1 = RogueString_create_string_table_entry( "[Bootstrap.configure() Bootstrap.rogue:97] ");
-  str__Bootstrap_configure_2 = RogueString_create_string_table_entry( "[Bootstrap.configure() Bootstrap.rogue:99] ");
-  str__Bootstrap_configure_3 = RogueString_create_string_table_entry( "[Bootstrap.configure() Bootstrap.rogue:101] ");
+  str__Bootstrap_configure_4 = RogueString_create_string_table_entry( "[Bootstrap.configure() Bootstrap.rogue:99] ");
+  str__Bootstrap_configure_5 = RogueString_create_string_table_entry( "[Bootstrap.configure() Bootstrap.rogue:101] ");
+  str__Bootstrap_configure_6 = RogueString_create_string_table_entry( "[Bootstrap.configure() Bootstrap.rogue:103] ");
+  str__Bootstrap_configure_7 = RogueString_create_string_table_entry( "[Bootstrap.configure() Bootstrap.rogue:105] ");
   str_packages____ = RogueString_create_string_table_entry( "packages/*/*");
   str_active_version_txt = RogueString_create_string_table_entry( "active_version.txt");
   str__bin_morlock = RogueString_create_string_table_entry( "/bin/morlock");
