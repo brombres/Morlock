@@ -13,7 +13,9 @@
 @if exist "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\download-v2.success" goto DOWNLOADED_EXE
 @echo Downloading Morlock bootstrap source...
 @curl -fsSL https://github.com/AbePralle/Morlock/main/Source/Bootstrap/Morlock.h -o "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\Morlock.h"
+@if errorlevel 1 goto EXIT
 @curl -fsSL https://github.com/AbePralle/Morlock/main/Source/Bootstrap/Morlock.c -o "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\Morlock.c"
+@if errorlevel 1 goto EXIT
 @echo Success > "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\download-v2.success"
 :DOWNLOADED_EXE
 
@@ -23,3 +25,4 @@
 
 "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\morlock-v2.exe" bootstrap --installer="%0"
 
+:EXIT
