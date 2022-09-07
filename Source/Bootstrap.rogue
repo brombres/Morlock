@@ -125,6 +125,7 @@ class Bootstrap [singleton]
     method install_morlock
       local ext = which{ System.is_windows:".bat" || "" }
       local bin_filepath = "$/bin/morlock$" (Morlock.HOME,ext)
+      if (File(bin_filepath).exists and cmd//action != "bootstrap") return
 
       # Can use the regular system to install the latest Morlock.
       # If the remaining code in this method executes on Windows it's probably a bootstrap
@@ -172,6 +173,7 @@ class Bootstrap [singleton]
     method install_rogo
       local ext = which{ System.is_windows:".bat" || "" }
       local bin_filepath = "$/bin/rogo$" (Morlock.HOME,ext)
+      if (File(bin_filepath).exists and cmd//action != "bootstrap") return
 
       local package = package_instance( "https://github.com/abepralle/rogo" )
       package.scan_repo_releases
@@ -214,6 +216,7 @@ class Bootstrap [singleton]
     method install_rogue
       local ext = which{ System.is_windows:".bat" || "" }
       local bin_filepath = "$/bin/$$" (Morlock.HOME,ROGUEC_EXE,ext)
+      if (File(bin_filepath).exists and cmd//action != "bootstrap") return
 
       local package = package_instance( "https://github.com/abepralle/rogue" )
       package.scan_repo_releases
