@@ -2,7 +2,7 @@
 
 About     | Current Release
 ----------|-----------------------
-Version   | -am
+Version   | 2.0.3
 Date      | September 7, 2022
 Platforms | Windows, macOS, Linux (Ubuntu+), Cygwin
 Author    | Abe Pralle
