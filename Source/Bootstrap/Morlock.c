@@ -25300,7 +25300,7 @@ void RogueBootstrap__configure__RogueValue( RogueBootstrap* THIS, RogueValue _au
     RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str_4__Add_the_Morlock__ );
     _auto_anchored_arg_0_22_31 = 0;
     RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_22_31 );
-    RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), (_auto_anchored_arg_0_22_31=RogueString__operatorPLUS__RogueString_RogueString( str____11, binpath_2 )) );
+    RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), (_auto_anchored_arg_0_22_31=RogueString__operatorPLUS__RogueString_RogueString( str_____2, binpath_2 )) );
     RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_context_23_32 );
     RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_context_24_33 );
     RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_context_25_34 );
@@ -36290,8 +36290,8 @@ RogueString* str_1__Start___Search_fo;
 RogueString* str_2__Click__Environmen;
 RogueString* str_3__Add_or_edit__Path;
 RogueString* str_4__Add_the_Morlock__;
-RogueString* str_5__Open_a_new_Develo;
 RogueString* str_____2;
+RogueString* str_5__Open_a_new_Develo;
 RogueString* str_5__Open_a_new_Develo_1;
 RogueString* str_Add_the_following_fo_1;
 RogueString* str_SHELL;
@@ -36955,8 +36955,8 @@ int Rogue_launch()
   str_2__Click__Environmen = RogueString_create_string_table_entry( "2. Click \"Environment Variables...\" near the bottom.");
   str_3__Add_or_edit__Path = RogueString_create_string_table_entry( "3. Add or edit \"Path\" in the top \"User variables\" section.");
   str_4__Add_the_Morlock__ = RogueString_create_string_table_entry( "4. Add the Morlock \"bin\" folder to the path:");
-  str_5__Open_a_new_Develo = RogueString_create_string_table_entry( "5. Open a new Developer Command Prompt and re-run:");
   str_____2 = RogueString_create_string_table_entry( "   ");
+  str_5__Open_a_new_Develo = RogueString_create_string_table_entry( "5. Open a new Developer Command Prompt and re-run:");
   str_5__Open_a_new_Develo_1 = RogueString_create_string_table_entry( "5. Open a new Developer Command Prompt and re-run morlock.");
   str_Add_the_following_fo_1 = RogueString_create_string_table_entry( "Add the following folder to your system PATH and re-run the Morlock install command:");
   str_SHELL = RogueString_create_string_table_entry( "SHELL");
