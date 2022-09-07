@@ -2,8 +2,8 @@
 # Morlock.rogue
 # Started August 15, 2021
 #================================================================================
-$define VERSION "2.0"
-$define DATE "November 24, 2021"
+$define VERSION "2.0.1"
+$define DATE    "September 7, 2022"
 
 $requireRogue "2.0"
 
