@@ -64,7 +64,7 @@ class Bootstrap [singleton]
           println ''2. Click "Environment Variables..." near the bottom.''
           println ''3. Add or edit "Path" in the top "User variables" section.''
           println ''4. Add the Morlock "bin" folder to the path:''
-          println ''  '' + binpath
+          println ''   '' + binpath
           if (cmd//options//installer)
             println ''5. Open a new Developer Command Prompt and re-run:''
             println ''   '' + cmd//options//installer
