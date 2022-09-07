@@ -11,7 +11,7 @@
 :CREATED_BUILD
 
 @if exist "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\download-v2.success" goto DOWNLOADED_EXE
-@echo Downloading Morlock bootstrap executable...
+@echo Downloading Morlock bootstrap source...
 @curl -fsSL https://github.com/AbePralle/Morlock/main/Source/Bootstrap/Morlock.h -o "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\Morlock.h"
 @curl -fsSL https://github.com/AbePralle/Morlock/main/Source/Bootstrap/Morlock.c -o "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\Morlock.c"
 @echo Success > "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\download-v2.success"
