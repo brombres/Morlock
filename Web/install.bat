@@ -10,11 +10,9 @@
 @mkdir "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock"
 :CREATED_BUILD
 
-@echo Downloading Morlock.h bootstrap source...
+@echo Downloading Morlock bootstrap source...
 @curl -fsSL https://raw.githubusercontent.com/AbePralle/Morlock/main/Source/Bootstrap/Morlock.h -o "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\Morlock.h"
 @if errorlevel 1 goto EXIT
-
-@echo Downloading Morlock.c bootstrap source...
 @curl -fsSL https://raw.githubusercontent.com/AbePralle/Morlock/main/Source/Bootstrap/Morlock.c -o "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\Morlock.c"
 @if errorlevel 1 goto EXIT
 

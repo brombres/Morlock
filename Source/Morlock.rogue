@@ -3,7 +3,7 @@
 # Started August 15, 2021
 #================================================================================
 $define VERSION "2.0"
-$define AUTHOR "November 24, 2021 by Abe Pralle"
+$define DATE "November 24, 2021"
 
 $requireRogue "2.0"
 
@@ -413,8 +413,8 @@ class Morlock [singleton]
       return command
 
     method print_usage
-      println VERSION
-      println AUTHOR
+      println "Morlock v$" (VERSION)
+      println "$ by Abe Pralle" (DATE)
       println
       println @|USAGE
                |  morlock <command>

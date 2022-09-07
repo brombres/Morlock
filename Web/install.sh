@@ -20,23 +20,25 @@ if ! chown $USER$GROUP "$HOME" &> /dev/null; then
 fi
 
 mkdir -p "$HOME/build/abepralle/morlock"
-if ! [ -f "$HOME/build/abepralle/morlock/download.success" ]; then
+if ! [ -f "$HOME/build/abepralle/morlock/download-v2.success" ]; then
   echo Downloading Morlock bootstrap source...
   curl -fsSL https://raw.githubusercontent.com/AbePralle/Morlock/main/Source/Bootstrap/Morlock.h \
     -o "$HOME/build/abepralle/morlock/Morlock.h"
   curl -fsSL https://raw.githubusercontent.com/AbePralle/Morlock/main/Source/Bootstrap/Morlock.c \
     -o "$HOME/build/abepralle/morlock/Morlock.c"
-  echo success >> "$HOME/build/abepralle/morlock/download.success"
+  echo success >> "$HOME/build/abepralle/morlock/download-v2.success"
 fi
 
-if ! [ -f "$HOME/build/abepralle/morlock/compile.success" ]; then
-  if c++ -O3 -Wall -fno-strict-aliasing -Wno-invalid-offsetof \
+if ! [ -f "$HOME/build/abepralle/morlock/compile-v2.success" ]; then
+  echo Compiling Morlock bootstrap...
+  if cc -O3 -Wall -fno-strict-aliasing \
     "$HOME/build/abepralle/morlock/Morlock.c" \
     -o "$HOME/build/abepralle/morlock/morlock"; then
     chmod a+x "$HOME/build/abepralle/morlock/morlock"
-    echo success >> "$HOME/build/abepralle/morlock/compile.success"
+    echo success >> "$HOME/build/abepralle/morlock/compile-v2.success"
   fi
 fi
 
+echo Bootstrapping Morlock...
 "$HOME/build/abepralle/morlock/morlock"
 
