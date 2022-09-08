@@ -33,7 +33,7 @@ if ! [ -f "$HOME/build/abepralle/morlock/compile-v2.success" ]; then
   echo Compiling Morlock bootstrap...
   if cc -O3 -Wall -fno-strict-aliasing \
     "$HOME/build/abepralle/morlock/Morlock.c" \
-    -o "$HOME/build/abepralle/morlock/morlock"; then
+    -o "$HOME/build/abepralle/morlock/morlock" -lm; then
     chmod a+x "$HOME/build/abepralle/morlock/morlock"
     echo success >> "$HOME/build/abepralle/morlock/compile-v2.success"
   fi
