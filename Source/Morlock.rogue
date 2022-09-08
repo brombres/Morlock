@@ -287,6 +287,7 @@ class Morlock [singleton]
       return packages.to_list
 
     method run_script( command:Value, info:PackageInfo )
+trace command
       local action = command//action->String
       if (action != "install" and not File(info.folder).exists)
         throw error( "Package $ is not installed." (info.name) )
@@ -317,7 +318,6 @@ class Morlock [singleton]
         local crc32 : Int32
         contingent
           # Recompile?
-          crc32 = File(info.filepath).crc32 ~ File(package_filepath).crc32 ~ File(script_launcher_filepath).crc32
           necessary (File(exe_filepath).exists)
           necessary (File(crc32_filepath).exists)
           necessary (crc32->String == String(File(crc32_filepath)).trimmed)

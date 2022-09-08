@@ -90,19 +90,26 @@ endRoutine
 
 routine rogo_install
   # Developer option to link 'morlock' launcher in existing Morlock install to current build.
-  # Only works on macOS & Linux.
   rogo_build
-  local src = File("Build/Morlock-macOS")
-  local list = File( "/opt/morlock/packages/abepralle/morlock/*/bin/morlock" ).listing
+  local src = which{ System.is_windows:File("Build/morlock.exe") || File("Build/Morlock-macOS") }
+  local exe_path : String
+  if (System.is_windows)
+    exe_path = "~/AppData/Local/Morlock/packages/abepralle/morlock/*/bin/morlock.exe"
+  else
+    exe_path = "/opt/morlock/packages/abepralle/morlock/*/bin/morlock"
+  endIf
+  local list = File(exe_path).listing
   assert list.count == 1
   local dest = File(list.first)
   dest.delete
   src.copy_to(dest,&verbose)
-  execute( "chmod a+x $"(dest.filepath) )
+  if (not System.is_windows) execute( "chmod a+x $"(dest.filepath) )
 
-  local launcher = "/opt/morlock/bin/morlock"
-  File( launcher ).delete
-  execute( "ln -s $ $"(dest.filepath,launcher) )
+  if (not System.is_windows)
+    local launcher = "/opt/morlock/bin/morlock"
+    File( launcher ).delete
+    execute( "ln -s $ $"(dest.filepath,launcher) )
+  endIf
 
   Files("Source","*.rogue").sync_to( dest.parent(2)/"Source" )
 endRoutine

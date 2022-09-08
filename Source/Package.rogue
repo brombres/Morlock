@@ -225,6 +225,9 @@ class Package
         throw error( "$ is not installed." (name) )
       endIf
 
+      # Force Package recompile next time
+      File( package_folder/"source_crc32.txt" ).delete
+
     method install
       # Override as needed.
       download
