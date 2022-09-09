@@ -44,6 +44,45 @@ class Morlock [singleton]
 
     method perform_action( cmd:Value )
       which (cmd//action)
+        case "alias"
+          if (cmd//args.is_empty)
+            println( (forEach in (File(HOME)/"bin").listing).before_first(".bat") )
+            return
+          endIf
+
+          local file = File(HOME)/"bin"/(cmd//args[0]->String)
+          if (System.is_windows) file += ".bat"
+
+          if (cmd//args.count == 1)
+            if (file.exists)
+              local content = String(file)
+              if (System.is_windows or content.begins_with("#!/bin"))
+                println content
+              else
+                println "<binary file>"
+              endIf
+            endIf
+            return
+          endIf
+
+          local writer = file.print_writer
+          if (System.is_windows)
+            forEach (line in cmd//args from 1)
+              writer.print '@'
+              writer.println line
+            endForEach
+            writer.close
+          else
+            writer.println "#!/bin/sh"
+            forEach (line in cmd//args from 1)
+              writer.println line
+            endForEach
+            writer.close
+            System.run( "chmod 0766 $"(file.esc) )
+          endIf
+
+          return
+
         case "bootstrap"
           noAction # already handled
           return
@@ -432,6 +471,11 @@ class Morlock [singleton]
                |COMMANDS
                |  help
                |    Show this help text.
+               |
+               |  alias <command> <line1> [<line2> ...]
+               |    Creates a Mac/Linux shell script or Windows batch file on the Morlock path
+               |    that executes the given line or lines of code. Use 'morlock unlink <alias>'
+               |    to remove.
                |
                |  create <provider>/<app-name>
                |    For example, `create mygithub/myapp` will create a template install script

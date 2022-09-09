@@ -46,6 +46,16 @@ Test out Morlock with:
     morlock install abepralle/helloworld
     helloworld
 
+## `alias`
+
+    morlock alias <command> <line1> [<line2>...]
+    ...
+    <command>
+
+Creates a Mac/Linux shell script or Windows batch file on the Morlock path
+that executes the given line or lines of code. Use `morlock unlink <alias>`
+to remove.
+
 ## `help`
 
     morlock help
