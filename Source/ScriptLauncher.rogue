@@ -8,7 +8,7 @@ try
     endIf
   endForEach
 
-catch (err:PackageError)
+catch (err:Error)
   Console.error.println err
   System.exit 1
 
