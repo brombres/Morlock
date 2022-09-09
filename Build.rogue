@@ -212,6 +212,7 @@ routine rogo_publish( new_version:String )
   if (not System.find_executable("gh")) throw Error( "The GitHub command line tool 'gh' must be installed." )
   rogo_commit( new_version )
 
+  rogo_build
   rogo_update_bootstrap
 
   # These can be hard-coded to suit your project
