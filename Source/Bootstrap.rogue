@@ -21,7 +21,7 @@ class Bootstrap [singleton]
           local mesg = "This command must be run from a Visual Studio Developer Command Prompt that supports C/C++. "
           if (cmd//options//installer)
             mesg += "Open a Developer Command Prompt and re-run the installer:\n"
-            mesg += "  curl -L windows.morlock.sh -o %TEMP%\install.bat && %TEMP%\install"
+            mesg += "  curl -L windows.morlock.sh -o %TEMP%\\install.bat && %TEMP%\\install"
           else
             mesg += "Open a Developer Command Prompt and re-run morlock."
           endIf
@@ -67,7 +67,7 @@ class Bootstrap [singleton]
           println ''   '' + binpath
           if (cmd//options//installer)
             println ''5. Open a new Developer Command Prompt and re-run the installer:''
-            println ''   curl -L windows.morlock.sh -o %TEMP%\install.bat && %TEMP%\install''
+            println ''   curl -L windows.morlock.sh -o %TEMP%\\install.bat && %TEMP%\\install''
           else
             println ''5. Open a new Developer Command Prompt and re-run morlock.''
           endIf
