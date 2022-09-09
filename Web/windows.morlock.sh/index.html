@@ -12,14 +12,31 @@
 
 @echo Downloading Morlock bootstrap source...
 @curl -fsSL https://raw.githubusercontent.com/AbePralle/Morlock/main/Source/Bootstrap/Morlock.h -o "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\Morlock.h"
-@if errorlevel 1 goto EXIT
+@if errorlevel 1 goto ERROR_DOWNLOADING
 @curl -fsSL https://raw.githubusercontent.com/AbePralle/Morlock/main/Source/Bootstrap/Morlock.c -o "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\Morlock.c"
-@if errorlevel 1 goto EXIT
+@if errorlevel 1 goto ERROR_DOWNLOADING
 
 @echo Compiling Morlock bootstrap...
-@cl /EHsc /nologo "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\Morlock.c" /Fo"%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\morlock-v2.obj" /Fe"%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\morlock-v2.exe"
+@cl /nologo "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\Morlock.c" /Fo"%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\morlock-v2.obj" /Fe"%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\morlock-v2.exe"
+@if errorlevel 1 goto ERROR_COMPILING
 
 echo Bootstrapping Morlock...
 "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\morlock-v2.exe" bootstrap --installer="%0"
+@goto EXIT
+
+:ERROR_DOWNLOADING
+@echo Error downloading the following files using 'curl':
+@echo   https://raw.githubusercontent.com/AbePralle/Morlock/main/Source/Bootstrap/Morlock.h
+@echo   https://raw.githubusercontent.com/AbePralle/Morlock/main/Source/Bootstrap/Morlock.c
+@echo:
+@echo Check the internet connection.
+@goto EXIT
+
+:ERROR_COMPILING
+@echo Error compiling the Morlock bootstrap. Check the following:
+@echo   1. Ensure that MS Visual Studio 2019 (or better) with C/C++ support is installed.
+@echo   2. Ensure that this command prompt is a VS "Developer Command Prompt".
+@echo   3. Ensure that the MSVC command-line C/C++ compiler is installed by running 'cl'.
+@goto EXIT
 
 :EXIT

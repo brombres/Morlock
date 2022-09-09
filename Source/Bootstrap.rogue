@@ -18,10 +18,10 @@ class Bootstrap [singleton]
       # command-line C++ support.
       if (System.is_windows)
         if (Process.run("cl").exit_code != 0)
-          local mesg = "This command must be run from a Visual Studio Developer Command Prompt that supports C++. "
+          local mesg = "This command must be run from a Visual Studio Developer Command Prompt that supports C/C++. "
           if (cmd//options//installer)
-            mesg += "Open a Developer Command Prompt and re-run:\n"
-            mesg += cmd//options//installer
+            mesg += "Open a Developer Command Prompt and re-run the installer:\n"
+            mesg += "  curl -L windows.morlock.sh -o %TEMP%\install.bat && %TEMP%\install"
           else
             mesg += "Open a Developer Command Prompt and re-run morlock."
           endIf
@@ -66,8 +66,8 @@ class Bootstrap [singleton]
           println ''4. Add the Morlock "bin" folder to the path:''
           println ''   '' + binpath
           if (cmd//options//installer)
-            println ''5. Open a new Developer Command Prompt and re-run:''
-            println ''   '' + cmd//options//installer
+            println ''5. Open a new Developer Command Prompt and re-run the installer:''
+            println ''   curl -L windows.morlock.sh -o %TEMP%\install.bat && %TEMP%\install''
           else
             println ''5. Open a new Developer Command Prompt and re-run morlock.''
           endIf
