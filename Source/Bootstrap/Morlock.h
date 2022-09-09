@@ -5755,8 +5755,8 @@ static int mz_mkdir(const char *pDirname) {
 #define MZ_MKDIR(d) mkdir(d, 0755)
 
 #else
-#pragma message(                                                               \
-    "Using fopen, ftello, fseeko, stat() etc. path for file I/O - this path may not support large files.")
+//#pragma message(                                                               \
+//    "Using fopen, ftello, fseeko, stat() etc. path for file I/O - this path may not support large files.")
 #ifndef MINIZ_NO_TIME
 #include <utime.h>
 #endif
@@ -14235,7 +14235,7 @@ void* Rogue_dispatch_print_to__RogueString__RogueObject( void* THIS, RogueString
 extern RogueInt32 Rogue_type_count;
 extern RogueRuntimeType* Rogue_types[179];
 extern RogueInt32 Rogue_base_types[218];
-extern RogueString* Rogue_string_table[467];
+extern RogueString* Rogue_string_table[470];
 extern RogueString* str_true;
 extern RogueString* str_false;
 extern RogueString* str___;
@@ -14469,12 +14469,13 @@ extern RogueString* str__Source_ScriptLaunch;
 extern RogueString* str__Source_Package_rogu;
 extern RogueString* str__exe;
 extern RogueString* str_source_crc32_txt;
+extern RogueString* str_2_0_5;
 extern RogueString* str_roguec;
 extern RogueString* str____debug___api___mai;
-extern RogueString* str_cl__EHsc__nologo_;
+extern RogueString* str_cl__nologo_;
 extern RogueString* str__c__Fo;
 extern RogueString* str__obj__Fe;
-extern RogueString* str_cc__O3__Wall__fno_st;
+extern RogueString* str_cc__Wall__fno_strict;
 extern RogueString* str__c__o_;
 extern RogueString* str___lm;
 extern RogueString* str_chmod_u_x_;
@@ -14498,7 +14499,7 @@ extern RogueString* str_options;
 extern RogueString* str_home;
 extern RogueString* str_dependency;
 extern RogueString* str_Morlock_v;
-extern RogueString* str_2_0_5;
+extern RogueString* str_2_0_6;
 extern RogueString* str_September_7__2022;
 extern RogueString* str__by_Abe_Pralle;
 extern RogueString* str_USAGE___morlock__com;
@@ -14555,6 +14556,7 @@ extern RogueString* str_cl;
 extern RogueString* str_This_command_must_be;
 extern RogueString* str_installer;
 extern RogueString* str_Open_a_Developer_Com;
+extern RogueString* str___curl__L_windows_mo;
 extern RogueString* str_Open_a_Developer_Com_1;
 extern RogueString* str_Creating_home_folder;
 extern RogueString* str_build;
@@ -14566,6 +14568,7 @@ extern RogueString* str_3__Add_or_edit__Path;
 extern RogueString* str_4__Add_the_Morlock__;
 extern RogueString* str_____2;
 extern RogueString* str_5__Open_a_new_Develo;
+extern RogueString* str____curl__L_windows_m;
 extern RogueString* str_5__Open_a_new_Develo_1;
 extern RogueString* str_Add_the_following_fo_1;
 extern RogueString* str_SHELL;
