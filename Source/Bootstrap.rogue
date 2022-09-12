@@ -169,7 +169,7 @@ class Bootstrap [singleton]
       local install_folder   = package.install_folder
       Morlock.create_folder( install_folder )
       Morlock.header( "Compiling morlock..." )
-      execute( "(cd $ && rogo build)" (File(archive_folder).esc) )
+      execute( "($ && rogo build)" (cd_cmd(archive_folder)) )
 
       package.install_executable
       File( File(package.install_folder).folder/"active_version.txt" ).save( package.version )
@@ -214,7 +214,7 @@ class Bootstrap [singleton]
       local install_folder   = package.install_folder
       Morlock.create_folder( install_folder )
       Morlock.header( "Compiling rogo..." )
-      execute( "(cd $ && make build)" (File(archive_folder).esc) )
+      execute( "($ && make build)" (cd_cmd(archive_folder)))
 
       package.install_executable
 
@@ -265,11 +265,11 @@ class Bootstrap [singleton]
         Morlock.header( "Compiling $ - this may take a while..."(ROGUEC_EXE) )
       endIf
       if (System.is_windows)
-        execute( "cd $ && make build" (File(archive_folder).esc) )
+        execute( "$ && make build" (cd_cmd(archive_folder)) )
         execute( "xcopy /I /S /Q /Y $ $"...
           (File(archive_folder/"Source/Libraries").esc,File(install_folder/"Libraries").esc) )
       else
-        execute( "(cd $ && make build LIBRARIES_FOLDER=$)" (File(archive_folder).esc,File(install_folder).esc) )
+        execute( "($ && make build LIBRARIES_FOLDER=$)" (cd_cmd(archive_folder),File(install_folder).esc) )
       endIf
 
       local dest_filename = which{ System.is_windows:"$.exe"(ROGUEC_EXE) || "$"(ROGUEC_EXE) }

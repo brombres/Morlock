@@ -85,7 +85,7 @@ class Package
       # archive and launches the appropriate commands.
       forEach (folder in File(".").listing(&folders,&ignore_hidden))
         if (File(folder/"Build.rogue").exists)
-          execute "cd $ && rogo build" (File(folder).esc)
+          execute "$ && rogo build" (cd_cmd(folder))
           archive_folder = folder
           return
         endIf
@@ -543,3 +543,10 @@ class Platforms
       return combined
 endClass
 
+routine cd_cmd( folder:String )->String
+  folder = File(folder).abs.esc
+  local cmd = "cd $"(folder)
+  if (not System.is_windows or folder.count < 2 or folder[1] != ':') return cmd # 'cd ...'
+  cmd = "$ && $"(folder.leftmost(2),cmd) # Windows drive letter, e.g. 'C: && cd C:...'
+  return cmd
+endRoutine

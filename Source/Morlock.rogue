@@ -122,7 +122,9 @@ class Morlock [singleton]
            |      #   forEach (folder in File(".",&folders,&ignore_hidden).listing)
            |      #     if (File(folder/"build-file-name").exists)
            |      #       archive_folder = folder  # be sure to set this property
-           |      #       execute "cd $ && <build-command>" (File(folder).esc)
+           |      #       execute "$ && <build-command>" (cd_cmd(folder))
+           |      #       # macOS:   cd_cmd("folder")    -> "cd folder"
+           |      #       # Windows: cd_cmd("C:/folder") -> "C: && cd C:/folder"
            |      #     endIf
            |      #   endForEach
            |
@@ -383,7 +385,7 @@ class Morlock [singleton]
 
         endContingent
 
-        execute( 'cd $ && $ "$"' (File(info.build_folder).esc,File(exe_filepath).esc,script_args), &quiet, &exit_on_error )
+        execute( '$ && $ "$"' (cd_cmd(info.build_folder),File(exe_filepath).esc,script_args), &quiet, &exit_on_error )
       endBlock
 
     method resolve_package( name:String, &allow_local_script )->PackageInfo
@@ -527,4 +529,3 @@ routine execute( cmd:String, &suppress_error, &allow_sudo, &quiet, &exit_on_erro
   if (exit_on_error) System.exit(1)
   throw Error( "Error executing:\n$"(cmd) )
 endRoutine
-

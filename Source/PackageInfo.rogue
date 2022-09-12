@@ -240,7 +240,7 @@ class PackageInfo
                          |        local setup_file = File(folder/"setup.py")
                          |        if (setup_file.exists)
                          |          local src = String(setup_file)
-                         |          execute "cd $ && $ install --user ." (File(folder).esc,pip)
+                         |          execute "$ && $ install --user ." (cd_cmd(folder),pip)
                          |          archive_folder = folder
                          |          return
                          |        endIf
