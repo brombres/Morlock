@@ -29,6 +29,15 @@ class Bootstrap [singleton]
         endIf
       endIf
 
+      # macOS: Ensure Homebrew is installed
+      if (System.is_macos)
+        if (0 != System.run("which brew > /dev/null 2>&1"))
+          local mesg = "Homebrew must be installed. Execute the following and then re-run the Morlock installer:\n"
+          mesg += @|/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          throw Error( mesg )
+        endIf
+      endIf
+
       # Create the Morlock home folder
       if (not File(Morlock.HOME).is_folder)
         print_installing_header
