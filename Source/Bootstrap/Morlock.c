@@ -5919,6 +5919,12 @@ RogueValue RogueValue__create__RogueCharacter(RogueCharacter value_0)
   return _auto_result_0;
 }
 
+RogueValue RogueValue__create__RogueInt32(RogueInt32 value_0)
+{
+  RogueValue _auto_result_0 = (RogueValue) {  ROGUE_VALUE_TYPE_INT32, 0, {.int32=value_0} };
+  return _auto_result_0;
+}
+
 RogueValue RogueValue__create__RogueReal64(RogueReal64 value_0)
 {
   RogueValue _auto_result_0 = (RogueValue) {  ROGUE_VALUE_TYPE_REAL64, 0, {.real64=value_0} };
@@ -21457,7 +21463,7 @@ void RogueMorlock__print_usage( RogueMorlock* THIS )
   _auto_context_block_0_0 = ROGUE_CREATE_OBJECT( RogueString );
   RogueString__init(_auto_context_block_0_0);
   RogueString__print__RogueString( _auto_context_block_0_0, str_Morlock_v );
-  RogueString__print__RogueString( _auto_context_block_0_0, str_2_0_10 );
+  RogueString__print__RogueString( _auto_context_block_0_0, str_2_1 );
   RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), _auto_context_block_0_0 );
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_context_block_1_1 );
   _auto_context_block_1_1 = ROGUE_CREATE_OBJECT( RogueString );
@@ -27520,6 +27526,7 @@ void RoguePackage_gc_trace( void* THIS )
   if ((ref = (RogueObject*)((RoguePackage*)THIS)->archive_filename) && ref->__refcount >= 0) ref->__type->fn_gc_trace(ref);
   if ((ref = (RogueObject*)((RoguePackage*)THIS)->archive_folder) && ref->__refcount >= 0) ref->__type->fn_gc_trace(ref);
   if ((ref = (RogueObject*)(((RoguePackage*)THIS)->releases.object)) && ref->__refcount >= 0) ref->__type->fn_gc_trace(ref);
+  if ((ref = (RogueObject*)(((RoguePackage*)THIS)->assets.object)) && ref->__refcount >= 0) ref->__type->fn_gc_trace(ref);
   if ((ref = (RogueObject*)(((RoguePackage*)THIS)->properties.object)) && ref->__refcount >= 0) ref->__type->fn_gc_trace(ref);
   if ((ref = (RogueObject*)(((RoguePackage*)THIS)->cache.object)) && ref->__refcount >= 0) ref->__type->fn_gc_trace(ref);
   if ((ref = (RogueObject*)((RoguePackage*)THIS)->is_unpacked) && ref->__refcount >= 0) ref->__type->fn_gc_trace(ref);
@@ -27632,10 +27639,10 @@ void RoguePackage__init__RogueValue( RoguePackage* THIS, RogueValue _auto_store_
   (void)_auto_anchored_arg_0_31_35;
   RogueString* _auto_anchored_arg_0_32_36 = 0;
   (void)_auto_anchored_arg_0_32_36;
-  RogueString* _auto_anchored_arg_0_33_37 = 0;
-  (void)_auto_anchored_arg_0_33_37;
-  RogueObject* _auto_anchored_arg_1_34_38 = 0;
-  (void)_auto_anchored_arg_1_34_38;
+  RogueObject* _auto_anchored_arg_1_33_37 = 0;
+  (void)_auto_anchored_arg_1_33_37;
+  RogueValue _auto_anchored_context_34_38 = {0};
+  (void)_auto_anchored_context_34_38;
   RogueValue _auto_anchored_context_35_39 = {0};
   (void)_auto_anchored_context_35_39;
   RogueValue _auto_anchored_context_36_40 = {0};
@@ -27743,17 +27750,14 @@ void RoguePackage__init__RogueValue( RoguePackage* THIS, RogueValue _auto_store_
   cache_file_3 = (RogueFile) {RogueString__operatorDIVIDE__RogueString_RogueString( (_auto_anchored_arg_0_32_36=THIS->package_folder), str_cache_json )};
   if (RogueFile__exists(cache_file_3))
   {
-    _auto_anchored_arg_0_33_37 = 0;
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_33_37 );
-    _auto_anchored_arg_1_34_38 = 0;
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_34_38 );
-    THIS->cache = RogueJSON__parse__RogueString_RoguePrintWriter( (_auto_anchored_arg_0_33_37=RogueFile__to_RogueString(cache_file_3)), (_auto_anchored_arg_1_34_38=0) );
+    _auto_anchored_arg_1_33_37 = 0;
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_33_37 );
+    THIS->cache = RogueJSON__load__RogueFile_RoguePrintWriter( cache_file_3, (_auto_anchored_arg_1_33_37=0) );
   }
-  else
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_context_34_38 );
+  if (!RogueValue__Optionaloperator((_auto_anchored_context_34_38=THIS->cache)))
   {
-    {
-      THIS->cache = RogueValue__table();
-    }
+    THIS->cache = RogueValue__table();
   }
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_context_35_39 );
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_context_36_40 );
@@ -27775,6 +27779,61 @@ void RoguePackage__init__RogueValue( RoguePackage* THIS, RogueValue _auto_store_
   TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
   TypeRogueFile.local_pointer_count = _auto_local_pointer_fp_1;
   TypeRogueValue.local_pointer_count = _auto_local_pointer_fp_2;
+}
+
+RogueString* RoguePackage__archive_folder( RoguePackage* THIS )
+{
+  RogueStringList* folders_0 = 0;
+  (void)folders_0;
+  RogueFile _auto_anchored_context_0_1 = {0};
+  (void)_auto_anchored_context_0_1;
+  RogueOptionalFilePattern _auto_anchored_arg_0_1_2 = {0};
+  (void)_auto_anchored_arg_0_1_2;
+  RogueError* _auto_obj_2_3 = 0;
+  (void)_auto_obj_2_3;
+
+  RogueInt32 _auto_local_pointer_fp_0 = TypeRogueObject.local_pointer_count;
+  RogueInt32 _auto_local_pointer_fp_1 = TypeRogueFile.local_pointer_count;
+  RogueInt32 _auto_local_pointer_fp_2 = TypeRogueOptionalFilePattern.local_pointer_count;
+
+  if (!!THIS->archive_folder)
+  {
+    TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+    TypeRogueFile.local_pointer_count = _auto_local_pointer_fp_1;
+    TypeRogueOptionalFilePattern.local_pointer_count = _auto_local_pointer_fp_2;
+    return THIS->archive_folder;
+  }
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &folders_0 );
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_0_1 );
+  _auto_anchored_arg_0_1_2 = (RogueOptionalFilePattern){0};
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueOptionalFilePattern, &_auto_anchored_arg_0_1_2 );
+  folders_0 = RogueFile__listing__RogueOptionalFilePattern_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical( (_auto_anchored_context_0_1=(RogueFile) {str___23}), (_auto_anchored_arg_0_1_2=(RogueOptionalFilePattern) {0}), 0, 0, 0, 0, 1, 0, 0 );
+  if (folders_0->count == 1)
+  {
+    THIS->archive_folder = RogueStringList__first(folders_0);
+    TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+    TypeRogueFile.local_pointer_count = _auto_local_pointer_fp_1;
+    TypeRogueOptionalFilePattern.local_pointer_count = _auto_local_pointer_fp_2;
+    return THIS->archive_folder;
+  }
+  Rogue_call_stack_push( "", "", -1 );
+  ;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_obj_2_3 );
+  _auto_obj_2_3 = ROGUE_CREATE_OBJECT( RogueError );
+  RogueException__init__RogueString( ((RogueException*)_auto_obj_2_3), str__archive_folder__can );
+  Rogue_exception = (RogueObject*)_auto_obj_2_3;
+  Rogue_call_stack_pop();
+
+  {
+    TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+    TypeRogueFile.local_pointer_count = _auto_local_pointer_fp_1;
+    TypeRogueOptionalFilePattern.local_pointer_count = _auto_local_pointer_fp_2;
+    return 0;
+  }
+  TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+  TypeRogueFile.local_pointer_count = _auto_local_pointer_fp_1;
+  TypeRogueOptionalFilePattern.local_pointer_count = _auto_local_pointer_fp_2;
+  return 0;
 }
 
 void RoguePackage__copy_executable__RogueString_RogueString( RoguePackage* THIS, RogueString* src_filepath_0, RogueString* dest_filename_1 )
@@ -28081,20 +28140,20 @@ void RoguePackage__install_executable__RogueString_RogueString_RogueString_Rogue
   (void)_auto_count_2_10;
   RogueString* _auto_iterator_0_11 = 0;
   (void)_auto_iterator_0_11;
-  RogueString* _auto_anchored_arg_0_0_12 = 0;
-  (void)_auto_anchored_arg_0_0_12;
+  RogueString* _auto_call_0_12 = 0;
+  (void)_auto_call_0_12;
   RogueFile _auto_anchored_context_1_13 = {0};
   (void)_auto_anchored_context_1_13;
-  RogueString* _auto_anchored_arg_0_2_14 = 0;
-  (void)_auto_anchored_arg_0_2_14;
+  RogueString* _auto_call_2_14 = 0;
+  (void)_auto_call_2_14;
   RogueFile _auto_anchored_context_3_15 = {0};
   (void)_auto_anchored_context_3_15;
   RogueString* _auto_anchored_arg_0_4_16 = 0;
   (void)_auto_anchored_arg_0_4_16;
   RogueString* _auto_anchored_arg_1_5_17 = 0;
   (void)_auto_anchored_arg_1_5_17;
-  RogueString* _auto_anchored_arg_0_6_18 = 0;
-  (void)_auto_anchored_arg_0_6_18;
+  RogueString* _auto_call_6_18 = 0;
+  (void)_auto_call_6_18;
   RogueFile _auto_anchored_context_7_19 = {0};
   (void)_auto_anchored_context_7_19;
   RogueOptionalFilePattern _auto_anchored_arg_0_8_20 = {0};
@@ -28142,19 +28201,33 @@ void RoguePackage__install_executable__RogueString_RogueString_RogueString_Rogue
   }
   if (!pattern_6)
   {
-    _auto_anchored_arg_0_0_12 = 0;
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_0_12 );
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_call_0_12 );
+    _auto_call_0_12 = RoguePackage__archive_folder(THIS);
+    if (Rogue_exception)
+    {
+      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+      TypeRogueFile.local_pointer_count = _auto_local_pointer_fp_1;
+      TypeRogueOptionalFilePattern.local_pointer_count = _auto_local_pointer_fp_2;
+      return;
+    }
     RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_1_13 );
-    if (RogueFile__is_folder((_auto_anchored_context_1_13=(RogueFile) {RogueString__operatorDIVIDE__RogueString_RogueString( (_auto_anchored_arg_0_0_12=THIS->archive_folder), str_Build )})))
+    if (RogueFile__is_folder((_auto_anchored_context_1_13=(RogueFile) {RogueString__operatorDIVIDE__RogueString_RogueString( _auto_call_0_12, str_Build )})))
     {
       pattern_6 = str_Build__;
     }
     else
     {
-      _auto_anchored_arg_0_2_14 = 0;
-      RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_2_14 );
+      RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_call_2_14 );
+      _auto_call_2_14 = RoguePackage__archive_folder(THIS);
+      if (Rogue_exception)
+      {
+        TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+        TypeRogueFile.local_pointer_count = _auto_local_pointer_fp_1;
+        TypeRogueOptionalFilePattern.local_pointer_count = _auto_local_pointer_fp_2;
+        return;
+      }
       RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_3_15 );
-      if (RogueFile__is_folder((_auto_anchored_context_3_15=(RogueFile) {RogueString__operatorDIVIDE__RogueString_RogueString( (_auto_anchored_arg_0_2_14=THIS->archive_folder), str_bin )})))
+      if (RogueFile__is_folder((_auto_anchored_context_3_15=(RogueFile) {RogueString__operatorDIVIDE__RogueString_RogueString( _auto_call_2_14, str_bin )})))
       {
         pattern_6 = str_bin__;
       }
@@ -28186,12 +28259,19 @@ void RoguePackage__install_executable__RogueString_RogueString_RogueString_Rogue
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_5_17 );
   pattern_6 = RogueString__replacing__RogueString_RogueString_RogueLogical( pattern_6, str___OS_, (_auto_anchored_arg_1_5_17=RogueSystem__os()), 0 );
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &exe_list_8 );
-  _auto_anchored_arg_0_6_18 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_6_18 );
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_call_6_18 );
+  _auto_call_6_18 = RoguePackage__archive_folder(THIS);
+  if (Rogue_exception)
+  {
+    TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+    TypeRogueFile.local_pointer_count = _auto_local_pointer_fp_1;
+    TypeRogueOptionalFilePattern.local_pointer_count = _auto_local_pointer_fp_2;
+    return;
+  }
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_7_19 );
   _auto_anchored_arg_0_8_20 = (RogueOptionalFilePattern){0};
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueOptionalFilePattern, &_auto_anchored_arg_0_8_20 );
-  exe_list_8 = RogueFile__listing__RogueOptionalFilePattern_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical( (_auto_anchored_context_7_19=(RogueFile) {RogueString__operatorDIVIDE__RogueString_RogueString( (_auto_anchored_arg_0_6_18=THIS->archive_folder), pattern_6 )}), (_auto_anchored_arg_0_8_20=(RogueOptionalFilePattern) {0}), 0, 0, 0, 0, 0, 0, 0 );
+  exe_list_8 = RogueFile__listing__RogueOptionalFilePattern_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical_RogueLogical( (_auto_anchored_context_7_19=(RogueFile) {RogueString__operatorDIVIDE__RogueString_RogueString( _auto_call_6_18, pattern_6 )}), (_auto_anchored_arg_0_8_20=(RogueOptionalFilePattern) {0}), 0, 0, 0, 0, 0, 0, 0 );
   if (exe_list_8->count == 1) goto _auto_satisfied_0;
   if (RogueSystem__is_windows())
   {
@@ -28407,84 +28487,86 @@ void RoguePackage__link( RoguePackage* THIS )
   TypeRogueOptionalFilePattern.local_pointer_count = _auto_local_pointer_fp_2;
 }
 
-void RoguePackage__release__RogueString_RoguePlatforms_RogueString( RoguePackage* THIS, RogueString* url_0, RoguePlatforms* platforms_1, RogueString* version_2 )
+void RoguePackage__release__RogueInt32_RogueString_RoguePlatforms_RogueString( RoguePackage* THIS, RogueInt32 id_0, RogueString* url_1, RoguePlatforms* platforms_2, RogueString* version_3 )
 {
-  RogueString* lc_3 = 0;
-  (void)lc_3;
-  RogueOptionalSpan span_4 = {0};
-  (void)span_4;
-  RogueString* _auto_context_block_0_5 = 0;
-  (void)_auto_context_block_0_5;
-  RogueInt32 separator_index_6 = 0;
-  (void)separator_index_6;
-  RogueCharacter separator_7 = 0;
-  (void)separator_7;
-  RogueString* version_8 = 0;
-  (void)version_8;
-  RogueLogical found_numbers_9 = 0;
-  (void)found_numbers_9;
-  RogueInt32 _auto_index_1_10 = 0;
-  (void)_auto_index_1_10;
-  RogueInt32 _auto_count_2_11 = 0;
-  (void)_auto_count_2_11;
-  RogueCharacter ch_12 = 0;
-  (void)ch_12;
-  RogueValue _auto_context_block_4_13 = {0};
-  (void)_auto_context_block_4_13;
-  RogueLogical _auto_condition_0_14 = 0;
-  (void)_auto_condition_0_14;
-  RogueValue _auto_anchored_arg_1_1_15 = {0};
-  (void)_auto_anchored_arg_1_1_15;
-  RogueValue _auto_anchored_arg_1_2_16 = {0};
-  (void)_auto_anchored_arg_1_2_16;
-  RogueString* _auto_anchored_arg_0_3_17 = 0;
-  (void)_auto_anchored_arg_0_3_17;
-  RogueValue _auto_anchored_arg_1_4_18 = {0};
-  (void)_auto_anchored_arg_1_4_18;
-  RogueString* _auto_anchored_arg_0_5_19 = 0;
-  (void)_auto_anchored_arg_0_5_19;
-  RogueValue _auto_anchored_arg_1_6_20 = {0};
-  (void)_auto_anchored_arg_1_6_20;
-  RogueValue _auto_anchored_context_7_21 = {0};
-  (void)_auto_anchored_context_7_21;
+  RogueString* lc_4 = 0;
+  (void)lc_4;
+  RogueOptionalSpan span_5 = {0};
+  (void)span_5;
+  RogueString* _auto_context_block_0_6 = 0;
+  (void)_auto_context_block_0_6;
+  RogueInt32 separator_index_7 = 0;
+  (void)separator_index_7;
+  RogueCharacter separator_8 = 0;
+  (void)separator_8;
+  RogueString* version_9 = 0;
+  (void)version_9;
+  RogueLogical found_numbers_10 = 0;
+  (void)found_numbers_10;
+  RogueInt32 _auto_index_1_11 = 0;
+  (void)_auto_index_1_11;
+  RogueInt32 _auto_count_2_12 = 0;
+  (void)_auto_count_2_12;
+  RogueCharacter ch_13 = 0;
+  (void)ch_13;
+  RogueValue _auto_context_block_4_14 = {0};
+  (void)_auto_context_block_4_14;
+  RogueLogical _auto_condition_0_15 = 0;
+  (void)_auto_condition_0_15;
+  RogueValue _auto_anchored_arg_1_1_16 = {0};
+  (void)_auto_anchored_arg_1_1_16;
+  RogueValue _auto_anchored_arg_1_2_17 = {0};
+  (void)_auto_anchored_arg_1_2_17;
+  RogueValue _auto_anchored_arg_1_3_18 = {0};
+  (void)_auto_anchored_arg_1_3_18;
+  RogueString* _auto_anchored_arg_0_4_19 = 0;
+  (void)_auto_anchored_arg_0_4_19;
+  RogueValue _auto_anchored_arg_1_5_20 = {0};
+  (void)_auto_anchored_arg_1_5_20;
+  RogueString* _auto_anchored_arg_0_6_21 = 0;
+  (void)_auto_anchored_arg_0_6_21;
+  RogueValue _auto_anchored_arg_1_7_22 = {0};
+  (void)_auto_anchored_arg_1_7_22;
+  RogueValue _auto_anchored_context_8_23 = {0};
+  (void)_auto_anchored_context_8_23;
 
   RogueInt32 _auto_local_pointer_fp_0 = TypeRogueObject.local_pointer_count;
   RogueInt32 _auto_local_pointer_fp_1 = TypeRogueValue.local_pointer_count;
 
-  if (!platforms_1)
+  if (!platforms_2)
   {
-    if (RogueString__ends_with__RogueString_RogueLogical( url_0, str__zip, 1 ) || RogueString__contains__RogueString_RogueLogical( url_0, str_zipball, 1 ))
+    if (RogueString__ends_with__RogueString_RogueLogical( url_1, str__zip, 1 ) || RogueString__contains__RogueString_RogueLogical( url_1, str_zipball, 1 ))
     {
-      platforms_1 = RoguePlatforms__windows();
+      platforms_2 = RoguePlatforms__windows();
     }
     else
     {
       {
-        platforms_1 = RoguePlatforms__all();
+        platforms_2 = RoguePlatforms__all();
       }
     }
   }
-  if (!version_2)
+  if (!version_3)
   {
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &lc_3 );
-    lc_3 = RogueString__to_lowercase(url_0);
-    span_4 = RogueString__locate_pattern__RogueString_RogueInt32_RogueLogical( lc_3, str_v__I_, 0, 0 );
-    if (span_4.exists) goto _auto_satisfied_0;
-    span_4 = RogueString__locate_pattern__RogueString_RogueInt32_RogueLogical( lc_3, str___I___I_, 0, 0 );
-    if (span_4.exists) goto _auto_satisfied_0;
-    span_4 = RogueString__locate_pattern__RogueString_RogueInt32_RogueLogical( lc_3, str___I___I__1, 0, 0 );
-    if (span_4.exists) goto _auto_satisfied_0;
-    span_4 = RogueString__locate_pattern__RogueString_RogueInt32_RogueLogical( lc_3, str___I_, 0, 0 );
-    if (span_4.exists) goto _auto_satisfied_0;
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_context_block_0_5 );
-    _auto_context_block_0_5 = ROGUE_CREATE_OBJECT( RogueString );
-    RogueString__init(_auto_context_block_0_5);
-    RogueString__print__RogueString( _auto_context_block_0_5, str_Cannot_determine_ver );
-    RogueString__print__RogueString( _auto_context_block_0_5, url_0 );
-    RogueString__print__RogueString( _auto_context_block_0_5, str____15 );
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &lc_4 );
+    lc_4 = RogueString__to_lowercase(url_1);
+    span_5 = RogueString__locate_pattern__RogueString_RogueInt32_RogueLogical( lc_4, str_v__I_, 0, 0 );
+    if (span_5.exists) goto _auto_satisfied_0;
+    span_5 = RogueString__locate_pattern__RogueString_RogueInt32_RogueLogical( lc_4, str___I___I_, 0, 0 );
+    if (span_5.exists) goto _auto_satisfied_0;
+    span_5 = RogueString__locate_pattern__RogueString_RogueInt32_RogueLogical( lc_4, str___I___I__1, 0, 0 );
+    if (span_5.exists) goto _auto_satisfied_0;
+    span_5 = RogueString__locate_pattern__RogueString_RogueInt32_RogueLogical( lc_4, str___I_, 0, 0 );
+    if (span_5.exists) goto _auto_satisfied_0;
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_context_block_0_6 );
+    _auto_context_block_0_6 = ROGUE_CREATE_OBJECT( RogueString );
+    RogueString__init(_auto_context_block_0_6);
+    RogueString__print__RogueString( _auto_context_block_0_6, str_Cannot_determine_ver );
+    RogueString__print__RogueString( _auto_context_block_0_6, url_1 );
+    RogueString__print__RogueString( _auto_context_block_0_6, str____15 );
     Rogue_call_stack_push( "", "", -1 );
     ;
-    Rogue_exception = (RogueObject*)RoguePackage__error__RogueString( THIS, _auto_context_block_0_5 );
+    Rogue_exception = (RogueObject*)RoguePackage__error__RogueString( THIS, _auto_context_block_0_6 );
     Rogue_call_stack_pop();
 
     {
@@ -28493,69 +28575,72 @@ void RoguePackage__release__RogueString_RoguePlatforms_RogueString( RoguePackage
       return;
     }
     _auto_satisfied_0:;
-    version_2 = RogueString__substring__RogueInt32( url_0, span_4.value.index );
-    separator_index_6 = (span_4.value.index + span_4.value.count);
-    separator_7 = ((separator_index_6 < RogueString__count(url_0)) ? RogueString__get__RogueInt32( url_0, separator_index_6 ) : '.');
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &version_8 );
-    version_8 = ROGUE_CREATE_OBJECT( RogueString );
-    RogueString__init(version_8);
-    found_numbers_9 = 0;
-    _auto_index_1_10 = 0;
-    _auto_count_2_11 = 0;
-    _auto_count_2_11 = RogueString__count(version_8);
-    ch_12 = 0;
-    _auto_condition_0_14 = _auto_index_1_10 < _auto_count_2_11;
+    version_3 = RogueString__substring__RogueInt32( url_1, span_5.value.index );
+    separator_index_7 = (span_5.value.index + span_5.value.count);
+    separator_8 = ((separator_index_7 < RogueString__count(url_1)) ? RogueString__get__RogueInt32( url_1, separator_index_7 ) : '.');
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &version_9 );
+    version_9 = ROGUE_CREATE_OBJECT( RogueString );
+    RogueString__init(version_9);
+    found_numbers_10 = 0;
+    _auto_index_1_11 = 0;
+    _auto_count_2_12 = 0;
+    _auto_count_2_12 = RogueString__count(version_9);
+    ch_13 = 0;
+    _auto_condition_0_15 = _auto_index_1_11 < _auto_count_2_12;
     goto _auto_loop_condition_1;
     do
     {
-      ch_12 = RogueString__get__RogueInt32( version_8, _auto_index_1_10 );
-      if (ch_12 == separator_7)
+      ch_13 = RogueString__get__RogueInt32( version_9, _auto_index_1_11 );
+      if (ch_13 == separator_8)
       {
-        RogueString__print__RogueString( version_8, str___23 );
+        RogueString__print__RogueString( version_9, str___23 );
       }
       else
       {
-        if (RogueCharacter__is_number__RogueInt32( ch_12, 10 ))
+        if (RogueCharacter__is_number__RogueInt32( ch_13, 10 ))
         {
-          RogueString__print__RogueCharacter( version_8, ch_12 );
-          found_numbers_9 = 1;
+          RogueString__print__RogueCharacter( version_9, ch_13 );
+          found_numbers_10 = 1;
         }
         else
         {
-          if (found_numbers_9)
+          if (found_numbers_10)
           {
             goto _auto_escape_2;
           }
         }
       }
-      ++_auto_index_1_10;
-      _auto_condition_0_14 = _auto_index_1_10 < _auto_count_2_11;
+      ++_auto_index_1_11;
+      _auto_condition_0_15 = _auto_index_1_11 < _auto_count_2_12;
       _auto_loop_condition_1:;
     }
-    while (_auto_condition_0_14);
+    while (_auto_condition_0_15);
     _auto_escape_2:;
-    version_8 = RogueString__without_suffix__RogueCharacter( version_8, '.' );
+    version_9 = RogueString__without_suffix__RogueCharacter( version_9, '.' );
   }
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_context_block_4_13 );
-  _auto_context_block_4_13 = RogueValue__table();
-  _auto_anchored_arg_1_1_15 = (RogueValue){0};
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_arg_1_1_15 );
-  RogueValue__set__RogueString_RogueValue( _auto_context_block_4_13, str_version, (_auto_anchored_arg_1_1_15=RogueValue__create__RogueString( version_2 )) );
-  _auto_anchored_arg_1_2_16 = (RogueValue){0};
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_arg_1_2_16 );
-  RogueValue__set__RogueString_RogueValue( _auto_context_block_4_13, str_url, (_auto_anchored_arg_1_2_16=RogueValue__create__RogueString( url_0 )) );
-  _auto_anchored_arg_0_3_17 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_3_17 );
-  _auto_anchored_arg_1_4_18 = (RogueValue){0};
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_arg_1_4_18 );
-  RogueValue__set__RogueString_RogueValue( _auto_context_block_4_13, str_platforms, (_auto_anchored_arg_1_4_18=RogueValue__create__RogueString( (_auto_anchored_arg_0_3_17=RoguePlatforms__to_RogueString(platforms_1)) )) );
-  _auto_anchored_arg_0_5_19 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_5_19 );
-  _auto_anchored_arg_1_6_20 = (RogueValue){0};
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_arg_1_6_20 );
-  RogueValue__set__RogueString_RogueValue( _auto_context_block_4_13, str_filename, (_auto_anchored_arg_1_6_20=RogueValue__create__RogueString( (_auto_anchored_arg_0_5_19=RoguePackage__filename_for_url__RogueString( THIS, url_0 )) )) );
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_context_7_21 );
-  RogueValue__add__RogueValue( (_auto_anchored_context_7_21=THIS->releases), _auto_context_block_4_13 );
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_context_block_4_14 );
+  _auto_context_block_4_14 = RogueValue__table();
+  _auto_anchored_arg_1_1_16 = (RogueValue){0};
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_arg_1_1_16 );
+  RogueValue__set__RogueString_RogueValue( _auto_context_block_4_14, str_id, (_auto_anchored_arg_1_1_16=RogueValue__create__RogueInt32( id_0 )) );
+  _auto_anchored_arg_1_2_17 = (RogueValue){0};
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_arg_1_2_17 );
+  RogueValue__set__RogueString_RogueValue( _auto_context_block_4_14, str_version, (_auto_anchored_arg_1_2_17=RogueValue__create__RogueString( version_3 )) );
+  _auto_anchored_arg_1_3_18 = (RogueValue){0};
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_arg_1_3_18 );
+  RogueValue__set__RogueString_RogueValue( _auto_context_block_4_14, str_url, (_auto_anchored_arg_1_3_18=RogueValue__create__RogueString( url_1 )) );
+  _auto_anchored_arg_0_4_19 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_4_19 );
+  _auto_anchored_arg_1_5_20 = (RogueValue){0};
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_arg_1_5_20 );
+  RogueValue__set__RogueString_RogueValue( _auto_context_block_4_14, str_platforms, (_auto_anchored_arg_1_5_20=RogueValue__create__RogueString( (_auto_anchored_arg_0_4_19=RoguePlatforms__to_RogueString(platforms_2)) )) );
+  _auto_anchored_arg_0_6_21 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_6_21 );
+  _auto_anchored_arg_1_7_22 = (RogueValue){0};
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_arg_1_7_22 );
+  RogueValue__set__RogueString_RogueValue( _auto_context_block_4_14, str_filename, (_auto_anchored_arg_1_7_22=RogueValue__create__RogueString( (_auto_anchored_arg_0_6_21=RoguePackage__filename_for_url__RogueString( THIS, url_1 )) )) );
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_context_8_23 );
+  RogueValue__add__RogueValue( (_auto_anchored_context_8_23=THIS->releases), _auto_context_block_4_14 );
   TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
   TypeRogueValue.local_pointer_count = _auto_local_pointer_fp_1;
 }
@@ -28601,68 +28686,100 @@ void RoguePackage__scan_repo_releases__RogueString_RogueString_RoguePlatforms( R
   (void)cmd_6;
   RogueProcessResult* process_7 = 0;
   (void)process_7;
-  RogueInt32 _auto_index_1_8 = 0;
-  (void)_auto_index_1_8;
-  RogueInt32 _auto_count_2_9 = 0;
-  (void)_auto_count_2_9;
-  RogueValue release_info_10 = {0};
-  (void)release_info_10;
-  RogueVersionNumber v_11 = {0};
-  (void)v_11;
-  RogueValue _auto_anchored_context_0_12 = {0};
-  (void)_auto_anchored_context_0_12;
-  RogueValue _auto_anchored_context_1_13 = {0};
-  (void)_auto_anchored_context_1_13;
-  RogueValue _auto_anchored_context_2_14 = {0};
-  (void)_auto_anchored_context_2_14;
-  RogueString* _auto_anchored_arg_0_3_15 = 0;
-  (void)_auto_anchored_arg_0_3_15;
-  RogueString* _auto_anchored_arg_0_4_16 = 0;
-  (void)_auto_anchored_arg_0_4_16;
-  RogueError* _auto_obj_5_17 = 0;
-  (void)_auto_obj_5_17;
-  RogueString* _auto_anchored_arg_0_6_18 = 0;
-  (void)_auto_anchored_arg_0_6_18;
-  RogueString* _auto_anchored_arg_0_7_19 = 0;
-  (void)_auto_anchored_arg_0_7_19;
-  RogueObject* _auto_anchored_arg_1_8_20 = 0;
-  (void)_auto_anchored_arg_1_8_20;
-  RogueValue _auto_anchored_context_9_21 = {0};
-  (void)_auto_anchored_context_9_21;
-  RogueLogical _auto_condition_10_22 = 0;
-  (void)_auto_condition_10_22;
-  RogueValue _auto_anchored_context_11_23 = {0};
-  (void)_auto_anchored_context_11_23;
-  RogueString* _auto_anchored_context_12_24 = 0;
-  (void)_auto_anchored_context_12_24;
-  RogueString* _auto_anchored_arg_0_13_25 = 0;
-  (void)_auto_anchored_arg_0_13_25;
-  RogueString* _auto_anchored_arg_1_14_26 = 0;
-  (void)_auto_anchored_arg_1_14_26;
-  RogueValue _auto_anchored_context_15_27 = {0};
-  (void)_auto_anchored_context_15_27;
-  RogueString* _auto_anchored_arg_0_16_28 = 0;
-  (void)_auto_anchored_arg_0_16_28;
-  RoguePlatforms* _auto_anchored_arg_1_17_29 = 0;
-  (void)_auto_anchored_arg_1_17_29;
-  RogueString* _auto_anchored_arg_2_18_30 = 0;
-  (void)_auto_anchored_arg_2_18_30;
-  RogueValue _auto_anchored_context_19_31 = {0};
-  (void)_auto_anchored_context_19_31;
-  RoguePlatforms* _auto_anchored_context_20_32 = 0;
-  (void)_auto_anchored_context_20_32;
-  RoguePlatforms* _auto_anchored_arg_0_21_33 = 0;
-  (void)_auto_anchored_arg_0_21_33;
-  RogueString* _auto_anchored_arg_0_22_34 = 0;
-  (void)_auto_anchored_arg_0_22_34;
-  RoguePlatforms* _auto_anchored_arg_1_23_35 = 0;
-  (void)_auto_anchored_arg_1_23_35;
-  RogueString* _auto_anchored_arg_2_24_36 = 0;
-  (void)_auto_anchored_arg_2_24_36;
-  RogueString* _auto_anchored_arg_0_25_37 = 0;
-  (void)_auto_anchored_arg_0_25_37;
-  RogueString* _auto_anchored_arg_1_26_38 = 0;
-  (void)_auto_anchored_arg_1_26_38;
+  RogueValue _auto_context_block_1_8 = {0};
+  (void)_auto_context_block_1_8;
+  RogueString* _auto_context_block_2_9 = 0;
+  (void)_auto_context_block_2_9;
+  RogueString* url_10 = 0;
+  (void)url_10;
+  RogueString* cmd_11 = 0;
+  (void)cmd_11;
+  RogueProcessResult* process_12 = 0;
+  (void)process_12;
+  RogueInt32 _auto_index_3_13 = 0;
+  (void)_auto_index_3_13;
+  RogueInt32 _auto_count_4_14 = 0;
+  (void)_auto_count_4_14;
+  RogueValue release_info_15 = {0};
+  (void)release_info_15;
+  RogueVersionNumber v_16 = {0};
+  (void)v_16;
+  RogueValue _auto_anchored_context_0_17 = {0};
+  (void)_auto_anchored_context_0_17;
+  RogueValue _auto_anchored_context_1_18 = {0};
+  (void)_auto_anchored_context_1_18;
+  RogueValue _auto_anchored_context_2_19 = {0};
+  (void)_auto_anchored_context_2_19;
+  RogueString* _auto_anchored_arg_0_3_20 = 0;
+  (void)_auto_anchored_arg_0_3_20;
+  RogueString* _auto_anchored_arg_0_4_21 = 0;
+  (void)_auto_anchored_arg_0_4_21;
+  RogueError* _auto_obj_5_22 = 0;
+  (void)_auto_obj_5_22;
+  RogueString* _auto_anchored_arg_0_6_23 = 0;
+  (void)_auto_anchored_arg_0_6_23;
+  RogueString* _auto_anchored_arg_0_7_24 = 0;
+  (void)_auto_anchored_arg_0_7_24;
+  RogueObject* _auto_anchored_arg_1_8_25 = 0;
+  (void)_auto_anchored_arg_1_8_25;
+  RogueValue _auto_anchored_arg_0_9_26 = {0};
+  (void)_auto_anchored_arg_0_9_26;
+  RogueValue _auto_anchored_context_10_27 = {0};
+  (void)_auto_anchored_context_10_27;
+  RogueValue _auto_anchored_context_11_28 = {0};
+  (void)_auto_anchored_context_11_28;
+  RogueString* _auto_anchored_arg_0_12_29 = 0;
+  (void)_auto_anchored_arg_0_12_29;
+  RogueString* _auto_anchored_arg_0_13_30 = 0;
+  (void)_auto_anchored_arg_0_13_30;
+  RogueError* _auto_obj_14_31 = 0;
+  (void)_auto_obj_14_31;
+  RogueString* _auto_anchored_arg_0_15_32 = 0;
+  (void)_auto_anchored_arg_0_15_32;
+  RogueString* _auto_anchored_arg_0_16_33 = 0;
+  (void)_auto_anchored_arg_0_16_33;
+  RogueObject* _auto_anchored_arg_1_17_34 = 0;
+  (void)_auto_anchored_arg_1_17_34;
+  RogueValue _auto_anchored_context_18_35 = {0};
+  (void)_auto_anchored_context_18_35;
+  RogueLogical _auto_condition_19_36 = 0;
+  (void)_auto_condition_19_36;
+  RogueValue _auto_anchored_context_20_37 = {0};
+  (void)_auto_anchored_context_20_37;
+  RogueString* _auto_anchored_context_21_38 = 0;
+  (void)_auto_anchored_context_21_38;
+  RogueString* _auto_anchored_arg_0_22_39 = 0;
+  (void)_auto_anchored_arg_0_22_39;
+  RogueString* _auto_anchored_arg_1_23_40 = 0;
+  (void)_auto_anchored_arg_1_23_40;
+  RogueValue _auto_anchored_context_24_41 = {0};
+  (void)_auto_anchored_context_24_41;
+  RogueValue _auto_anchored_context_25_42 = {0};
+  (void)_auto_anchored_context_25_42;
+  RogueString* _auto_anchored_arg_1_26_43 = 0;
+  (void)_auto_anchored_arg_1_26_43;
+  RoguePlatforms* _auto_anchored_arg_2_27_44 = 0;
+  (void)_auto_anchored_arg_2_27_44;
+  RogueString* _auto_anchored_arg_3_28_45 = 0;
+  (void)_auto_anchored_arg_3_28_45;
+  RogueValue _auto_anchored_context_29_46 = {0};
+  (void)_auto_anchored_context_29_46;
+  RogueValue _auto_anchored_context_30_47 = {0};
+  (void)_auto_anchored_context_30_47;
+  RoguePlatforms* _auto_anchored_context_31_48 = 0;
+  (void)_auto_anchored_context_31_48;
+  RoguePlatforms* _auto_anchored_arg_0_32_49 = 0;
+  (void)_auto_anchored_arg_0_32_49;
+  RogueString* _auto_anchored_arg_1_33_50 = 0;
+  (void)_auto_anchored_arg_1_33_50;
+  RoguePlatforms* _auto_anchored_arg_2_34_51 = 0;
+  (void)_auto_anchored_arg_2_34_51;
+  RogueString* _auto_anchored_arg_3_35_52 = 0;
+  (void)_auto_anchored_arg_3_35_52;
+  RogueString* _auto_anchored_arg_0_36_53 = 0;
+  (void)_auto_anchored_arg_0_36_53;
+  RogueString* _auto_anchored_arg_1_37_54 = 0;
+  (void)_auto_anchored_arg_1_37_54;
 
   RogueInt32 _auto_local_pointer_fp_0 = TypeRogueValue.local_pointer_count;
   RogueInt32 _auto_local_pointer_fp_1 = TypeRogueObject.local_pointer_count;
@@ -28670,28 +28787,29 @@ void RoguePackage__scan_repo_releases__RogueString_RogueString_RoguePlatforms( R
 
   info_3 = (RogueValue){0};
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &info_3 );
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_context_0_12 );
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_context_1_13 );
-  if (RogueValue__Optionaloperator((_auto_anchored_context_1_13=RogueValue__get__RogueString( (_auto_anchored_context_0_12=THIS->cache), str_repo_releases ))))
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_context_0_17 );
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_context_1_18 );
+  if (RogueValue__Optionaloperator((_auto_anchored_context_1_18=RogueValue__get__RogueString( (_auto_anchored_context_0_17=THIS->cache), str_repo_releases ))))
   {
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_context_2_14 );
-    info_3 = RogueValue__get__RogueString( (_auto_anchored_context_2_14=THIS->cache), str_repo_releases );
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_context_2_19 );
+    info_3 = RogueValue__get__RogueString( (_auto_anchored_context_2_19=THIS->cache), str_repo_releases );
   }
   else
   {
+    if (!max_version_1)
     {
       RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_context_block_0_4 );
       _auto_context_block_0_4 = ROGUE_CREATE_OBJECT( RogueString );
       RogueString__init(_auto_context_block_0_4);
       RogueString__print__RogueString( _auto_context_block_0_4, str_https___api_github_c );
-      _auto_anchored_arg_0_3_15 = 0;
-      RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_3_15 );
-      RogueString__print__RogueString( _auto_context_block_0_4, (_auto_anchored_arg_0_3_15=THIS->provider) );
+      _auto_anchored_arg_0_3_20 = 0;
+      RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_3_20 );
+      RogueString__print__RogueString( _auto_context_block_0_4, (_auto_anchored_arg_0_3_20=THIS->provider) );
       RogueString__print__RogueString( _auto_context_block_0_4, str___24 );
-      _auto_anchored_arg_0_4_16 = 0;
-      RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_4_16 );
-      RogueString__print__RogueString( _auto_context_block_0_4, (_auto_anchored_arg_0_4_16=THIS->repo) );
-      RogueString__print__RogueString( _auto_context_block_0_4, str__releases );
+      _auto_anchored_arg_0_4_21 = 0;
+      RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_4_21 );
+      RogueString__print__RogueString( _auto_context_block_0_4, (_auto_anchored_arg_0_4_21=THIS->repo) );
+      RogueString__print__RogueString( _auto_context_block_0_4, str__releases_latest );
       RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &url_5 );
       url_5 = _auto_context_block_0_4;
       RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &cmd_6 );
@@ -28702,12 +28820,12 @@ void RoguePackage__scan_repo_releases__RogueString_RogueString_RoguePlatforms( R
       {
         Rogue_call_stack_push( "", "", -1 );
         ;
-        RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_obj_5_17 );
-        _auto_obj_5_17 = ROGUE_CREATE_OBJECT( RogueError );
-        _auto_anchored_arg_0_6_18 = 0;
-        RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_6_18 );
-        RogueException__init__RogueString( ((RogueException*)_auto_obj_5_17), (_auto_anchored_arg_0_6_18=RogueString__operatorPLUS__RogueString_RogueString( str_Download_failed__, url_5 )) );
-        Rogue_exception = (RogueObject*)_auto_obj_5_17;
+        RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_obj_5_22 );
+        _auto_obj_5_22 = ROGUE_CREATE_OBJECT( RogueError );
+        _auto_anchored_arg_0_6_23 = 0;
+        RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_6_23 );
+        RogueException__init__RogueString( ((RogueException*)_auto_obj_5_22), (_auto_anchored_arg_0_6_23=RogueString__operatorPLUS__RogueString_RogueString( str_Download_failed__, url_5 )) );
+        Rogue_exception = (RogueObject*)_auto_obj_5_22;
         Rogue_call_stack_pop();
 
         {
@@ -28717,60 +28835,118 @@ void RoguePackage__scan_repo_releases__RogueString_RogueString_RoguePlatforms( R
           return;
         }
       }
-      _auto_anchored_arg_0_7_19 = 0;
-      RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_7_19 );
-      _auto_anchored_arg_1_8_20 = 0;
-      RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_8_20 );
-      info_3 = RogueJSON__parse__RogueString_RoguePrintWriter( (_auto_anchored_arg_0_7_19=RogueProcessResult__output_string(process_7)), (_auto_anchored_arg_1_8_20=0) );
-      RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_context_9_21 );
-      RogueValue__set__RogueString_RogueValue( (_auto_anchored_context_9_21=THIS->cache), str_repo_releases, info_3 );
+      RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_context_block_1_8 );
+      _auto_context_block_1_8 = RogueValue__list();
+      _auto_anchored_arg_0_7_24 = 0;
+      RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_7_24 );
+      _auto_anchored_arg_1_8_25 = 0;
+      RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_8_25 );
+      _auto_anchored_arg_0_9_26 = (RogueValue){0};
+      RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_arg_0_9_26 );
+      RogueValue__add__RogueValue( _auto_context_block_1_8, (_auto_anchored_arg_0_9_26=RogueJSON__parse__RogueString_RoguePrintWriter( (_auto_anchored_arg_0_7_24=RogueProcessResult__output_string(process_7)), (_auto_anchored_arg_1_8_25=0) )) );
+      info_3 = _auto_context_block_1_8;
+      RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_context_10_27 );
+      THIS->assets = RogueValue__get__RogueString( (_auto_anchored_context_10_27=RogueValue__first(info_3)), str_assets );
+      RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_context_11_28 );
+      RogueValue__set__RogueString_RogueValue( (_auto_anchored_context_11_28=THIS->cache), str_repo_releases, info_3 );
       RoguePackage__save_cache(THIS);
-    }
-  }
-  _auto_index_1_8 = 0;
-  _auto_count_2_9 = 0;
-  _auto_count_2_9 = RogueValue__count(info_3);
-  release_info_10 = (RogueValue){0};
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &release_info_10 );
-  _auto_condition_10_22 = _auto_index_1_8 < _auto_count_2_9;
-  goto _auto_loop_condition_0;
-  do
-  {
-    release_info_10 = RogueValue__get__RogueInt32( info_3, _auto_index_1_8 );
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueVersionNumber, &v_11 );
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_context_11_23 );
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_context_12_24 );
-    v_11 = (RogueVersionNumber) {RogueString__after_any__RogueString_RogueLogical( (_auto_anchored_context_12_24=RogueValue__to_RogueString((_auto_anchored_context_11_23=RogueValue__get__RogueString( release_info_10, str_tag_name )))), str_v, 0 )};
-    if (!!THIS->specified_version)
-    {
-      _auto_anchored_arg_0_13_25 = 0;
-      RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_13_25 );
-      _auto_anchored_arg_1_14_26 = 0;
-      RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_14_26 );
-      if (RogueString__operator____RogueString_RogueString( (_auto_anchored_arg_0_13_25=RogueVersionNumber__to_RogueString(v_11)), (_auto_anchored_arg_1_14_26=THIS->specified_version) )) goto _auto_satisfied_1;
     }
     else
     {
       {
-        if ((!!min_version_0) && (RogueVersionNumber__operatorLTGT__RogueString( v_11, min_version_0 ) < 0))
+        RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_context_block_2_9 );
+        _auto_context_block_2_9 = ROGUE_CREATE_OBJECT( RogueString );
+        RogueString__init(_auto_context_block_2_9);
+        RogueString__print__RogueString( _auto_context_block_2_9, str_https___api_github_c );
+        _auto_anchored_arg_0_12_29 = 0;
+        RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_12_29 );
+        RogueString__print__RogueString( _auto_context_block_2_9, (_auto_anchored_arg_0_12_29=THIS->provider) );
+        RogueString__print__RogueString( _auto_context_block_2_9, str___24 );
+        _auto_anchored_arg_0_13_30 = 0;
+        RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_13_30 );
+        RogueString__print__RogueString( _auto_context_block_2_9, (_auto_anchored_arg_0_13_30=THIS->repo) );
+        RogueString__print__RogueString( _auto_context_block_2_9, str__releases );
+        RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &url_10 );
+        url_10 = _auto_context_block_2_9;
+        RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &cmd_11 );
+        cmd_11 = RogueString__operatorPLUS__RogueString_RogueString( str_curl__fsSL__H__Accep, url_10 );
+        RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &process_12 );
+        process_12 = RogueProcess__run__RogueString_RogueLogical_RogueLogical( cmd_11, 0, 0 );
+        if (!RogueProcessResult__success(process_12))
         {
-          goto _auto_upkeep_3;
+          Rogue_call_stack_push( "", "", -1 );
+          ;
+          RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_obj_14_31 );
+          _auto_obj_14_31 = ROGUE_CREATE_OBJECT( RogueError );
+          _auto_anchored_arg_0_15_32 = 0;
+          RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_15_32 );
+          RogueException__init__RogueString( ((RogueException*)_auto_obj_14_31), (_auto_anchored_arg_0_15_32=RogueString__operatorPLUS__RogueString_RogueString( str_Download_failed__, url_10 )) );
+          Rogue_exception = (RogueObject*)_auto_obj_14_31;
+          Rogue_call_stack_pop();
+
+          {
+            TypeRogueValue.local_pointer_count = _auto_local_pointer_fp_0;
+            TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_1;
+            TypeRogueVersionNumber.local_pointer_count = _auto_local_pointer_fp_2;
+            return;
+          }
         }
-        if ((!!max_version_1) && (RogueVersionNumber__operatorLTGT__RogueString( v_11, max_version_1 ) > 0))
+        _auto_anchored_arg_0_16_33 = 0;
+        RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_16_33 );
+        _auto_anchored_arg_1_17_34 = 0;
+        RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_17_34 );
+        info_3 = RogueJSON__parse__RogueString_RoguePrintWriter( (_auto_anchored_arg_0_16_33=RogueProcessResult__output_string(process_12)), (_auto_anchored_arg_1_17_34=0) );
+        RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_context_18_35 );
+        RogueValue__set__RogueString_RogueValue( (_auto_anchored_context_18_35=THIS->cache), str_repo_releases, info_3 );
+        RoguePackage__save_cache(THIS);
+      }
+    }
+  }
+  _auto_index_3_13 = 0;
+  _auto_count_4_14 = 0;
+  _auto_count_4_14 = RogueValue__count(info_3);
+  release_info_15 = (RogueValue){0};
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &release_info_15 );
+  _auto_condition_19_36 = _auto_index_3_13 < _auto_count_4_14;
+  goto _auto_loop_condition_0;
+  do
+  {
+    release_info_15 = RogueValue__get__RogueInt32( info_3, _auto_index_3_13 );
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueVersionNumber, &v_16 );
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_context_20_37 );
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_context_21_38 );
+    v_16 = (RogueVersionNumber) {RogueString__after_any__RogueString_RogueLogical( (_auto_anchored_context_21_38=RogueValue__to_RogueString((_auto_anchored_context_20_37=RogueValue__get__RogueString( release_info_15, str_tag_name )))), str_v, 0 )};
+    if (!!THIS->specified_version)
+    {
+      _auto_anchored_arg_0_22_39 = 0;
+      RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_22_39 );
+      _auto_anchored_arg_1_23_40 = 0;
+      RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_23_40 );
+      if (RogueString__operator____RogueString_RogueString( (_auto_anchored_arg_0_22_39=RogueVersionNumber__to_RogueString(v_16)), (_auto_anchored_arg_1_23_40=THIS->specified_version) )) goto _auto_satisfied_1;
+    }
+    else
+    {
+      {
+        if ((!!min_version_0) && (RogueVersionNumber__operatorLTGT__RogueString( v_16, min_version_0 ) < 0))
         {
-          goto _auto_upkeep_3;
+          goto _auto_upkeep_5;
+        }
+        if ((!!max_version_1) && (RogueVersionNumber__operatorLTGT__RogueString( v_16, max_version_1 ) > 0))
+        {
+          goto _auto_upkeep_5;
         }
       }
     }
     _auto_satisfied_1:;
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_context_15_27 );
-    _auto_anchored_arg_0_16_28 = 0;
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_16_28 );
-    _auto_anchored_arg_1_17_29 = 0;
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_17_29 );
-    _auto_anchored_arg_2_18_30 = 0;
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_2_18_30 );
-    RoguePackage__release__RogueString_RoguePlatforms_RogueString( THIS, (_auto_anchored_arg_0_16_28=RogueValue__to_RogueString((_auto_anchored_context_15_27=RogueValue__get__RogueString( release_info_10, str_tarball_url )))), (_auto_anchored_arg_1_17_29=((!!platforms_2) ? platforms_2 : RoguePlatforms__unix())), (_auto_anchored_arg_2_18_30=RogueVersionNumber__to_RogueString(v_11)) );
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_context_24_41 );
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_context_25_42 );
+    _auto_anchored_arg_1_26_43 = 0;
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_26_43 );
+    _auto_anchored_arg_2_27_44 = 0;
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_2_27_44 );
+    _auto_anchored_arg_3_28_45 = 0;
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_3_28_45 );
+    RoguePackage__release__RogueInt32_RogueString_RoguePlatforms_RogueString( THIS, RogueValue__to_RogueInt32((_auto_anchored_context_24_41=RogueValue__get__RogueString( release_info_15, str_id ))), (_auto_anchored_arg_1_26_43=RogueValue__to_RogueString((_auto_anchored_context_25_42=RogueValue__get__RogueString( release_info_15, str_tarball_url )))), (_auto_anchored_arg_2_27_44=((!!platforms_2) ? platforms_2 : RoguePlatforms__unix())), (_auto_anchored_arg_3_28_45=RogueVersionNumber__to_RogueString(v_16)) );
     if (Rogue_exception)
     {
       TypeRogueValue.local_pointer_count = _auto_local_pointer_fp_0;
@@ -28778,17 +28954,18 @@ void RoguePackage__scan_repo_releases__RogueString_RogueString_RoguePlatforms( R
       TypeRogueVersionNumber.local_pointer_count = _auto_local_pointer_fp_2;
       return;
     }
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_context_19_31 );
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_context_20_32 );
-    _auto_anchored_arg_0_21_33 = 0;
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_21_33 );
-    _auto_anchored_arg_0_22_34 = 0;
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_22_34 );
-    _auto_anchored_arg_1_23_35 = 0;
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_23_35 );
-    _auto_anchored_arg_2_24_36 = 0;
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_2_24_36 );
-    RoguePackage__release__RogueString_RoguePlatforms_RogueString( THIS, (_auto_anchored_arg_0_22_34=RogueValue__to_RogueString((_auto_anchored_context_19_31=RogueValue__get__RogueString( release_info_10, str_zipball_url )))), (_auto_anchored_arg_1_23_35=((!!platforms_2) ? platforms_2 : RoguePlatforms__operatorPLUS__RoguePlatforms( (_auto_anchored_context_20_32=RoguePlatforms__unix()), (_auto_anchored_arg_0_21_33=RoguePlatforms__windows()) ))), (_auto_anchored_arg_2_24_36=RogueVersionNumber__to_RogueString(v_11)) );
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_context_29_46 );
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_context_30_47 );
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_context_31_48 );
+    _auto_anchored_arg_0_32_49 = 0;
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_32_49 );
+    _auto_anchored_arg_1_33_50 = 0;
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_33_50 );
+    _auto_anchored_arg_2_34_51 = 0;
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_2_34_51 );
+    _auto_anchored_arg_3_35_52 = 0;
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_3_35_52 );
+    RoguePackage__release__RogueInt32_RogueString_RoguePlatforms_RogueString( THIS, RogueValue__to_RogueInt32((_auto_anchored_context_29_46=RogueValue__get__RogueString( release_info_15, str_id ))), (_auto_anchored_arg_1_33_50=RogueValue__to_RogueString((_auto_anchored_context_30_47=RogueValue__get__RogueString( release_info_15, str_zipball_url )))), (_auto_anchored_arg_2_34_51=((!!platforms_2) ? platforms_2 : RoguePlatforms__operatorPLUS__RoguePlatforms( (_auto_anchored_context_31_48=RoguePlatforms__unix()), (_auto_anchored_arg_0_32_49=RoguePlatforms__windows()) ))), (_auto_anchored_arg_3_35_52=RogueVersionNumber__to_RogueString(v_16)) );
     if (Rogue_exception)
     {
       TypeRogueValue.local_pointer_count = _auto_local_pointer_fp_0;
@@ -28796,19 +28973,19 @@ void RoguePackage__scan_repo_releases__RogueString_RogueString_RoguePlatforms( R
       TypeRogueVersionNumber.local_pointer_count = _auto_local_pointer_fp_2;
       return;
     }
-    _auto_anchored_arg_0_25_37 = 0;
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_25_37 );
-    _auto_anchored_arg_1_26_38 = 0;
-    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_26_38 );
-    if ((!!THIS->specified_version) && RogueString__operator____RogueString_RogueString( (_auto_anchored_arg_0_25_37=RogueVersionNumber__to_RogueString(v_11)), (_auto_anchored_arg_1_26_38=THIS->specified_version) ))
+    _auto_anchored_arg_0_36_53 = 0;
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_36_53 );
+    _auto_anchored_arg_1_37_54 = 0;
+    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_37_54 );
+    if ((!!THIS->specified_version) && RogueString__operator____RogueString_RogueString( (_auto_anchored_arg_0_36_53=RogueVersionNumber__to_RogueString(v_16)), (_auto_anchored_arg_1_37_54=THIS->specified_version) ))
     {
       goto _auto_escape_2;
     }
-    _auto_upkeep_3:;++_auto_index_1_8;
-    _auto_condition_10_22 = _auto_index_1_8 < _auto_count_2_9;
+    _auto_upkeep_5:;++_auto_index_3_13;
+    _auto_condition_19_36 = _auto_index_3_13 < _auto_count_4_14;
     _auto_loop_condition_0:;
   }
-  while (_auto_condition_10_22);
+  while (_auto_condition_19_36);
   _auto_escape_2:;
   TypeRogueValue.local_pointer_count = _auto_local_pointer_fp_0;
   TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_1;
@@ -28931,16 +29108,18 @@ void RoguePackage__select_version( RoguePackage* THIS )
   (void)_auto_anchored_context_30_55;
   RogueValue _auto_anchored_context_31_56 = {0};
   (void)_auto_anchored_context_31_56;
-  RogueString* _auto_anchored_context_32_57 = 0;
+  RogueValue _auto_anchored_context_32_57 = {0};
   (void)_auto_anchored_context_32_57;
   RogueString* _auto_anchored_context_33_58 = 0;
   (void)_auto_anchored_context_33_58;
-  RogueString* _auto_anchored_arg_0_34_59 = 0;
-  (void)_auto_anchored_arg_0_34_59;
-  RogueString* _auto_anchored_arg_1_35_60 = 0;
-  (void)_auto_anchored_arg_1_35_60;
-  RogueString* _auto_anchored_arg_0_36_61 = 0;
-  (void)_auto_anchored_arg_0_36_61;
+  RogueString* _auto_anchored_context_34_59 = 0;
+  (void)_auto_anchored_context_34_59;
+  RogueString* _auto_anchored_arg_0_35_60 = 0;
+  (void)_auto_anchored_arg_0_35_60;
+  RogueString* _auto_anchored_arg_1_36_61 = 0;
+  (void)_auto_anchored_arg_1_36_61;
+  RogueString* _auto_anchored_arg_0_37_62 = 0;
+  (void)_auto_anchored_arg_0_37_62;
 
   RogueInt32 _auto_local_pointer_fp_0 = TypeRogueBest_RogueString.local_pointer_count;
   RogueInt32 _auto_local_pointer_fp_1 = TypeRogueValue.local_pointer_count;
@@ -29129,18 +29308,20 @@ void RoguePackage__select_version( RoguePackage* THIS )
     if (RogueString__operator____RogueString_RogueString( (_auto_anchored_arg_0_26_51=RogueVersionNumber__to_RogueString((_auto_anchored_context_25_50=(RogueVersionNumber) {RogueValue__to_RogueString((_auto_anchored_context_24_49=RogueValue__get__RogueString( release_24, str_version )))}))), (_auto_anchored_arg_1_27_52=THIS->version) ) && RogueString__contains__RogueCharacter_RogueLogical( (_auto_anchored_context_29_54=RogueValue__to_RogueString((_auto_anchored_context_28_53=RogueValue__get__RogueString( release_24, str_platforms )))), platform_0, 0 ))
     {
       RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_context_30_55 );
-      THIS->url = RogueValue__to_RogueString((_auto_anchored_context_30_55=RogueValue__get__RogueString( release_24, str_url )));
+      THIS->release_id = RogueValue__to_RogueInt32((_auto_anchored_context_30_55=RogueValue__get__RogueString( release_24, str_id )));
       RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_context_31_56 );
-      THIS->archive_filename = RogueValue__to_RogueString((_auto_anchored_context_31_56=RogueValue__get__RogueString( release_24, str_filename )));
+      THIS->url = RogueValue__to_RogueString((_auto_anchored_context_31_56=RogueValue__get__RogueString( release_24, str_url )));
+      RogueRuntimeType_local_pointer_stack_add( &TypeRogueValue, &_auto_anchored_context_32_57 );
+      THIS->archive_filename = RogueValue__to_RogueString((_auto_anchored_context_32_57=RogueValue__get__RogueString( release_24, str_filename )));
       if (!RogueSystem__is_windows())
       {
-        RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_context_32_57 );
-        if (RogueString__ends_with__RogueString_RogueLogical( (_auto_anchored_context_32_57=THIS->url), str__tar_gz, 1 ))
+        RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_context_33_58 );
+        if (RogueString__ends_with__RogueString_RogueLogical( (_auto_anchored_context_33_58=THIS->url), str__tar_gz, 1 ))
         {
           goto _auto_escape_5;
         }
-        RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_context_33_58 );
-        if (RogueString__contains__RogueString_RogueLogical( (_auto_anchored_context_33_58=THIS->url), str_tarball, 0 ))
+        RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_context_34_59 );
+        if (RogueString__contains__RogueString_RogueLogical( (_auto_anchored_context_34_59=THIS->url), str_tarball, 0 ))
         {
           goto _auto_escape_5;
         }
@@ -29167,14 +29348,14 @@ void RoguePackage__select_version( RoguePackage* THIS )
       return;
     }
   }
-  _auto_anchored_arg_0_34_59 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_34_59 );
-  _auto_anchored_arg_1_35_60 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_35_60 );
-  THIS->install_folder = RogueString__operatorDIVIDE__RogueString_RogueString( (_auto_anchored_arg_0_34_59=THIS->package_folder), (_auto_anchored_arg_1_35_60=THIS->version) );
-  _auto_anchored_arg_0_36_61 = 0;
-  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_36_61 );
-  THIS->bin_folder = RogueString__operatorDIVIDE__RogueString_RogueString( (_auto_anchored_arg_0_36_61=THIS->install_folder), str_bin );
+  _auto_anchored_arg_0_35_60 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_35_60 );
+  _auto_anchored_arg_1_36_61 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_36_61 );
+  THIS->install_folder = RogueString__operatorDIVIDE__RogueString_RogueString( (_auto_anchored_arg_0_35_60=THIS->package_folder), (_auto_anchored_arg_1_36_61=THIS->version) );
+  _auto_anchored_arg_0_37_62 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_37_62 );
+  THIS->bin_folder = RogueString__operatorDIVIDE__RogueString_RogueString( (_auto_anchored_arg_0_37_62=THIS->install_folder), str_bin );
   TypeRogueBest_RogueString.local_pointer_count = _auto_local_pointer_fp_0;
   TypeRogueValue.local_pointer_count = _auto_local_pointer_fp_1;
   TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_2;
@@ -31502,6 +31683,30 @@ RogueString* RoguePackageError__type_name( RoguePackageError* THIS )
 void RogueJSON_gc_trace( void* THIS )
 {
   ((RogueObject*)THIS)->__refcount = ~((RogueObject*)THIS)->__refcount;
+}
+
+RogueValue RogueJSON__load__RogueFile_RoguePrintWriter(RogueFile file_0, RogueObject* error_log_1)
+{
+  RogueString* _auto_anchored_arg_0_0_2 = 0;
+  (void)_auto_anchored_arg_0_0_2;
+  RogueObject* _auto_anchored_arg_1_1_3 = 0;
+  (void)_auto_anchored_arg_1_1_3;
+
+  RogueInt32 _auto_local_pointer_fp_0 = TypeRogueObject.local_pointer_count;
+
+  if (!RogueFile__exists(file_0))
+  {
+    RogueValue _auto_result_0 = RogueValue__create();
+    TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+    return _auto_result_0;
+  }
+  _auto_anchored_arg_0_0_2 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_0_2 );
+  _auto_anchored_arg_1_1_3 = 0;
+  RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_1_1_3 );
+  RogueValue _auto_result_1 = RogueJSON__parse__RogueString_RoguePrintWriter( (_auto_anchored_arg_0_0_2=RogueString__create__RogueFile( file_0 )), (_auto_anchored_arg_1_1_3=0) );
+  TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+  return _auto_result_1;
 }
 
 RogueValue RogueJSON__parse__RogueString_RoguePrintWriter(RogueString* json_0, RogueObject* error_log_1)
@@ -36665,7 +36870,7 @@ void* Rogue_dispatch_print_to__RogueString__RogueObject( void* THIS, RogueString
   }
 }
 
-RogueString* Rogue_string_table[476];
+RogueString* Rogue_string_table[481];
 RogueString* str_true;
 RogueString* str_false;
 RogueString* str___;
@@ -36934,6 +37139,7 @@ RogueString* str_options;
 RogueString* str_home;
 RogueString* str_dependency;
 RogueString* str_Morlock_v;
+RogueString* str_2_1;
 RogueString* str_September_12__2022;
 RogueString* str__by_Abe_Pralle;
 RogueString* str_USAGE___morlock__com;
@@ -37055,6 +37261,7 @@ RogueString* str_____make_build_LIBRA;
 RogueString* str_abepralle_rogue;
 RogueString* str_Installing_the_Morlo;
 RogueString* str_Package_name_must_be;
+RogueString* str__archive_folder__can;
 RogueString* str_Error_creating_folde;
 RogueString* str_Downloading_;
 RogueString* str_curl__LfsS_;
@@ -37077,11 +37284,14 @@ RogueString* str___I___I_;
 RogueString* str___I___I__1;
 RogueString* str___I_;
 RogueString* str_Cannot_determine_ver;
+RogueString* str_id;
 RogueString* str_platforms;
 RogueString* str_filename;
 RogueString* str_repo_releases;
-RogueString* str__releases;
+RogueString* str__releases_latest;
 RogueString* str_curl__fsSL__H__Accep;
+RogueString* str_assets;
+RogueString* str__releases;
 RogueString* str_tag_name;
 RogueString* str_tarball_url;
 RogueString* str_zipball_url;
@@ -37614,6 +37824,7 @@ int Rogue_launch()
   str_home = RogueString_create_string_table_entry( "home");
   str_dependency = RogueString_create_string_table_entry( "dependency");
   str_Morlock_v = RogueString_create_string_table_entry( "Morlock v");
+  str_2_1 = RogueString_create_string_table_entry( "2.1");
   str_September_12__2022 = RogueString_create_string_table_entry( "September 12, 2022");
   str__by_Abe_Pralle = RogueString_create_string_table_entry( " by Abe Pralle");
   str_USAGE___morlock__com = RogueString_create_string_table_entry( "USAGE\n  morlock <command>\n\nCOMMANDS\n  help\n    Show this help text.\n\n  alias <command> <line1> [<line2> ...]\n    Creates a Mac/Linux shell script or Windows batch file on the Morlock path\n    that executes the given line or lines of code. Use 'morlock unlink <alias>'\n    to remove.\n\n  create <provider>/<app-name>\n    For example, `create mygithub/myapp` will create a template install script\n    `myapp.rogue`. Edit it and move it to a root subfolder called `Morlock/`\n    (or `morlock/`).\n\n  install <package>\n    'morlock install user/repo/app-name' - installs package user/app-name\n    'morlock install user/app-name'      - shorthand for user/app-name/app-name\n\n  link <package>\n    Re-links the launchers for the specified package.\n\n  link <launcher-name> <exe-filepath>\n    Links an arbitrary launcher on the Morlock path to an arbitrary executable.\n    For example: 'morlock link myprog ~/MyProject/Build/myprog.exe'.\n\n  list\n    Shows list of all installed packages.\n\n  uninstall <package>\n    Uninstalls the specified package.\n\n  unlink <package-name-or-launcher-name>\n    Unlinks launchers so they're no longer on the Morlock binpath.\n\n  update [package-a [package-b ...]]\n    Updates listed packages or else all packages, including Morlock, Rogue,\n    and Rogo.\n\nPACKAGE FORMAT\n  provider/repo/app-name\n  provider/repo\n  repo\n  https://github.com/provider/repo/morlock/app-name.rogue");
@@ -37735,6 +37946,7 @@ int Rogue_launch()
   str_abepralle_rogue = RogueString_create_string_table_entry( "abepralle/rogue");
   str_Installing_the_Morlo = RogueString_create_string_table_entry( "Installing the Morlock Package Management System");
   str_Package_name_must_be = RogueString_create_string_table_entry( "Package name must be specified as a property. For example:\n\n  PROPERTIES\n    name = \"provider/");
+  str__archive_folder__can = RogueString_create_string_table_entry( "'archive_folder' can not be automatically determined. Set 'archive_folder = \"filepath\"' before using 'archive_folder' in other operations. A file .listing() using a known filename can help locate the folder - e.g. start with 'File(\".\").listing(\"*/KnownFilename.txt\")'.");
   str_Error_creating_folde = RogueString_create_string_table_entry( "Error creating folder \"");
   str_Downloading_ = RogueString_create_string_table_entry( "Downloading ");
   str_curl__LfsS_ = RogueString_create_string_table_entry( "curl -LfsS ");
@@ -37757,11 +37969,14 @@ int Rogue_launch()
   str___I___I__1 = RogueString_create_string_table_entry( "$(I)?(I)");
   str___I_ = RogueString_create_string_table_entry( "$(I)");
   str_Cannot_determine_ver = RogueString_create_string_table_entry( "Cannot determine version number from release URL \"");
+  str_id = RogueString_create_string_table_entry( "id");
   str_platforms = RogueString_create_string_table_entry( "platforms");
   str_filename = RogueString_create_string_table_entry( "filename");
   str_repo_releases = RogueString_create_string_table_entry( "repo_releases");
-  str__releases = RogueString_create_string_table_entry( "/releases");
+  str__releases_latest = RogueString_create_string_table_entry( "/releases/latest");
   str_curl__fsSL__H__Accep = RogueString_create_string_table_entry( "curl -fsSL -H \"Accept: application/vnd.github.v3+json\" ");
+  str_assets = RogueString_create_string_table_entry( "assets");
+  str__releases = RogueString_create_string_table_entry( "/releases");
   str_tag_name = RogueString_create_string_table_entry( "tag_name");
   str_tarball_url = RogueString_create_string_table_entry( "tarball_url");
   str_zipball_url = RogueString_create_string_table_entry( "zipball_url");
