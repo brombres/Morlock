@@ -68,10 +68,9 @@ class Package
 
       local cache_file = File(package_folder/"cache.json")
       if (cache_file.exists)
-        cache = JSON.parse(cache_file)
-      else
-        cache = @{}
+        cache = JSON.load(cache_file)
       endIf
+      if (not cache) cache = @{}
 
       if (properties//version)
         specified_version = properties//version
