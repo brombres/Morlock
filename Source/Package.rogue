@@ -14,6 +14,7 @@ class Package
     app_name          : String   # "app-name"               ->  "helloworld"
     specified_version : String   # req version or null      ->  "1.2"
     version           : String   # selected v, best match   ->  "1.2.4"
+    release_id        : Int32    # integer ID of selected release -> 12345678
     url               : String   # URL of .rogue script     ->  "https://github.com/.../morlock/app-name.rogue"
     morlock_home      : String   # Home folder for Morlock  ->  "/opt/morlock"     | "C:/Users/.../AppData/Local/Morlock"
     launcher_folder   : String   # Links/.bat files         ->  "/opt/morlock/bin" | "C:/.../Morlock/bin"
@@ -24,6 +25,7 @@ class Package
     archive_folder    : String   # Name of unzipped folder  ->  "helloworld-1.0"
 
     releases          = @[]      # Auto-populated           ->  ["3.2.1"] (usually only 1 install at a time)
+    assets            : Value
     properties        : Value    # Cmd line arg as JSON value. Note properties//command has parsed cmd line args
     cache             : Value    # Arbitrary info table @{...} you can store values into, then call save_cache()
 
@@ -79,6 +81,33 @@ class Package
 
       init
 
+    method archive_folder->String
+      if (@archive_folder) return @archive_folder
+
+      local folders = File(".").listing(&folders)
+      if (folders.count == 1)
+        archive_folder = folders.first
+        return @archive_folder
+      endIf
+
+      throw Error( '''archive_folder' can not be automatically determined. Set 'archive_folder = "filepath"' before using 'archive_folder' in other operations. A file .listing() using a known filename can help locate the folder - e.g. start with 'File(".").listing("*/KnownFilename.txt")'.'' )
+
+      return null
+
+    method assets->Value
+      if (@assets) return @assets
+
+      local url = "https://api.github.com/repos/$/$/releases/$/assets"(provider,repo,release_id)
+      local cmd = ''curl -fsSL -H "Accept: application/vnd.github.v3+json" '' + url
+      local process = Process.run( cmd )
+      if (process.success)
+        @assets = JSON.parse( process.output_string )
+      else
+        @assets = @[]
+      endIf
+
+      return @assets
+
     method build
       # Attempts to automatically figure out how build the downloaded & unpacked
       # archive and launches the appropriate commands.
@@ -128,6 +157,23 @@ class Package
       execute( "curl -LfsS $ -o $" (url,File(archive_filename).esc), &quiet )
       if (not File(archive_filename).esc) throw error( "Error downloading " + url )
       return archive_filename
+
+    method download_asset( asset_name:String, to_file=null:File? )->File
+      forEach (asset in assets)
+        if (FilePattern(asset_name) == asset//name->String)
+          return download_asset( asset, to_file )
+        endIf
+      endForEach
+      throw Error( "Failed to download binary asset '$'."(asset_name) )
+
+    method download_asset( asset:Value, to_file=null:File? )->File
+      # asset
+      #   One of the values in the 'assets' Value list
+      if (not to_file) to_file = File( asset//name->String )
+      local url = "https://api.github.com/repos/abepralle/windowsmedialibs/releases/assets/$"(asset//id->Int32)
+      execute( ''curl -H "Accept: application/octet-stream" -LfsS $ -o $''(url,to_file.value.abs.esc), &quiet )
+      if (to_file.value.exists) return to_file.value
+      throw Error( "Failed to download binary asset '$'."(asset//name) )
 
     method error( message:String )->Error
       return PackageError( provider/app_name, message )
@@ -291,7 +337,7 @@ class Package
     method on( action:String )
       throw error( "Package [$] does not implement '$'."(name,action) )
 
-    method release( url:String, platforms=null:Platforms, version=null:String )
+    method release( id:Int32, url:String, platforms=null:Platforms, version=null:String )
       # Registers a release with .tar.gz/.zip URL and version number.
       #
       # platforms
@@ -337,7 +383,7 @@ class Package
         version = version.without_suffix('.')
       endIf
 
-      releases.add @{ :version, :url, platforms:platforms->String, filename:filename_for_url(url) }
+      releases.add @{ :id, :version, :url, platforms:platforms->String, filename:filename_for_url(url) }
 
     method save_cache
       File( package_folder ).create_folder
@@ -348,7 +394,19 @@ class Package
 
       if (cache//repo_releases)
         info = cache//repo_releases
+      elseIf (not max_version)
+        # Just grab the latest release
+        local url = "https://api.github.com/repos/$/$/releases/latest"(provider,repo)
+        local cmd = ''curl -fsSL -H "Accept: application/vnd.github.v3+json" '' + url
+        local process = Process.run( cmd )
+        if (not process.success) throw Error( "Download failed: " + url )
+
+        info = @[ JSON.parse( process.output_string ) ]
+        assets = info.first//assets
+        cache//repo_releases = info
+        save_cache
       else
+        # Get all releases so we can filter
         local url = "https://api.github.com/repos/$/$/releases"(provider,repo)
         local cmd = ''curl -fsSL -H "Accept: application/vnd.github.v3+json" '' + url
         local process = Process.run( cmd )
@@ -369,8 +427,8 @@ class Package
             if (max_version and v > max_version) nextIteration
           endIf
         satisfied
-          release( release_info//tarball_url, which{platforms||Platforms.unix}, v )
-          release( release_info//zipball_url, which{platforms||Platforms.unix+Platforms.windows}, v )
+          release( release_info//id, release_info//tarball_url, which{platforms||Platforms.unix}, v )
+          release( release_info//id, release_info//zipball_url, which{platforms||Platforms.unix+Platforms.windows}, v )
           if (specified_version and v == specified_version) escapeForEach
         endContingent
       endForEach
@@ -416,6 +474,7 @@ class Package
       url = null
       forEach (release in releases)
         if (VersionNumber(release//version) == version and release//platforms->String.contains(platform))
+          release_id = release//id
           url = release//url
           archive_filename = release//filename
           if (not System.is_windows)
