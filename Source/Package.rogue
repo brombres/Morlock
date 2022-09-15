@@ -150,7 +150,7 @@ class Package
       endIf
 
     method dependency( package_name:String )
-      execute( "morlock install --dependency " + package_name, &quiet )
+      execute( "morlock.bat install --dependency " + package_name, &quiet )
 
     method download->String
       println "Downloading $ v$" (name,version)
