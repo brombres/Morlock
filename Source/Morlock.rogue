@@ -372,7 +372,7 @@ class Morlock [singleton]
           local build_filepath = File(info.build_folder/info.app_name).esc
           local local_exe      = File(info.build_folder/exe_filename).esc
           if (System.is_windows)
-            cmd = "cl /nologo $.c /Fo$.obj /Fe$"(build_filepath,build_filepath,local_exe)
+            cmd = "cl /nologo $.c /Fo$.obj /Fe$ > nul"(build_filepath,build_filepath,local_exe)
           else
             cmd = "cc -Wall -fno-strict-aliasing $.c -o $ -lm"(build_filepath,local_exe)
           endIf

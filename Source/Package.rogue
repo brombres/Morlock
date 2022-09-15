@@ -327,7 +327,7 @@ class Package
         File( launcher ).delete
         println "Linking " + base_launcher
         if (System.is_windows)
-          File( launcher ).save( ''@$ %*''(File(File(exe).conventional_filepath).esc) )
+          File( launcher ).save( ''@call $ %*''(File(File(exe).conventional_filepath).esc) )
         else
           local cmd = "ln -s $ $" (exe,launcher)
           execute( cmd, &quiet )
