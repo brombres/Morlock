@@ -164,7 +164,7 @@ class Package
 
     method download_asset( asset_name:String, to_file=null:File? )->File
       forEach (asset in assets)
-        if (FilePattern(asset_name) == asset//name->String)
+        if (FilePattern(asset_name).matches(asset//name->String))
           return download_asset( asset, to_file )
         endIf
       endForEach
