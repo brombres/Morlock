@@ -2,8 +2,8 @@
 
 About     | Current Release
 ----------|-----------------------
-Version   | 2.1.5
-Date      | September 16, 2022
+Version   | 2.1.6
+Date      | September 22, 2022
 Platforms | Windows, macOS, Linux (Ubuntu+), Cygwin
 Author    | Abe Pralle
 
