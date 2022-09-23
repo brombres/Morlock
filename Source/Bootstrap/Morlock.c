@@ -22438,7 +22438,7 @@ void RogueMorlock__print_usage( RogueMorlock* THIS )
   _auto_context_block_0_0 = ROGUE_CREATE_OBJECT( RogueString );
   RogueString__init(_auto_context_block_0_0);
   RogueString__print__RogueString( _auto_context_block_0_0, str_Morlock_v );
-  RogueString__print__RogueString( _auto_context_block_0_0, str_2_1_6 );
+  RogueString__print__RogueString( _auto_context_block_0_0, str_2_1_7 );
   RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), _auto_context_block_0_0 );
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_context_block_1_1 );
   _auto_context_block_1_1 = ROGUE_CREATE_OBJECT( RogueString );
@@ -26789,6 +26789,8 @@ void RogueBootstrap__configure__RogueValue( RogueBootstrap* THIS, RogueValue _au
     {
       RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &mesg_2 );
       mesg_2 = str_Homebrew_must_be_ins;
+      mesg_2 = RogueString__operatorPLUS__RogueString_RogueString( mesg_2, str__bin_bash__c____curl );
+      mesg_2 = RogueString__operatorPLUS__RogueString_RogueString( mesg_2, str___Then_reopen_your_t );
       mesg_2 = RogueString__operatorPLUS__RogueString_RogueString( mesg_2, str_bash__c____curl__L_i );
       Rogue_call_stack_push( "", "", -1 );
       ;
@@ -26951,12 +26953,13 @@ void RogueBootstrap__configure__RogueValue( RogueBootstrap* THIS, RogueValue _au
       goto _auto_escape_3;
       _auto_unsatisfied_2:;
       RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str_Make_the_change_by_a );
-      RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str_terminal_ );
       _auto_anchored_arg_0_26_36 = 0;
       RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_26_36 );
       _auto_anchored_arg_0_27_37 = 0;
       RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_27_37 );
-      RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), (_auto_anchored_arg_0_27_37=RogueString__operatorPLUS__RogueString_RogueString( (_auto_anchored_arg_0_26_36=RogueString__operatorPLUS__RogueString_RogueString( str_export_PATH__, binpath_3 )), str____PATH )) );
+      RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), (_auto_anchored_arg_0_27_37=RogueString__operatorPLUS__RogueString_RogueString( (_auto_anchored_arg_0_26_36=RogueString__operatorPLUS__RogueString_RogueString( str_export_PATH__, binpath_3 )), str____PATH__ )) );
+      RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str_Then_reopen_your_ter );
+      RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), str_bash__c____curl__L_i );
       _auto_escape_3:;
     }
   }
@@ -37277,7 +37280,7 @@ void* Rogue_dispatch_print_to__RogueString__RogueObject( void* THIS, RogueString
   }
 }
 
-RogueString* Rogue_string_table[487];
+RogueString* Rogue_string_table[489];
 RogueString* str_true;
 RogueString* str_false;
 RogueString* str___;
@@ -37570,7 +37573,7 @@ RogueString* str_options;
 RogueString* str_home;
 RogueString* str_dependency;
 RogueString* str_Morlock_v;
-RogueString* str_2_1_6;
+RogueString* str_2_1_7;
 RogueString* str_September_22__2022;
 RogueString* str__by_Abe_Pralle;
 RogueString* str_USAGE___morlock__com;
@@ -37631,6 +37634,8 @@ RogueString* str___curl__L_windows_mo;
 RogueString* str_Open_a_Developer_Com_1;
 RogueString* str_which_brew____dev_nu;
 RogueString* str_Homebrew_must_be_ins;
+RogueString* str__bin_bash__c____curl;
+RogueString* str___Then_reopen_your_t;
 RogueString* str_bash__c____curl__L_i;
 RogueString* str_Creating_home_folder;
 RogueString* str_build;
@@ -37654,9 +37659,9 @@ RogueString* str_____5;
 RogueString* str_PATH____;
 RogueString* str_____source_;
 RogueString* str_Make_the_change_by_a;
-RogueString* str_terminal_;
 RogueString* str_export_PATH__;
-RogueString* str____PATH;
+RogueString* str____PATH__;
+RogueString* str_Then_reopen_your_ter;
 RogueString* str_packages____;
 RogueString* str_active_version_txt;
 RogueString* str__bin_morlock;
@@ -38261,7 +38266,7 @@ int Rogue_launch()
   str_home = RogueString_create_string_table_entry( "home");
   str_dependency = RogueString_create_string_table_entry( "dependency");
   str_Morlock_v = RogueString_create_string_table_entry( "Morlock v");
-  str_2_1_6 = RogueString_create_string_table_entry( "2.1.6");
+  str_2_1_7 = RogueString_create_string_table_entry( "2.1.7");
   str_September_22__2022 = RogueString_create_string_table_entry( "September 22, 2022");
   str__by_Abe_Pralle = RogueString_create_string_table_entry( " by Abe Pralle");
   str_USAGE___morlock__com = RogueString_create_string_table_entry( "USAGE\n  morlock <command>\n\nCOMMANDS\n  help\n    Show this help text.\n\n  alias <command> <line1> [<line2> ...]\n    Creates a Mac/Linux shell script or Windows batch file on the Morlock path\n    that executes the given line or lines of code. Use 'morlock unlink <alias>'\n    to remove.\n\n  create <provider>/<app-name>\n    For example, `create mygithub/myapp` will create a template install script\n    `myapp.rogue`. Edit it and move it to a root subfolder called `Morlock/`\n    (or `morlock/`).\n\n  install <package>\n    'morlock install user/repo/app-name' - installs package user/app-name\n    'morlock install user/app-name'      - shorthand for user/app-name/app-name\n\n  link <package>\n    Re-links the launchers for the specified package.\n\n  link <launcher-name> <exe-filepath>\n    Links an arbitrary launcher on the Morlock path to an arbitrary executable.\n    For example: 'morlock link myprog ~/MyProject/Build/myprog.exe'.\n\n  list\n    Shows list of all installed packages.\n\n  uninstall <package>\n    Uninstalls the specified package.\n\n  unlink <package-name-or-launcher-name>\n    Unlinks launchers so they're no longer on the Morlock binpath.\n\n  update [package-a [package-b ...]]\n    Updates listed packages or else all packages, including Morlock, Rogue,\n    and Rogo.\n\nPACKAGE FORMAT\n  provider/repo/app-name\n  provider/repo\n  repo\n  https://github.com/provider/repo/morlock/app-name.rogue");
@@ -38321,7 +38326,9 @@ int Rogue_launch()
   str___curl__L_windows_mo = RogueString_create_string_table_entry( "  curl -L windows.morlock.sh -o %TEMP%\\install.bat && %TEMP%\\install");
   str_Open_a_Developer_Com_1 = RogueString_create_string_table_entry( "Open a Developer Command Prompt and re-run morlock.");
   str_which_brew____dev_nu = RogueString_create_string_table_entry( "which brew > /dev/null 2>&1");
-  str_Homebrew_must_be_ins = RogueString_create_string_table_entry( "Homebrew must be installed. Execute the following and then re-run the Morlock installer:\n");
+  str_Homebrew_must_be_ins = RogueString_create_string_table_entry( "Homebrew must be installed. Execute the following to install Homebrew (or visit homebrew.sh):\n\n");
+  str__bin_bash__c____curl = RogueString_create_string_table_entry( "/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"");
+  str___Then_reopen_your_t = RogueString_create_string_table_entry( "\n\nThen reopen your terminal and re-run the Morlock install command:\n\n");
   str_bash__c____curl__L_i = RogueString_create_string_table_entry( "bash -c \"$(curl -L install.morlock.sh)\"");
   str_Creating_home_folder = RogueString_create_string_table_entry( "Creating home folder...");
   str_build = RogueString_create_string_table_entry( "build");
@@ -38344,10 +38351,10 @@ int Rogue_launch()
   str_____5 = RogueString_create_string_table_entry( "\":\\");
   str_PATH____ = RogueString_create_string_table_entry( "PATH >> ");
   str_____source_ = RogueString_create_string_table_entry( " && source ");
-  str_Make_the_change_by_a = RogueString_create_string_table_entry( "Make the change by adding this line to your ~/.bashrc (etc.) and reopening your");
-  str_terminal_ = RogueString_create_string_table_entry( "terminal:");
+  str_Make_the_change_by_a = RogueString_create_string_table_entry( "Make the change by adding this line to your ~/.bashrc (etc.):\n");
   str_export_PATH__ = RogueString_create_string_table_entry( "export PATH=\"");
-  str____PATH = RogueString_create_string_table_entry( "\":$PATH");
+  str____PATH__ = RogueString_create_string_table_entry( "\":$PATH\n\n");
+  str_Then_reopen_your_ter = RogueString_create_string_table_entry( "Then reopen your terminal and re-run the Morlock install command:\n");
   str_packages____ = RogueString_create_string_table_entry( "packages/*/*");
   str_active_version_txt = RogueString_create_string_table_entry( "active_version.txt");
   str__bin_morlock = RogueString_create_string_table_entry( "/bin/morlock");
