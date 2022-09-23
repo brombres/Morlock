@@ -32,8 +32,10 @@ class Bootstrap [singleton]
       # macOS: Ensure Homebrew is installed
       if (System.is_macos)
         if (0 != System.run("which brew > /dev/null 2>&1"))
-          local mesg = "Homebrew must be installed. Execute the following and then re-run the Morlock installer:\n"
+          local mesg = "Homebrew must be installed. Execute the following to install Homebrew (or visit homebrew.sh):\n\n"
           mesg += @|/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          mesg += "\n\nThen reopen your terminal and re-run the Morlock install command:\n\n"
+          mesg += @|bash -c "$(curl -L install.morlock.sh)"
           throw Error( mesg )
         endIf
       endIf
@@ -92,9 +94,10 @@ class Bootstrap [singleton]
             println "You can execute this command to make the change:"
             println ''echo export PATH="$":\\$PATH >> $ && source $''(binpath,'$',shell,shell)
           unsatisfied
-            println "Make the change by adding this line to your ~/.bashrc (etc.) and reopening your"
-            println "terminal:"
-            println ''export PATH="'' + binpath + ''":$PATH''
+            println "Make the change by adding this line to your ~/.bashrc (etc.):\n"
+            println ''export PATH="'' + binpath + ''":$PATH\n\n''
+            println "Then reopen your terminal and re-run the Morlock install command:\n"
+            println @|bash -c "$(curl -L install.morlock.sh)"
           endContingent
         endIf
         Morlock.header
