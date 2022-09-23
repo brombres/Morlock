@@ -33,7 +33,7 @@ class Bootstrap [singleton]
       if (System.is_macos)
         if (0 != System.run("which brew > /dev/null 2>&1"))
           local mesg = "Homebrew must be installed. Execute the following and then re-run the Morlock installer:\n"
-          mesg += @|/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          mesg += @|bash -c "$(curl -L install.morlock.sh)"
           throw Error( mesg )
         endIf
       endIf
