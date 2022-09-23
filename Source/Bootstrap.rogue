@@ -32,9 +32,9 @@ class Bootstrap [singleton]
       # macOS: Ensure Homebrew is installed
       if (System.is_macos)
         if (0 != System.run("which brew > /dev/null 2>&1"))
-          local mesg = "Homebrew must be installed. Execute the following to install Homebrew (or visit homebrew.sh):\n\n"
+          local mesg = "Homebrew must be installed. Execute the following to install Homebrew (or visit brew.sh):\n\n"
           mesg += @|/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          mesg += "\n\nThen reopen your terminal and re-run the Morlock install command:\n\n"
+          mesg += "\n\nThen re-run the Morlock install command:\n\n"
           mesg += @|bash -c "$(curl -L install.morlock.sh)"
           throw Error( mesg )
         endIf
@@ -83,7 +83,7 @@ class Bootstrap [singleton]
             println ''5. Open a new Developer Command Prompt and re-run morlock.''
           endIf
         else
-          println "Add the following folder to your system PATH and re-run the Morlock install command:"
+          println "Add the following folder to your system PATH:\n"
           println binpath
           println
           local shell = System.env//SHELL
@@ -91,11 +91,13 @@ class Bootstrap [singleton]
             necessary (shell)
             shell = "~/.$rc" (File(shell).filename)
             necessary (File(shell).exists)
-            println "You can execute this command to make the change:"
-            println ''echo export PATH="$":\\$PATH >> $ && source $''(binpath,'$',shell,shell)
+            println "You can execute this command to make the change:\n"
+            println ''echo export PATH="$":\\$PATH >> $ && source $\n''(binpath,'$',shell,shell)
+            println "Then re-run the Morlock install command:\n"
+            println @|bash -c "$(curl -L install.morlock.sh)"
           unsatisfied
             println "Make the change by adding this line to your ~/.bashrc (etc.):\n"
-            println ''export PATH="'' + binpath + ''":$PATH\n\n''
+            println ''export PATH="'' + binpath + ''":$PATH\n''
             println "Then reopen your terminal and re-run the Morlock install command:\n"
             println @|bash -c "$(curl -L install.morlock.sh)"
           endContingent
