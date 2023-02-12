@@ -22,9 +22,9 @@ fi
 mkdir -p "$MORLOCK_HOME/build/brombres/morlock"
 if ! [ -f "$MORLOCK_HOME/build/brombres/morlock/download-v2.success" ]; then
   echo Downloading Morlock bootstrap source...
-  curl -fsSL https://raw.githubusercontent.com/brombres/Morlock/main/Source/Bootstrap/Morlock.h \
+  curl -H "Cache-Control: no-cache" -fsSL https://raw.githubusercontent.com/brombres/Morlock/main/Source/Bootstrap/Morlock.h \
     -o "$MORLOCK_HOME/build/brombres/morlock/Morlock.h"
-  curl -fsSL https://raw.githubusercontent.com/brombres/Morlock/main/Source/Bootstrap/Morlock.c \
+  curl -H "Cache-Control: no-cache" -fsSL https://raw.githubusercontent.com/brombres/Morlock/main/Source/Bootstrap/Morlock.c \
     -o "$MORLOCK_HOME/build/brombres/morlock/Morlock.c"
   echo success >> "$MORLOCK_HOME/build/brombres/morlock/download-v2.success"
 fi
