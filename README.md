@@ -2,8 +2,8 @@
 
 About     | Current Release
 ----------|-----------------------
-Version   | 2.1.8
-Date      | September 22, 2022
+Version   | 2.2
+Date      | February 11, 2023
 Platforms | Windows, macOS, Linux (Ubuntu+), Cygwin
 Author    | Brom Bresenham
 
