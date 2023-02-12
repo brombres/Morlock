@@ -1,4 +1,4 @@
-# To run this build file, install Rogue from github.com/AbePralle/Rogue then cd
+# To run this build file, install Rogue from github.com/brombres/Rogue then cd
 # to this folder and type "rogo" at the command line, or "rogo help" for a list
 # of supported commands.
 
@@ -97,13 +97,13 @@ routine rogo_install
   if (System.is_windows) morlock_path = "~/AppData/Local/Morlock"
   else                   morlock_path = "/opt/morlock"
 
-  local v = String(File(morlock_path)/"packages/abepralle/morlock/active_version.txt")
+  local v = String(File(morlock_path)/"packages/brombres/morlock/active_version.txt")
 
   local exe_path : String
   if (System.is_windows)
-    exe_path = "~/AppData/Local/Morlock/packages/abepralle/morlock/$/bin/morlock.exe"(v)
+    exe_path = "~/AppData/Local/Morlock/packages/brombres/morlock/$/bin/morlock.exe"(v)
   else
-    exe_path = "/opt/morlock/packages/abepralle/morlock/$/bin/morlock"(v)
+    exe_path = "/opt/morlock/packages/brombres/morlock/$/bin/morlock"(v)
   endIf
   local list = File(exe_path).listing
   assert list.count == 1

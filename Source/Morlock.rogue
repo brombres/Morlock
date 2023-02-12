@@ -97,15 +97,15 @@ class Morlock [singleton]
           local src =
           @|class $(CLASS_NAME)Package : Package
            |  # Base class Package is defined here:
-           |  # https://github.com/AbePralle/Morlock/blob/main/Source/Package.rogue
+           |  # https://github.com/brombres/Morlock/blob/main/Source/Package.rogue
            |  PROPERTIES
            |    name = "$(PACKAGE_NAME)"
            |
            |  METHODS
            |    method init
            |      # Specify dependencies like this:
-           |      # dependency "abepralle/helloworld"
-           |      # dependency "abepralle/rogue@1.9.2"   # (1.9.2 or better)
+           |      # dependency "brombres/helloworld"
+           |      # dependency "brombres/rogue@1.9.2"   # (1.9.2 or better)
            |
            |      # Uncomment to automatically determine releases using GitHub's API.
            |      # scan_repo_releases
@@ -340,15 +340,15 @@ class Morlock [singleton]
       script_args//command = command
 
       block script_args = script_args.to_json.to_escaped_ascii('"')
-        local v_list = File( HOME/"packages/abepralle/morlock" ).listing( &folders, &ignore_hidden, &omit_path )
+        local v_list = File( HOME/"packages/brombres/morlock" ).listing( &folders, &ignore_hidden, &omit_path )
         if (v_list.is_empty)
           println "[INTERNAL ERROR] Morlock has no current version."
           System.exit 1
         endIf
         v_list.sort( (a,b) => VersionNumber(a) > b )
         local v = v_list.first
-        local script_launcher_filepath = HOME/"packages/abepralle/morlock/$/Source/ScriptLauncher.rogue"(v)
-        local package_filepath  = HOME/"packages/abepralle/morlock/$/Source/Package.rogue"(v)
+        local script_launcher_filepath = HOME/"packages/brombres/morlock/$/Source/ScriptLauncher.rogue"(v)
+        local package_filepath  = HOME/"packages/brombres/morlock/$/Source/Package.rogue"(v)
 
         local exe_filename = info.app_name
         if (System.is_windows) exe_filename += ".exe"
@@ -465,7 +465,7 @@ class Morlock [singleton]
 
     method print_usage
       println "Morlock v$" (VERSION)
-      println "$ by Abe Pralle" (DATE)
+      println "$ by Brom Bresenham" (DATE)
       println
       println @|USAGE
                |  morlock <command>

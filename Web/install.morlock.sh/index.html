@@ -19,25 +19,25 @@ if ! chown $USER$GROUP "$MORLOCK_HOME" &> /dev/null; then
   sudo chown $USER$GROUP "$MORLOCK_HOME"
 fi
 
-mkdir -p "$MORLOCK_HOME/build/abepralle/morlock"
-if ! [ -f "$MORLOCK_HOME/build/abepralle/morlock/download-v2.success" ]; then
+mkdir -p "$MORLOCK_HOME/build/brombres/morlock"
+if ! [ -f "$MORLOCK_HOME/build/brombres/morlock/download-v2.success" ]; then
   echo Downloading Morlock bootstrap source...
-  curl -fsSL https://raw.githubusercontent.com/AbePralle/Morlock/main/Source/Bootstrap/Morlock.h \
-    -o "$MORLOCK_HOME/build/abepralle/morlock/Morlock.h"
-  curl -fsSL https://raw.githubusercontent.com/AbePralle/Morlock/main/Source/Bootstrap/Morlock.c \
-    -o "$MORLOCK_HOME/build/abepralle/morlock/Morlock.c"
-  echo success >> "$MORLOCK_HOME/build/abepralle/morlock/download-v2.success"
+  curl -fsSL https://raw.githubusercontent.com/brombres/Morlock/main/Source/Bootstrap/Morlock.h \
+    -o "$MORLOCK_HOME/build/brombres/morlock/Morlock.h"
+  curl -fsSL https://raw.githubusercontent.com/brombres/Morlock/main/Source/Bootstrap/Morlock.c \
+    -o "$MORLOCK_HOME/build/brombres/morlock/Morlock.c"
+  echo success >> "$MORLOCK_HOME/build/brombres/morlock/download-v2.success"
 fi
 
-if ! [ -f "$MORLOCK_HOME/build/abepralle/morlock/compile-v2.success" ]; then
+if ! [ -f "$MORLOCK_HOME/build/brombres/morlock/compile-v2.success" ]; then
   echo Compiling Morlock bootstrap...
   if cc -O3 -Wall -fno-strict-aliasing \
-    "$MORLOCK_HOME/build/abepralle/morlock/Morlock.c" \
-    -o "$MORLOCK_HOME/build/abepralle/morlock/morlock" -lm; then
-    chmod a+x "$MORLOCK_HOME/build/abepralle/morlock/morlock"
-    echo success >> "$MORLOCK_HOME/build/abepralle/morlock/compile-v2.success"
+    "$MORLOCK_HOME/build/brombres/morlock/Morlock.c" \
+    -o "$MORLOCK_HOME/build/brombres/morlock/morlock" -lm; then
+    chmod a+x "$MORLOCK_HOME/build/brombres/morlock/morlock"
+    echo success >> "$MORLOCK_HOME/build/brombres/morlock/compile-v2.success"
   fi
 fi
 
 echo Bootstrapping Morlock...
-"$MORLOCK_HOME/build/abepralle/morlock/morlock" bootstrap
+"$MORLOCK_HOME/build/brombres/morlock/morlock" bootstrap

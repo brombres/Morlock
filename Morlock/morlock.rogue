@@ -1,12 +1,12 @@
 class MorlockPackage : Package
   # Base class Package is defined here:
-  # https://github.com/AbePralle/Morlock/blob/main/Source/Package.rogue
+  # https://github.com/brombres/Morlock/blob/main/Source/Package.rogue
   PROPERTIES
-    name = "abepralle/morlock"
+    name = "brombres/morlock"
 
   METHODS
     method init
-      dependency( "abepralle/rogue@2.0.1" )
+      dependency( "brombres/rogue@2.0.1" )
       scan_repo_releases
 
     method install

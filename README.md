@@ -5,9 +5,9 @@ About     | Current Release
 Version   | 2.1.8
 Date      | September 22, 2022
 Platforms | Windows, macOS, Linux (Ubuntu+), Cygwin
-Author    | Abe Pralle
+Author    | Brom Bresenham
 
-Morlock is a multi-platform, decentralized console package manager implemented in [Rogue](https://github.com/AbePralle/Rogue). It has two goals:
+Morlock is a multi-platform, decentralized console package manager implemented in [Rogue](https://github.com/brombres/Rogue). It has two goals:
 
 1. To add multi-platform support across Windows, Mac, and Linux.
 2. To allow anyone to have their packages be easily installed via Morlock without having to register their package with a central authority.
@@ -43,7 +43,7 @@ The installation will ask you to add `/opt/morlock/bin` to your path before proc
 ## Hello World
 Test out Morlock with:
 
-    morlock install abepralle/helloworld
+    morlock install brombres/helloworld
     helloworld
 
 ## `alias`
@@ -72,11 +72,11 @@ to remove.
 
 Morlock pre-installs three packages:
 
-    abepralle\morlock
-    abepralle\rogue
-    abepralle\rogo
+    brombres\morlock
+    brombres\rogue
+    brombres\rogo
 
-This are the Morlock package management system itself, the [Rogue](https://github.com/AbePralle/Rogue) language compiler that Morlock install scripts are written in, and the [Rogo](https://github.com/AbePralle/Rogo) build system that all three packages use. These packages can be updated but not uninstalled.
+This are the Morlock package management system itself, the [Rogue](https://github.com/brombres/Rogue) language compiler that Morlock install scripts are written in, and the [Rogo](https://github.com/brombres/Rogo) build system that all three packages use. These packages can be updated but not uninstalled.
 
 ## `uninstall`
 

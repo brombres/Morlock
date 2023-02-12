@@ -6,28 +6,28 @@
 @mkdir "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock"
 :CREATED_HOME
 
-@if exist "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock" goto CREATED_BUILD
-@mkdir "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock"
+@if exist "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\brombres\morlock" goto CREATED_BUILD
+@mkdir "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\brombres\morlock"
 :CREATED_BUILD
 
 @echo Downloading Morlock bootstrap source...
-@curl -fsSL https://raw.githubusercontent.com/AbePralle/Morlock/main/Source/Bootstrap/Morlock.h -o "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\Morlock.h"
+@curl -fsSL https://raw.githubusercontent.com/brombres/Morlock/main/Source/Bootstrap/Morlock.h -o "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\brombres\morlock\Morlock.h"
 @if errorlevel 1 goto ERROR_DOWNLOADING
-@curl -fsSL https://raw.githubusercontent.com/AbePralle/Morlock/main/Source/Bootstrap/Morlock.c -o "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\Morlock.c"
+@curl -fsSL https://raw.githubusercontent.com/brombres/Morlock/main/Source/Bootstrap/Morlock.c -o "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\brombres\morlock\Morlock.c"
 @if errorlevel 1 goto ERROR_DOWNLOADING
 
 @echo Compiling Morlock bootstrap...
-@cl /nologo "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\Morlock.c" /Fo"%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\morlock-v2.obj" /Fe"%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\morlock-v2.exe"
+@cl /nologo "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\brombres\morlock\Morlock.c" /Fo"%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\brombres\morlock\morlock-v2.obj" /Fe"%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\brombres\morlock\morlock-v2.exe"
 @if errorlevel 1 goto ERROR_COMPILING
 
 echo Bootstrapping Morlock...
-"%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\abepralle\morlock\morlock-v2.exe" bootstrap --installer="%0"
+"%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\brombres\morlock\morlock-v2.exe" bootstrap --installer="%0"
 @goto EXIT
 
 :ERROR_DOWNLOADING
 @echo Error downloading the following files using 'curl':
-@echo   https://raw.githubusercontent.com/AbePralle/Morlock/main/Source/Bootstrap/Morlock.h
-@echo   https://raw.githubusercontent.com/AbePralle/Morlock/main/Source/Bootstrap/Morlock.c
+@echo   https://raw.githubusercontent.com/brombres/Morlock/main/Source/Bootstrap/Morlock.h
+@echo   https://raw.githubusercontent.com/brombres/Morlock/main/Source/Bootstrap/Morlock.c
 @echo:
 @echo Check the internet connection.
 @goto EXIT
