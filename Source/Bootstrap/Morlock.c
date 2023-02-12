@@ -22758,7 +22758,7 @@ void RogueMorlock__run_script__RogueValue_RoguePackageInfo( RogueMorlock* THIS, 
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_13_37 );
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_14_38 );
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_15_39 );
-  crc32_15 = ((RogueFile__crc32((_auto_anchored_context_13_37=(RogueFile) {info_1->filepath})) ^ RogueFile__crc32((_auto_anchored_context_14_38=(RogueFile) {package_filepath_11}))) ^ RogueFile__crc32((_auto_anchored_context_15_39=(RogueFile) {script_launcher_filepath_9}))) ^ RogueString__hash_code(str_2_11);
+  crc32_15 = ((RogueFile__crc32((_auto_anchored_context_13_37=(RogueFile) {info_1->filepath})) ^ RogueFile__crc32((_auto_anchored_context_14_38=(RogueFile) {package_filepath_11}))) ^ RogueFile__crc32((_auto_anchored_context_15_39=(RogueFile) {script_launcher_filepath_9}))) ^ RogueString__hash_code(str_2_12);
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_16_40 );
   if (!(RogueFile__exists((_auto_anchored_context_16_40=(RogueFile) {exe_filepath_13})))) goto _auto_unsatisfied_0;
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_17_41 );
@@ -23291,7 +23291,7 @@ void RogueMorlock__print_usage( RogueMorlock* THIS )
   _auto_context_block_0_0 = ROGUE_CREATE_OBJECT( RogueString );
   RogueString__init(_auto_context_block_0_0);
   RogueString__print__RogueString( _auto_context_block_0_0, str_Morlock_v );
-  RogueString__print__RogueString( _auto_context_block_0_0, str_2_2 );
+  RogueString__print__RogueString( _auto_context_block_0_0, str_2_2_1 );
   RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), _auto_context_block_0_0 );
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_context_block_1_1 );
   _auto_context_block_1_1 = ROGUE_CREATE_OBJECT( RogueString );
@@ -28619,7 +28619,7 @@ void RogueBootstrap__install_morlock( RogueBootstrap* THIS )
   }
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &package_3 );
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_call_5_19 );
-  _auto_call_5_19 = RogueBootstrap__package_instance__RogueString( THIS, str_https___github_com_a_1 );
+  _auto_call_5_19 = RogueBootstrap__package_instance__RogueString( THIS, str_https___github_com_b );
   if (Rogue_exception)
   {
     TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -28686,7 +28686,7 @@ void RogueBootstrap__install_morlock( RogueBootstrap* THIS )
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &build_folder_5 );
   _auto_anchored_arg_0_16_30 = 0;
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_16_30 );
-  build_folder_5 = RogueString__operatorDIVIDE__RogueString_RogueString( (_auto_anchored_arg_0_16_30=ROGUE_SINGLETON(RogueMorlock)->HOME), str_build_abepralle_morl );
+  build_folder_5 = RogueString__operatorDIVIDE__RogueString_RogueString( (_auto_anchored_arg_0_16_30=ROGUE_SINGLETON(RogueMorlock)->HOME), str_build_brombres_morlo );
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_17_31 );
   RogueFile__delete((_auto_anchored_context_17_31=(RogueFile) {build_folder_5}));
   RogueMorlock__create_folder__RogueString_RogueLogical( ROGUE_SINGLETON(RogueMorlock), build_folder_5, 0 );
@@ -28837,7 +28837,7 @@ void RogueBootstrap__install_morlock( RogueBootstrap* THIS )
   RogueFiles__sync_to__RogueFile_RogueLogical_RogueLogical_RogueLogical_RogueLogical( src_13, (_auto_anchored_arg_0_37_51=(RogueFile) {RogueString__operatorDIVIDE__RogueString_RogueString( install_folder_11, str_Source )}), 0, 0, 0, 0 );
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_obj_38_52 );
   _auto_obj_38_52 = ROGUE_CREATE_OBJECT( RoguePackageInfo );
-  RoguePackageInfo__init__RogueString_RogueLogical( _auto_obj_38_52, str_abepralle_morlock, 0 );
+  RoguePackageInfo__init__RogueString_RogueLogical( _auto_obj_38_52, str_brombres_morlock, 0 );
   if (Rogue_exception)
   {
     TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -28999,7 +28999,7 @@ void RogueBootstrap__install_rogo( RogueBootstrap* THIS )
   }
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &package_3 );
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_call_5_18 );
-  _auto_call_5_18 = RogueBootstrap__package_instance__RogueString( THIS, str_https___github_com_a_2 );
+  _auto_call_5_18 = RogueBootstrap__package_instance__RogueString( THIS, str_https___github_com_b_1 );
   if (Rogue_exception)
   {
     TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -29066,7 +29066,7 @@ void RogueBootstrap__install_rogo( RogueBootstrap* THIS )
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &build_folder_5 );
   _auto_anchored_arg_0_16_29 = 0;
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_16_29 );
-  build_folder_5 = RogueString__operatorDIVIDE__RogueString_RogueString( (_auto_anchored_arg_0_16_29=ROGUE_SINGLETON(RogueMorlock)->HOME), str_build_abepralle_rogo );
+  build_folder_5 = RogueString__operatorDIVIDE__RogueString_RogueString( (_auto_anchored_arg_0_16_29=ROGUE_SINGLETON(RogueMorlock)->HOME), str_build_brombres_rogo );
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_17_30 );
   RogueFile__delete((_auto_anchored_context_17_30=(RogueFile) {build_folder_5}));
   RogueMorlock__create_folder__RogueString_RogueLogical( ROGUE_SINGLETON(RogueMorlock), build_folder_5, 0 );
@@ -29209,7 +29209,7 @@ void RogueBootstrap__install_rogo( RogueBootstrap* THIS )
   RogueFile__save__RogueString_RogueLogical( (_auto_anchored_context_34_47=(RogueFile) {RogueString__operatorDIVIDE__RogueString_RogueString( (_auto_anchored_arg_0_33_46=RogueFile__folder((_auto_anchored_context_32_45=(RogueFile) {package_3->install_folder}))), str_active_version_txt )}), (_auto_anchored_arg_0_35_48=package_3->version), 0 );
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_obj_36_49 );
   _auto_obj_36_49 = ROGUE_CREATE_OBJECT( RoguePackageInfo );
-  RoguePackageInfo__init__RogueString_RogueLogical( _auto_obj_36_49, str_abepralle_rogo, 0 );
+  RoguePackageInfo__init__RogueString_RogueLogical( _auto_obj_36_49, str_brombres_rogo, 0 );
   if (Rogue_exception)
   {
     TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -29406,7 +29406,7 @@ void RogueBootstrap__install_rogue( RogueBootstrap* THIS )
   }
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &package_3 );
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_call_5_27 );
-  _auto_call_5_27 = RogueBootstrap__package_instance__RogueString( THIS, str_https___github_com_a_3 );
+  _auto_call_5_27 = RogueBootstrap__package_instance__RogueString( THIS, str_https___github_com_b_2 );
   if (Rogue_exception)
   {
     TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -29473,7 +29473,7 @@ void RogueBootstrap__install_rogue( RogueBootstrap* THIS )
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &build_folder_5 );
   _auto_anchored_arg_0_16_38 = 0;
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_16_38 );
-  build_folder_5 = RogueString__operatorDIVIDE__RogueString_RogueString( (_auto_anchored_arg_0_16_38=ROGUE_SINGLETON(RogueMorlock)->HOME), str_build_abepralle_rogu );
+  build_folder_5 = RogueString__operatorDIVIDE__RogueString_RogueString( (_auto_anchored_arg_0_16_38=ROGUE_SINGLETON(RogueMorlock)->HOME), str_build_brombres_rogue );
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_17_39 );
   RogueFile__delete((_auto_anchored_context_17_39=(RogueFile) {build_folder_5}));
   RogueMorlock__create_folder__RogueString_RogueLogical( ROGUE_SINGLETON(RogueMorlock), build_folder_5, 0 );
@@ -29705,7 +29705,7 @@ void RogueBootstrap__install_rogue( RogueBootstrap* THIS )
   RogueFile__save__RogueString_RogueLogical( (_auto_anchored_context_42_64=(RogueFile) {RogueString__operatorDIVIDE__RogueString_RogueString( (_auto_anchored_arg_0_41_63=RogueFile__folder((_auto_anchored_context_40_62=(RogueFile) {package_3->install_folder}))), str_active_version_txt )}), (_auto_anchored_arg_0_43_65=package_3->version), 0 );
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_obj_44_66 );
   _auto_obj_44_66 = ROGUE_CREATE_OBJECT( RoguePackageInfo );
-  RoguePackageInfo__init__RogueString_RogueLogical( _auto_obj_44_66, str_abepralle_rogue, 0 );
+  RoguePackageInfo__init__RogueString_RogueLogical( _auto_obj_44_66, str_brombres_rogue, 0 );
   if (Rogue_exception)
   {
     TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -40055,7 +40055,7 @@ RogueString* str__Source_ScriptLaunch;
 RogueString* str__Source_Package_rogu;
 RogueString* str__exe;
 RogueString* str_source_crc32_txt;
-RogueString* str_2_11;
+RogueString* str_2_12;
 RogueString* str_roguec;
 RogueString* str____debug___api___mai;
 RogueString* str_cl__nologo_;
@@ -40084,7 +40084,7 @@ RogueString* str_options;
 RogueString* str_home;
 RogueString* str_dependency;
 RogueString* str_Morlock_v;
-RogueString* str_2_2;
+RogueString* str_2_2_1;
 RogueString* str_February_11__2023;
 RogueString* str__by_Brom_Bresenham;
 RogueString* str_USAGE___morlock__com;
@@ -40177,26 +40177,26 @@ RogueString* str_Then_reopen_your_ter;
 RogueString* str_packages____;
 RogueString* str_active_version_txt;
 RogueString* str__bin_morlock;
-RogueString* str_https___github_com_a_1;
+RogueString* str_https___github_com_b;
 RogueString* str__v_1;
-RogueString* str_build_abepralle_morl;
+RogueString* str_build_brombres_morlo;
 RogueString* str_Build_rogue;
 RogueString* str_Failed_to_find_extra;
 RogueString* str_Compiling_morlock___;
 RogueString* str_____rogo_build_;
 RogueString* str_Source;
 RogueString* str___rogue;
-RogueString* str_abepralle_morlock;
+RogueString* str_brombres_morlock;
 RogueString* str__bin_rogo;
-RogueString* str_https___github_com_a_2;
-RogueString* str_build_abepralle_rogo;
+RogueString* str_https___github_com_b_1;
+RogueString* str_build_brombres_rogo;
 RogueString* str_Makefile;
 RogueString* str_Compiling_rogo___;
 RogueString* str_____make_build_;
-RogueString* str_abepralle_rogo;
+RogueString* str_brombres_rogo;
 RogueString* str__bin_;
-RogueString* str_https___github_com_a_3;
-RogueString* str_build_abepralle_rogu;
+RogueString* str_https___github_com_b_2;
+RogueString* str_build_brombres_rogue;
 RogueString* str_make_bat;
 RogueString* str_Compiling_;
 RogueString* str____this_may_take_a_w;
@@ -40205,7 +40205,7 @@ RogueString* str_xcopy__I__S__Q__Y_;
 RogueString* str_Source_Libraries;
 RogueString* str_Libraries;
 RogueString* str_____make_build_LIBRA;
-RogueString* str_abepralle_rogue;
+RogueString* str_brombres_rogue;
 RogueString* str_Installing_the_Morlo;
 RogueString* str_Package_name_must_be;
 RogueString* str__archive_folder__can;
@@ -40754,7 +40754,7 @@ int Rogue_launch()
   str__Source_Package_rogu = RogueString_create_string_table_entry( "/Source/Package.rogue");
   str__exe = RogueString_create_string_table_entry( ".exe");
   str_source_crc32_txt = RogueString_create_string_table_entry( "source_crc32.txt");
-  str_2_11 = RogueString_create_string_table_entry( "2.11");
+  str_2_12 = RogueString_create_string_table_entry( "2.12");
   str_roguec = RogueString_create_string_table_entry( "roguec");
   str____debug___api___mai = RogueString_create_string_table_entry( " --debug --api --main --output=");
   str_cl__nologo_ = RogueString_create_string_table_entry( "cl /nologo ");
@@ -40783,7 +40783,7 @@ int Rogue_launch()
   str_home = RogueString_create_string_table_entry( "home");
   str_dependency = RogueString_create_string_table_entry( "dependency");
   str_Morlock_v = RogueString_create_string_table_entry( "Morlock v");
-  str_2_2 = RogueString_create_string_table_entry( "2.2");
+  str_2_2_1 = RogueString_create_string_table_entry( "2.2.1");
   str_February_11__2023 = RogueString_create_string_table_entry( "February 11, 2023");
   str__by_Brom_Bresenham = RogueString_create_string_table_entry( " by Brom Bresenham");
   str_USAGE___morlock__com = RogueString_create_string_table_entry( "USAGE\n  morlock <command>\n\nCOMMANDS\n  help\n    Show this help text.\n\n  alias <command> <line1> [<line2> ...]\n    Creates a Mac/Linux shell script or Windows batch file on the Morlock path\n    that executes the given line or lines of code. Use 'morlock unlink <alias>'\n    to remove.\n\n  create <provider>/<app-name>\n    For example, `create mygithub/myapp` will create a template install script\n    `myapp.rogue`. Edit it and move it to a root subfolder called `Morlock/`\n    (or `morlock/`).\n\n  install <package>\n    'morlock install user/repo/app-name' - installs package user/app-name\n    'morlock install user/app-name'      - shorthand for user/app-name/app-name\n\n  link <package>\n    Re-links the launchers for the specified package.\n\n  link <launcher-name> <exe-filepath>\n    Links an arbitrary launcher on the Morlock path to an arbitrary executable.\n    For example: 'morlock link myprog ~/MyProject/Build/myprog.exe'.\n\n  list\n    Shows list of all installed packages.\n\n  uninstall <package>\n    Uninstalls the specified package.\n\n  unlink <package-name-or-launcher-name>\n    Unlinks launchers so they're no longer on the Morlock binpath.\n\n  update [package-a [package-b ...]]\n    Updates listed packages or else all packages, including Morlock, Rogue,\n    and Rogo.\n\nPACKAGE FORMAT\n  provider/repo/app-name\n  provider/repo\n  repo\n  https://github.com/provider/repo/morlock/app-name.rogue");
@@ -40876,26 +40876,26 @@ int Rogue_launch()
   str_packages____ = RogueString_create_string_table_entry( "packages/*/*");
   str_active_version_txt = RogueString_create_string_table_entry( "active_version.txt");
   str__bin_morlock = RogueString_create_string_table_entry( "/bin/morlock");
-  str_https___github_com_a_1 = RogueString_create_string_table_entry( "https://github.com/abepralle/morlock");
+  str_https___github_com_b = RogueString_create_string_table_entry( "https://github.com/brombres/morlock");
   str__v_1 = RogueString_create_string_table_entry( " v");
-  str_build_abepralle_morl = RogueString_create_string_table_entry( "build/abepralle/morlock");
+  str_build_brombres_morlo = RogueString_create_string_table_entry( "build/brombres/morlock");
   str_Build_rogue = RogueString_create_string_table_entry( "Build.rogue");
   str_Failed_to_find_extra = RogueString_create_string_table_entry( "Failed to find extracted source folder in: ");
   str_Compiling_morlock___ = RogueString_create_string_table_entry( "Compiling morlock...");
   str_____rogo_build_ = RogueString_create_string_table_entry( " && rogo build)");
   str_Source = RogueString_create_string_table_entry( "Source");
   str___rogue = RogueString_create_string_table_entry( "*.rogue");
-  str_abepralle_morlock = RogueString_create_string_table_entry( "abepralle/morlock");
+  str_brombres_morlock = RogueString_create_string_table_entry( "brombres/morlock");
   str__bin_rogo = RogueString_create_string_table_entry( "/bin/rogo");
-  str_https___github_com_a_2 = RogueString_create_string_table_entry( "https://github.com/abepralle/rogo");
-  str_build_abepralle_rogo = RogueString_create_string_table_entry( "build/abepralle/rogo");
+  str_https___github_com_b_1 = RogueString_create_string_table_entry( "https://github.com/brombres/rogo");
+  str_build_brombres_rogo = RogueString_create_string_table_entry( "build/brombres/rogo");
   str_Makefile = RogueString_create_string_table_entry( "Makefile");
   str_Compiling_rogo___ = RogueString_create_string_table_entry( "Compiling rogo...");
   str_____make_build_ = RogueString_create_string_table_entry( " && make build)");
-  str_abepralle_rogo = RogueString_create_string_table_entry( "abepralle/rogo");
+  str_brombres_rogo = RogueString_create_string_table_entry( "brombres/rogo");
   str__bin_ = RogueString_create_string_table_entry( "/bin/");
-  str_https___github_com_a_3 = RogueString_create_string_table_entry( "https://github.com/abepralle/rogue");
-  str_build_abepralle_rogu = RogueString_create_string_table_entry( "build/abepralle/rogue");
+  str_https___github_com_b_2 = RogueString_create_string_table_entry( "https://github.com/brombres/rogue");
+  str_build_brombres_rogue = RogueString_create_string_table_entry( "build/brombres/rogue");
   str_make_bat = RogueString_create_string_table_entry( "make.bat");
   str_Compiling_ = RogueString_create_string_table_entry( "Compiling ");
   str____this_may_take_a_w = RogueString_create_string_table_entry( " - this may take a while...");
@@ -40904,7 +40904,7 @@ int Rogue_launch()
   str_Source_Libraries = RogueString_create_string_table_entry( "Source/Libraries");
   str_Libraries = RogueString_create_string_table_entry( "Libraries");
   str_____make_build_LIBRA = RogueString_create_string_table_entry( " && make build LIBRARIES_FOLDER=");
-  str_abepralle_rogue = RogueString_create_string_table_entry( "abepralle/rogue");
+  str_brombres_rogue = RogueString_create_string_table_entry( "brombres/rogue");
   str_Installing_the_Morlo = RogueString_create_string_table_entry( "Installing the Morlock Package Management System");
   str_Package_name_must_be = RogueString_create_string_table_entry( "Package name must be specified as a property. For example:\n\n  PROPERTIES\n    name = \"provider/");
   str__archive_folder__can = RogueString_create_string_table_entry( "'archive_folder' can not be automatically determined. Set 'archive_folder = \"filepath\"' before using 'archive_folder' in other operations. A file .listing() using a known filename can help locate the folder - e.g. start with 'File(\".\").listing(\"*/KnownFilename.txt\")'.");

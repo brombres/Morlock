@@ -7,9 +7,9 @@ class Package
   PROPERTIES
     action            : String   # "install", "uninstall", "<custom>", ...
     args              : String[] # any command line args after action and package name
-    name              : String   # "provider-name/app-name" ->  "abepralle/helloworld"
+    name              : String   # "provider-name/app-name" ->  "brombres/helloworld"
     host              : String   # "github.com" etc.
-    provider          : String   # "provider-name"          ->  "abepralle"
+    provider          : String   # "provider-name"          ->  "brombres"
     repo              : String   # "repo-name"              ->  "tools"
     app_name          : String   # "app-name"               ->  "helloworld"
     specified_version : String   # req version or null      ->  "1.2"
@@ -19,7 +19,7 @@ class Package
     morlock_home      : String   # Home folder for Morlock  ->  "/opt/morlock"     | "C:/Users/.../AppData/Local/Morlock"
     launcher_folder   : String   # Links/.bat files         ->  "/opt/morlock/bin" | "C:/.../Morlock/bin"
     package_folder    : String   # Morlock packages folder  ->  "/opt/morlock/packages" | "C:/.../Morlock/packages"
-    install_folder    : String   # Install-to folder        ->  package_folder/"abepralle/helloworld/1.0"
+    install_folder    : String   # Install-to folder        ->  package_folder/"brombres/helloworld/1.0"
     bin_folder        : String   # Put executables here     ->  install_folder/"bin"
     archive_filename  : String   # Tar/zip w/in cur folder  ->  "helloworld-1.0.tar.gz"
     archive_folder    : String   # Name of unzipped folder  ->  "helloworld-1.0"
@@ -174,7 +174,7 @@ class Package
       # asset
       #   One of the values in the 'assets' Value list
       if (not to_file) to_file = File( asset//name->String )
-      local url = "https://api.github.com/repos/abepralle/windowsmedialibs/releases/assets/$"(asset//id->Int32)
+      local url = "https://api.github.com/repos/brombres/windowsmedialibs/releases/assets/$"(asset//id->Int32)
       execute( ''curl -H "Accept: application/octet-stream" -LfsS $ -o $''(url,to_file.value.abs.esc), &quiet )
       if (to_file.value.exists) return to_file.value
       throw Error( "Failed to download binary asset '$'."(asset//name) )

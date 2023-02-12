@@ -144,7 +144,7 @@ class Bootstrap [singleton]
       # Can use the regular system to install the latest Morlock.
       # If the remaining code in this method executes on Windows it's probably a bootstrap
       # executable and may be out of date.
-      local package = package_instance( "https://github.com/abepralle/morlock" )
+      local package = package_instance( "https://github.com/brombres/morlock" )
       package.scan_repo_releases
       package.select_version
       if (File(package.install_folder).exists and not File(package.install_folder).listing.is_empty)
@@ -152,7 +152,7 @@ class Bootstrap [singleton]
         return
       endIf
 
-      local build_folder = Morlock.HOME/"build/abepralle/morlock"
+      local build_folder = Morlock.HOME/"build/brombres/morlock"
       File( build_folder ).delete
       Morlock.create_folder( build_folder )
 
@@ -182,14 +182,14 @@ class Bootstrap [singleton]
       local src = Files( archive_folder/"Source", "*.rogue" )
       src.sync_to( install_folder/"Source" )
 
-      PackageInfo( "abepralle/morlock" ).ensure_script_exists
+      PackageInfo( "brombres/morlock" ).ensure_script_exists
 
     method install_rogo
       local ext = which{ System.is_windows:".bat" || "" }
       local bin_filepath = "$/bin/rogo$" (Morlock.HOME,ext)
       if (File(bin_filepath).exists and cmd//action != "bootstrap") return
 
-      local package = package_instance( "https://github.com/abepralle/rogo" )
+      local package = package_instance( "https://github.com/brombres/rogo" )
       package.scan_repo_releases
       package.select_version
       if (File(package.install_folder).exists and not File(package.install_folder).listing.is_empty)
@@ -197,7 +197,7 @@ class Bootstrap [singleton]
         return
       endIf
 
-      local build_folder = Morlock.HOME/"build/abepralle/rogo"
+      local build_folder = Morlock.HOME/"build/brombres/rogo"
       File( build_folder ).delete
       Morlock.create_folder( build_folder )
 
@@ -225,14 +225,14 @@ class Bootstrap [singleton]
 
       File( File(package.install_folder).folder/"active_version.txt" ).save( package.version )
 
-      PackageInfo( "abepralle/rogo" ).ensure_script_exists
+      PackageInfo( "brombres/rogo" ).ensure_script_exists
 
     method install_rogue
       local ext = which{ System.is_windows:".bat" || "" }
       local bin_filepath = "$/bin/$$" (Morlock.HOME,ROGUEC_EXE,ext)
       if (File(bin_filepath).exists and cmd//action != "bootstrap") return
 
-      local package = package_instance( "https://github.com/abepralle/rogue" )
+      local package = package_instance( "https://github.com/brombres/rogue" )
       package.scan_repo_releases
       package.select_version
       if (File(package.install_folder).exists and not File(package.install_folder).listing.is_empty)
@@ -240,7 +240,7 @@ class Bootstrap [singleton]
         return
       endIf
 
-      local build_folder = Morlock.HOME/"build/abepralle/rogue"
+      local build_folder = Morlock.HOME/"build/brombres/rogue"
       File( build_folder ).delete
       Morlock.create_folder( build_folder )
 
@@ -281,7 +281,7 @@ class Bootstrap [singleton]
       package.install_executable( &=dest_filename )
 
       File( File(package.install_folder).folder/"active_version.txt" ).save( package.version )
-      PackageInfo( "abepralle/rogue" ).ensure_script_exists
+      PackageInfo( "brombres/rogue" ).ensure_script_exists
 
     method print_installing_header
       if (printed_installing_header) return

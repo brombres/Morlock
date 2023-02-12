@@ -1,16 +1,16 @@
 class PackageInfo
   PROPERTIES
-    name     : String  # abepralle/rogo, provider/app_name
-    provider : String  # abepralle
+    name     : String  # brombres/rogo, provider/app_name
+    provider : String  # brombres
     app_name : String  # rogo
     repo     : String  # rogo
     version  : String  # null, 1.0, 1.0.0, etc.
     host     : String  # github.com
-    folder   : String  # /opt/morlock/packages/abepralle/rogo,            /opt/morlock/packages/provider/app_name
-    filepath : String  # /opt/morlock/packages/abepralle/rogo/rogo.rogue, /opt/morlock/packages/provider/app_name.rogue
-    url      : String  # https://raw.githubusercontent.com/abepralle/rogo/master/morlock/abepralle/rogo.rogue
+    folder   : String  # /opt/morlock/packages/brombres/rogo,            /opt/morlock/packages/provider/app_name
+    filepath : String  # /opt/morlock/packages/brombres/rogo/rogo.rogue, /opt/morlock/packages/provider/app_name.rogue
+    url      : String  # https://raw.githubusercontent.com/brombres/rogo/master/morlock/brombres/rogo.rogue
                        # protocol://domain/provider/repo/master/morlock/provider/app_name.rogue
-    build_folder       : String   # /opt/morlock/build/abepralle/rogo
+    build_folder       : String   # /opt/morlock/build/brombres/rogo
     installed_versions : String[]
     using_local_script : Logical  # prevents pinging repo for updates
 
@@ -98,10 +98,10 @@ class PackageInfo
             # EITHER
             # - host/account/repo, AKA:
             # - host/provider/app-name
-            # - github.com/abepralle/rogue
+            # - github.com/brombres/rogue
             # OR
             # - provider/repo/app-name
-            # - abepralle/tools/xyz
+            # - brombres/tools/xyz
             local parts = url.split('/')
             if (parts[0] == "github" or parts[0].contains('.'))
               host     = parts[0]
