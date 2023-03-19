@@ -3003,84 +3003,100 @@ void RogueCharacter__print_escaped_ascii__RogueString_RoguePrintWriter( RogueCha
 {
   RogueObject* _auto_context_block_0_2 = 0;
   (void)_auto_context_block_0_2;
+  RogueCharacter _auto_which_value_1_3 = 0;
+  (void)_auto_which_value_1_3;
 
   RogueInt32 _auto_local_pointer_fp_0 = TypeRogueObject.local_pointer_count;
 
-  switch (THIS)
+  _auto_which_value_1_3 = 0;
+  _auto_which_value_1_3 = THIS;
+  if (_auto_which_value_1_3 == '\\')
   {
-    case '\\':
-    {
-      Rogue_dispatch_print__RogueString( writer_1, str___ );
-      break;
-    }
-    case ((RogueCharacter)0):
+    Rogue_dispatch_print__RogueString( writer_1, str___ );
+  }
+  else
+  {
+    if (_auto_which_value_1_3 == ((RogueCharacter)0))
     {
       Rogue_dispatch_print__RogueString( writer_1, str__0 );
-      break;
     }
-    case ((RogueCharacter)8):
+    else
     {
-      Rogue_dispatch_print__RogueString( writer_1, str__b );
-      break;
-    }
-    case ((RogueCharacter)27):
-    {
-      Rogue_dispatch_print__RogueString( writer_1, str__e );
-      break;
-    }
-    case ((RogueCharacter)12):
-    {
-      Rogue_dispatch_print__RogueString( writer_1, str__f );
-      break;
-    }
-    case ((RogueCharacter)10):
-    {
-      Rogue_dispatch_print__RogueString( writer_1, str__n );
-      break;
-    }
-    case ((RogueCharacter)13):
-    {
-      Rogue_dispatch_print__RogueString( writer_1, str__r );
-      break;
-    }
-    case ((RogueCharacter)9):
-    {
-      Rogue_dispatch_print__RogueString( writer_1, str__t );
-      break;
-    }
-    case ((RogueCharacter)11):
-    {
-      Rogue_dispatch_print__RogueString( writer_1, str__v );
-      break;
-    }
-    default:
-    {
-      if (RogueString__contains__RogueCharacter_RogueLogical( additional_characters_to_escape_0, THIS, 0 ))
+      if (_auto_which_value_1_3 == ((RogueCharacter)8))
       {
-        RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_context_block_0_2 );
-        _auto_context_block_0_2 = writer_1;
-        Rogue_dispatch_print__RogueString( _auto_context_block_0_2, str__ );
-        Rogue_dispatch_print__RogueCharacter( _auto_context_block_0_2, THIS );
+        Rogue_dispatch_print__RogueString( writer_1, str__b );
       }
       else
       {
-        if (((RogueInt32)THIS) >= 256)
+        if (_auto_which_value_1_3 == ((RogueCharacter)27))
         {
-          Rogue_dispatch_print__RogueString( writer_1, str____1 );
-          RogueInt64__print_power_of_2__RogueInt32_RogueInt32_RoguePrintWriter( ((RogueInt64)THIS), 16, 3, writer_1 );
-          Rogue_dispatch_print__RogueCharacter( writer_1, ']' );
+          Rogue_dispatch_print__RogueString( writer_1, str__e );
         }
         else
         {
-          if ((((RogueInt32)THIS) < 32) || (((RogueInt32)THIS) >= 127))
+          if (_auto_which_value_1_3 == ((RogueCharacter)12))
           {
-            Rogue_dispatch_print__RogueString( writer_1, str__x );
-            RogueInt64__print_power_of_2__RogueInt32_RogueInt32_RoguePrintWriter( ((RogueInt64)THIS), 16, 2, writer_1 );
+            Rogue_dispatch_print__RogueString( writer_1, str__f );
           }
           else
           {
+            if (_auto_which_value_1_3 == ((RogueCharacter)10))
             {
-              Rogue_dispatch_print__RogueCharacter( writer_1, THIS );
+              Rogue_dispatch_print__RogueString( writer_1, str__n );
+            }
+            else
+            {
+              if (_auto_which_value_1_3 == ((RogueCharacter)13))
+              {
+                Rogue_dispatch_print__RogueString( writer_1, str__r );
+              }
+              else
+              {
+                if (_auto_which_value_1_3 == ((RogueCharacter)9))
+                {
+                  Rogue_dispatch_print__RogueString( writer_1, str__t );
+                }
+                else
+                {
+                  if (_auto_which_value_1_3 == ((RogueCharacter)11))
+                  {
+                    Rogue_dispatch_print__RogueString( writer_1, str__v );
+                  }
+                  else
+                  {
+                    if (RogueString__contains__RogueCharacter_RogueLogical( additional_characters_to_escape_0, THIS, 0 ))
+                    {
+                      RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_context_block_0_2 );
+                      _auto_context_block_0_2 = writer_1;
+                      Rogue_dispatch_print__RogueString( _auto_context_block_0_2, str__ );
+                      Rogue_dispatch_print__RogueCharacter( _auto_context_block_0_2, THIS );
+                    }
+                    else
+                    {
+                      if (((RogueInt32)THIS) >= 256)
+                      {
+                        Rogue_dispatch_print__RogueString( writer_1, str____1 );
+                        RogueInt64__print_power_of_2__RogueInt32_RogueInt32_RoguePrintWriter( ((RogueInt64)THIS), 16, 3, writer_1 );
+                        Rogue_dispatch_print__RogueCharacter( writer_1, ']' );
+                      }
+                      else
+                      {
+                        if ((((RogueInt32)THIS) < 32) || (((RogueInt32)THIS) >= 127))
+                        {
+                          Rogue_dispatch_print__RogueString( writer_1, str__x );
+                          RogueInt64__print_power_of_2__RogueInt32_RogueInt32_RoguePrintWriter( ((RogueInt64)THIS), 16, 2, writer_1 );
+                        }
+                        else
+                        {
+                          {
+                            Rogue_dispatch_print__RogueCharacter( writer_1, THIS );
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         }
@@ -3094,637 +3110,841 @@ RogueString* RogueCharacter__toxRogueStringx( RogueCharacter THIS )
 {
   RogueString* _auto_context_block_0_0 = 0;
   (void)_auto_context_block_0_0;
+  RogueCharacter _auto_which_value_1_1 = 0;
+  (void)_auto_which_value_1_1;
 
   RogueInt32 _auto_local_pointer_fp_0 = TypeRogueObject.local_pointer_count;
 
-  switch (THIS)
+  _auto_which_value_1_1 = 0;
+  _auto_which_value_1_1 = THIS;
+  if (_auto_which_value_1_1 == 0)
   {
-    case 0:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___1;
-      break;
-    }
-    case 8:
+    TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+    return str___1;
+  }
+  else
+  {
+    if (_auto_which_value_1_1 == 8)
     {
       TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
       return str___2;
-      break;
     }
-    case 9:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___3;
-      break;
-    }
-    case 10:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___4;
-      break;
-    }
-    case 11:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___5;
-      break;
-    }
-    case 12:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___6;
-      break;
-    }
-    case 13:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___7;
-      break;
-    }
-    case 27:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___8;
-      break;
-    }
-    case 32:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___9;
-      break;
-    }
-    case 33:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___10;
-      break;
-    }
-    case 34:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___11;
-      break;
-    }
-    case 35:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___12;
-      break;
-    }
-    case 36:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___13;
-      break;
-    }
-    case 37:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___14;
-      break;
-    }
-    case 38:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___15;
-      break;
-    }
-    case 39:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___16;
-      break;
-    }
-    case 40:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___17;
-      break;
-    }
-    case 41:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___18;
-      break;
-    }
-    case 42:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___19;
-      break;
-    }
-    case 43:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___20;
-      break;
-    }
-    case 44:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___21;
-      break;
-    }
-    case 45:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___22;
-      break;
-    }
-    case 46:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___23;
-      break;
-    }
-    case 47:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___24;
-      break;
-    }
-    case 48:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_0;
-      break;
-    }
-    case 49:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_1;
-      break;
-    }
-    case 50:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_2;
-      break;
-    }
-    case 51:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_3;
-      break;
-    }
-    case 52:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_4;
-      break;
-    }
-    case 53:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_5;
-      break;
-    }
-    case 54:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_6;
-      break;
-    }
-    case 55:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_7;
-      break;
-    }
-    case 56:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_8;
-      break;
-    }
-    case 57:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_9;
-      break;
-    }
-    case 58:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___25;
-      break;
-    }
-    case 59:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___26;
-      break;
-    }
-    case 60:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___27;
-      break;
-    }
-    case 61:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___28;
-      break;
-    }
-    case 62:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___29;
-      break;
-    }
-    case 63:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___30;
-      break;
-    }
-    case 64:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___31;
-      break;
-    }
-    case 65:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_A;
-      break;
-    }
-    case 66:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_B;
-      break;
-    }
-    case 67:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_C;
-      break;
-    }
-    case 68:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_D;
-      break;
-    }
-    case 69:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_E;
-      break;
-    }
-    case 70:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_F;
-      break;
-    }
-    case 71:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_G;
-      break;
-    }
-    case 72:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_H;
-      break;
-    }
-    case 73:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_I;
-      break;
-    }
-    case 74:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_J;
-      break;
-    }
-    case 75:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_K;
-      break;
-    }
-    case 76:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_L;
-      break;
-    }
-    case 77:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_M;
-      break;
-    }
-    case 78:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_N;
-      break;
-    }
-    case 79:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_O;
-      break;
-    }
-    case 80:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_P;
-      break;
-    }
-    case 81:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_Q;
-      break;
-    }
-    case 82:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_R;
-      break;
-    }
-    case 83:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_S;
-      break;
-    }
-    case 84:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_T;
-      break;
-    }
-    case 85:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_U;
-      break;
-    }
-    case 86:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_V;
-      break;
-    }
-    case 87:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_W;
-      break;
-    }
-    case 88:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_X;
-      break;
-    }
-    case 89:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_Y;
-      break;
-    }
-    case 90:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_Z;
-      break;
-    }
-    case 91:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___32;
-      break;
-    }
-    case 92:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str__;
-      break;
-    }
-    case 93:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___33;
-      break;
-    }
-    case 94:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___34;
-      break;
-    }
-    case 95:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___35;
-      break;
-    }
-    case 96:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___36;
-      break;
-    }
-    case 97:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_a;
-      break;
-    }
-    case 98:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_b;
-      break;
-    }
-    case 99:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_c;
-      break;
-    }
-    case 100:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_d;
-      break;
-    }
-    case 101:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_e;
-      break;
-    }
-    case 102:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_f;
-      break;
-    }
-    case 103:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_g;
-      break;
-    }
-    case 104:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_h;
-      break;
-    }
-    case 105:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_i;
-      break;
-    }
-    case 106:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_j;
-      break;
-    }
-    case 107:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_k;
-      break;
-    }
-    case 108:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_l;
-      break;
-    }
-    case 109:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_m;
-      break;
-    }
-    case 110:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_n;
-      break;
-    }
-    case 111:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_o;
-      break;
-    }
-    case 112:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_p;
-      break;
-    }
-    case 113:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_q;
-      break;
-    }
-    case 114:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_r;
-      break;
-    }
-    case 115:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_s;
-      break;
-    }
-    case 116:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_t;
-      break;
-    }
-    case 117:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_u;
-      break;
-    }
-    case 118:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_v;
-      break;
-    }
-    case 119:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_w;
-      break;
-    }
-    case 120:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_x;
-      break;
-    }
-    case 121:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_y;
-      break;
-    }
-    case 122:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str_z;
-      break;
-    }
-    case 123:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___37;
-      break;
-    }
-    case 124:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___38;
-      break;
-    }
-    case 125:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___39;
-      break;
-    }
-    case 126:
-    {
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return str___40;
-      break;
-    }
-    default:
-    {
-      RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_context_block_0_0 );
-      _auto_context_block_0_0 = ROGUE_CREATE_OBJECT( RogueString );
-      RogueString__init(_auto_context_block_0_0);
-      RogueString__print__RogueCharacter( _auto_context_block_0_0, THIS );
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return _auto_context_block_0_0;
+    else
+    {
+      if (_auto_which_value_1_1 == 9)
+      {
+        TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+        return str___3;
+      }
+      else
+      {
+        if (_auto_which_value_1_1 == 10)
+        {
+          TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+          return str___4;
+        }
+        else
+        {
+          if (_auto_which_value_1_1 == 11)
+          {
+            TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+            return str___5;
+          }
+          else
+          {
+            if (_auto_which_value_1_1 == 12)
+            {
+              TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+              return str___6;
+            }
+            else
+            {
+              if (_auto_which_value_1_1 == 13)
+              {
+                TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                return str___7;
+              }
+              else
+              {
+                if (_auto_which_value_1_1 == 27)
+                {
+                  TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                  return str___8;
+                }
+                else
+                {
+                  if (_auto_which_value_1_1 == 32)
+                  {
+                    TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                    return str___9;
+                  }
+                  else
+                  {
+                    if (_auto_which_value_1_1 == 33)
+                    {
+                      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                      return str___10;
+                    }
+                    else
+                    {
+                      if (_auto_which_value_1_1 == 34)
+                      {
+                        TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                        return str___11;
+                      }
+                      else
+                      {
+                        if (_auto_which_value_1_1 == 35)
+                        {
+                          TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                          return str___12;
+                        }
+                        else
+                        {
+                          if (_auto_which_value_1_1 == 36)
+                          {
+                            TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                            return str___13;
+                          }
+                          else
+                          {
+                            if (_auto_which_value_1_1 == 37)
+                            {
+                              TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                              return str___14;
+                            }
+                            else
+                            {
+                              if (_auto_which_value_1_1 == 38)
+                              {
+                                TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                return str___15;
+                              }
+                              else
+                              {
+                                if (_auto_which_value_1_1 == 39)
+                                {
+                                  TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                  return str___16;
+                                }
+                                else
+                                {
+                                  if (_auto_which_value_1_1 == 40)
+                                  {
+                                    TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                    return str___17;
+                                  }
+                                  else
+                                  {
+                                    if (_auto_which_value_1_1 == 41)
+                                    {
+                                      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                      return str___18;
+                                    }
+                                    else
+                                    {
+                                      if (_auto_which_value_1_1 == 42)
+                                      {
+                                        TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                        return str___19;
+                                      }
+                                      else
+                                      {
+                                        if (_auto_which_value_1_1 == 43)
+                                        {
+                                          TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                          return str___20;
+                                        }
+                                        else
+                                        {
+                                          if (_auto_which_value_1_1 == 44)
+                                          {
+                                            TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                            return str___21;
+                                          }
+                                          else
+                                          {
+                                            if (_auto_which_value_1_1 == 45)
+                                            {
+                                              TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                              return str___22;
+                                            }
+                                            else
+                                            {
+                                              if (_auto_which_value_1_1 == 46)
+                                              {
+                                                TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                return str___23;
+                                              }
+                                              else
+                                              {
+                                                if (_auto_which_value_1_1 == 47)
+                                                {
+                                                  TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                  return str___24;
+                                                }
+                                                else
+                                                {
+                                                  if (_auto_which_value_1_1 == 48)
+                                                  {
+                                                    TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                    return str_0;
+                                                  }
+                                                  else
+                                                  {
+                                                    if (_auto_which_value_1_1 == 49)
+                                                    {
+                                                      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                      return str_1;
+                                                    }
+                                                    else
+                                                    {
+                                                      if (_auto_which_value_1_1 == 50)
+                                                      {
+                                                        TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                        return str_2;
+                                                      }
+                                                      else
+                                                      {
+                                                        if (_auto_which_value_1_1 == 51)
+                                                        {
+                                                          TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                          return str_3;
+                                                        }
+                                                        else
+                                                        {
+                                                          if (_auto_which_value_1_1 == 52)
+                                                          {
+                                                            TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                            return str_4;
+                                                          }
+                                                          else
+                                                          {
+                                                            if (_auto_which_value_1_1 == 53)
+                                                            {
+                                                              TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                              return str_5;
+                                                            }
+                                                            else
+                                                            {
+                                                              if (_auto_which_value_1_1 == 54)
+                                                              {
+                                                                TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                return str_6;
+                                                              }
+                                                              else
+                                                              {
+                                                                if (_auto_which_value_1_1 == 55)
+                                                                {
+                                                                  TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                  return str_7;
+                                                                }
+                                                                else
+                                                                {
+                                                                  if (_auto_which_value_1_1 == 56)
+                                                                  {
+                                                                    TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                    return str_8;
+                                                                  }
+                                                                  else
+                                                                  {
+                                                                    if (_auto_which_value_1_1 == 57)
+                                                                    {
+                                                                      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                      return str_9;
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                      if (_auto_which_value_1_1 == 58)
+                                                                      {
+                                                                        TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                        return str___25;
+                                                                      }
+                                                                      else
+                                                                      {
+                                                                        if (_auto_which_value_1_1 == 59)
+                                                                        {
+                                                                          TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                          return str___26;
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                          if (_auto_which_value_1_1 == 60)
+                                                                          {
+                                                                            TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                            return str___27;
+                                                                          }
+                                                                          else
+                                                                          {
+                                                                            if (_auto_which_value_1_1 == 61)
+                                                                            {
+                                                                              TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                              return str___28;
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                              if (_auto_which_value_1_1 == 62)
+                                                                              {
+                                                                                TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                return str___29;
+                                                                              }
+                                                                              else
+                                                                              {
+                                                                                if (_auto_which_value_1_1 == 63)
+                                                                                {
+                                                                                  TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                  return str___30;
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                  if (_auto_which_value_1_1 == 64)
+                                                                                  {
+                                                                                    TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                    return str___31;
+                                                                                  }
+                                                                                  else
+                                                                                  {
+                                                                                    if (_auto_which_value_1_1 == 65)
+                                                                                    {
+                                                                                      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                      return str_A;
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                      if (_auto_which_value_1_1 == 66)
+                                                                                      {
+                                                                                        TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                        return str_B;
+                                                                                      }
+                                                                                      else
+                                                                                      {
+                                                                                        if (_auto_which_value_1_1 == 67)
+                                                                                        {
+                                                                                          TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                          return str_C;
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                          if (_auto_which_value_1_1 == 68)
+                                                                                          {
+                                                                                            TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                            return str_D;
+                                                                                          }
+                                                                                          else
+                                                                                          {
+                                                                                            if (_auto_which_value_1_1 == 69)
+                                                                                            {
+                                                                                              TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                              return str_E;
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                              if (_auto_which_value_1_1 == 70)
+                                                                                              {
+                                                                                                TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                return str_F;
+                                                                                              }
+                                                                                              else
+                                                                                              {
+                                                                                                if (_auto_which_value_1_1 == 71)
+                                                                                                {
+                                                                                                  TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                  return str_G;
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                  if (_auto_which_value_1_1 == 72)
+                                                                                                  {
+                                                                                                    TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                    return str_H;
+                                                                                                  }
+                                                                                                  else
+                                                                                                  {
+                                                                                                    if (_auto_which_value_1_1 == 73)
+                                                                                                    {
+                                                                                                      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                      return str_I;
+                                                                                                    }
+                                                                                                    else
+                                                                                                    {
+                                                                                                      if (_auto_which_value_1_1 == 74)
+                                                                                                      {
+                                                                                                        TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                        return str_J;
+                                                                                                      }
+                                                                                                      else
+                                                                                                      {
+                                                                                                        if (_auto_which_value_1_1 == 75)
+                                                                                                        {
+                                                                                                          TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                          return str_K;
+                                                                                                        }
+                                                                                                        else
+                                                                                                        {
+                                                                                                          if (_auto_which_value_1_1 == 76)
+                                                                                                          {
+                                                                                                            TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                            return str_L;
+                                                                                                          }
+                                                                                                          else
+                                                                                                          {
+                                                                                                            if (_auto_which_value_1_1 == 77)
+                                                                                                            {
+                                                                                                              TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                              return str_M;
+                                                                                                            }
+                                                                                                            else
+                                                                                                            {
+                                                                                                              if (_auto_which_value_1_1 == 78)
+                                                                                                              {
+                                                                                                                TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                return str_N;
+                                                                                                              }
+                                                                                                              else
+                                                                                                              {
+                                                                                                                if (_auto_which_value_1_1 == 79)
+                                                                                                                {
+                                                                                                                  TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                  return str_O;
+                                                                                                                }
+                                                                                                                else
+                                                                                                                {
+                                                                                                                  if (_auto_which_value_1_1 == 80)
+                                                                                                                  {
+                                                                                                                    TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                    return str_P;
+                                                                                                                  }
+                                                                                                                  else
+                                                                                                                  {
+                                                                                                                    if (_auto_which_value_1_1 == 81)
+                                                                                                                    {
+                                                                                                                      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                      return str_Q;
+                                                                                                                    }
+                                                                                                                    else
+                                                                                                                    {
+                                                                                                                      if (_auto_which_value_1_1 == 82)
+                                                                                                                      {
+                                                                                                                        TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                        return str_R;
+                                                                                                                      }
+                                                                                                                      else
+                                                                                                                      {
+                                                                                                                        if (_auto_which_value_1_1 == 83)
+                                                                                                                        {
+                                                                                                                          TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                          return str_S;
+                                                                                                                        }
+                                                                                                                        else
+                                                                                                                        {
+                                                                                                                          if (_auto_which_value_1_1 == 84)
+                                                                                                                          {
+                                                                                                                            TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                            return str_T;
+                                                                                                                          }
+                                                                                                                          else
+                                                                                                                          {
+                                                                                                                            if (_auto_which_value_1_1 == 85)
+                                                                                                                            {
+                                                                                                                              TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                              return str_U;
+                                                                                                                            }
+                                                                                                                            else
+                                                                                                                            {
+                                                                                                                              if (_auto_which_value_1_1 == 86)
+                                                                                                                              {
+                                                                                                                                TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                return str_V;
+                                                                                                                              }
+                                                                                                                              else
+                                                                                                                              {
+                                                                                                                                if (_auto_which_value_1_1 == 87)
+                                                                                                                                {
+                                                                                                                                  TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                  return str_W;
+                                                                                                                                }
+                                                                                                                                else
+                                                                                                                                {
+                                                                                                                                  if (_auto_which_value_1_1 == 88)
+                                                                                                                                  {
+                                                                                                                                    TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                    return str_X;
+                                                                                                                                  }
+                                                                                                                                  else
+                                                                                                                                  {
+                                                                                                                                    if (_auto_which_value_1_1 == 89)
+                                                                                                                                    {
+                                                                                                                                      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                      return str_Y;
+                                                                                                                                    }
+                                                                                                                                    else
+                                                                                                                                    {
+                                                                                                                                      if (_auto_which_value_1_1 == 90)
+                                                                                                                                      {
+                                                                                                                                        TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                        return str_Z;
+                                                                                                                                      }
+                                                                                                                                      else
+                                                                                                                                      {
+                                                                                                                                        if (_auto_which_value_1_1 == 91)
+                                                                                                                                        {
+                                                                                                                                          TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                          return str___32;
+                                                                                                                                        }
+                                                                                                                                        else
+                                                                                                                                        {
+                                                                                                                                          if (_auto_which_value_1_1 == 92)
+                                                                                                                                          {
+                                                                                                                                            TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                            return str__;
+                                                                                                                                          }
+                                                                                                                                          else
+                                                                                                                                          {
+                                                                                                                                            if (_auto_which_value_1_1 == 93)
+                                                                                                                                            {
+                                                                                                                                              TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                              return str___33;
+                                                                                                                                            }
+                                                                                                                                            else
+                                                                                                                                            {
+                                                                                                                                              if (_auto_which_value_1_1 == 94)
+                                                                                                                                              {
+                                                                                                                                                TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                return str___34;
+                                                                                                                                              }
+                                                                                                                                              else
+                                                                                                                                              {
+                                                                                                                                                if (_auto_which_value_1_1 == 95)
+                                                                                                                                                {
+                                                                                                                                                  TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                  return str___35;
+                                                                                                                                                }
+                                                                                                                                                else
+                                                                                                                                                {
+                                                                                                                                                  if (_auto_which_value_1_1 == 96)
+                                                                                                                                                  {
+                                                                                                                                                    TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                    return str___36;
+                                                                                                                                                  }
+                                                                                                                                                  else
+                                                                                                                                                  {
+                                                                                                                                                    if (_auto_which_value_1_1 == 97)
+                                                                                                                                                    {
+                                                                                                                                                      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                      return str_a;
+                                                                                                                                                    }
+                                                                                                                                                    else
+                                                                                                                                                    {
+                                                                                                                                                      if (_auto_which_value_1_1 == 98)
+                                                                                                                                                      {
+                                                                                                                                                        TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                        return str_b;
+                                                                                                                                                      }
+                                                                                                                                                      else
+                                                                                                                                                      {
+                                                                                                                                                        if (_auto_which_value_1_1 == 99)
+                                                                                                                                                        {
+                                                                                                                                                          TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                          return str_c;
+                                                                                                                                                        }
+                                                                                                                                                        else
+                                                                                                                                                        {
+                                                                                                                                                          if (_auto_which_value_1_1 == 100)
+                                                                                                                                                          {
+                                                                                                                                                            TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                            return str_d;
+                                                                                                                                                          }
+                                                                                                                                                          else
+                                                                                                                                                          {
+                                                                                                                                                            if (_auto_which_value_1_1 == 101)
+                                                                                                                                                            {
+                                                                                                                                                              TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                              return str_e;
+                                                                                                                                                            }
+                                                                                                                                                            else
+                                                                                                                                                            {
+                                                                                                                                                              if (_auto_which_value_1_1 == 102)
+                                                                                                                                                              {
+                                                                                                                                                                TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                                return str_f;
+                                                                                                                                                              }
+                                                                                                                                                              else
+                                                                                                                                                              {
+                                                                                                                                                                if (_auto_which_value_1_1 == 103)
+                                                                                                                                                                {
+                                                                                                                                                                  TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                                  return str_g;
+                                                                                                                                                                }
+                                                                                                                                                                else
+                                                                                                                                                                {
+                                                                                                                                                                  if (_auto_which_value_1_1 == 104)
+                                                                                                                                                                  {
+                                                                                                                                                                    TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                                    return str_h;
+                                                                                                                                                                  }
+                                                                                                                                                                  else
+                                                                                                                                                                  {
+                                                                                                                                                                    if (_auto_which_value_1_1 == 105)
+                                                                                                                                                                    {
+                                                                                                                                                                      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                                      return str_i;
+                                                                                                                                                                    }
+                                                                                                                                                                    else
+                                                                                                                                                                    {
+                                                                                                                                                                      if (_auto_which_value_1_1 == 106)
+                                                                                                                                                                      {
+                                                                                                                                                                        TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                                        return str_j;
+                                                                                                                                                                      }
+                                                                                                                                                                      else
+                                                                                                                                                                      {
+                                                                                                                                                                        if (_auto_which_value_1_1 == 107)
+                                                                                                                                                                        {
+                                                                                                                                                                          TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                                          return str_k;
+                                                                                                                                                                        }
+                                                                                                                                                                        else
+                                                                                                                                                                        {
+                                                                                                                                                                          if (_auto_which_value_1_1 == 108)
+                                                                                                                                                                          {
+                                                                                                                                                                            TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                                            return str_l;
+                                                                                                                                                                          }
+                                                                                                                                                                          else
+                                                                                                                                                                          {
+                                                                                                                                                                            if (_auto_which_value_1_1 == 109)
+                                                                                                                                                                            {
+                                                                                                                                                                              TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                                              return str_m;
+                                                                                                                                                                            }
+                                                                                                                                                                            else
+                                                                                                                                                                            {
+                                                                                                                                                                              if (_auto_which_value_1_1 == 110)
+                                                                                                                                                                              {
+                                                                                                                                                                                TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                                                return str_n;
+                                                                                                                                                                              }
+                                                                                                                                                                              else
+                                                                                                                                                                              {
+                                                                                                                                                                                if (_auto_which_value_1_1 == 111)
+                                                                                                                                                                                {
+                                                                                                                                                                                  TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                                                  return str_o;
+                                                                                                                                                                                }
+                                                                                                                                                                                else
+                                                                                                                                                                                {
+                                                                                                                                                                                  if (_auto_which_value_1_1 == 112)
+                                                                                                                                                                                  {
+                                                                                                                                                                                    TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                                                    return str_p;
+                                                                                                                                                                                  }
+                                                                                                                                                                                  else
+                                                                                                                                                                                  {
+                                                                                                                                                                                    if (_auto_which_value_1_1 == 113)
+                                                                                                                                                                                    {
+                                                                                                                                                                                      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                                                      return str_q;
+                                                                                                                                                                                    }
+                                                                                                                                                                                    else
+                                                                                                                                                                                    {
+                                                                                                                                                                                      if (_auto_which_value_1_1 == 114)
+                                                                                                                                                                                      {
+                                                                                                                                                                                        TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                                                        return str_r;
+                                                                                                                                                                                      }
+                                                                                                                                                                                      else
+                                                                                                                                                                                      {
+                                                                                                                                                                                        if (_auto_which_value_1_1 == 115)
+                                                                                                                                                                                        {
+                                                                                                                                                                                          TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                                                          return str_s;
+                                                                                                                                                                                        }
+                                                                                                                                                                                        else
+                                                                                                                                                                                        {
+                                                                                                                                                                                          if (_auto_which_value_1_1 == 116)
+                                                                                                                                                                                          {
+                                                                                                                                                                                            TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                                                            return str_t;
+                                                                                                                                                                                          }
+                                                                                                                                                                                          else
+                                                                                                                                                                                          {
+                                                                                                                                                                                            if (_auto_which_value_1_1 == 117)
+                                                                                                                                                                                            {
+                                                                                                                                                                                              TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                                                              return str_u;
+                                                                                                                                                                                            }
+                                                                                                                                                                                            else
+                                                                                                                                                                                            {
+                                                                                                                                                                                              if (_auto_which_value_1_1 == 118)
+                                                                                                                                                                                              {
+                                                                                                                                                                                                TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                                                                return str_v;
+                                                                                                                                                                                              }
+                                                                                                                                                                                              else
+                                                                                                                                                                                              {
+                                                                                                                                                                                                if (_auto_which_value_1_1 == 119)
+                                                                                                                                                                                                {
+                                                                                                                                                                                                  TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                                                                  return str_w;
+                                                                                                                                                                                                }
+                                                                                                                                                                                                else
+                                                                                                                                                                                                {
+                                                                                                                                                                                                  if (_auto_which_value_1_1 == 120)
+                                                                                                                                                                                                  {
+                                                                                                                                                                                                    TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                                                                    return str_x;
+                                                                                                                                                                                                  }
+                                                                                                                                                                                                  else
+                                                                                                                                                                                                  {
+                                                                                                                                                                                                    if (_auto_which_value_1_1 == 121)
+                                                                                                                                                                                                    {
+                                                                                                                                                                                                      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                                                                      return str_y;
+                                                                                                                                                                                                    }
+                                                                                                                                                                                                    else
+                                                                                                                                                                                                    {
+                                                                                                                                                                                                      if (_auto_which_value_1_1 == 122)
+                                                                                                                                                                                                      {
+                                                                                                                                                                                                        TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                                                                        return str_z;
+                                                                                                                                                                                                      }
+                                                                                                                                                                                                      else
+                                                                                                                                                                                                      {
+                                                                                                                                                                                                        if (_auto_which_value_1_1 == 123)
+                                                                                                                                                                                                        {
+                                                                                                                                                                                                          TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                                                                          return str___37;
+                                                                                                                                                                                                        }
+                                                                                                                                                                                                        else
+                                                                                                                                                                                                        {
+                                                                                                                                                                                                          if (_auto_which_value_1_1 == 124)
+                                                                                                                                                                                                          {
+                                                                                                                                                                                                            TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                                                                            return str___38;
+                                                                                                                                                                                                          }
+                                                                                                                                                                                                          else
+                                                                                                                                                                                                          {
+                                                                                                                                                                                                            if (_auto_which_value_1_1 == 125)
+                                                                                                                                                                                                            {
+                                                                                                                                                                                                              TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                                                                              return str___39;
+                                                                                                                                                                                                            }
+                                                                                                                                                                                                            else
+                                                                                                                                                                                                            {
+                                                                                                                                                                                                              if (_auto_which_value_1_1 == 126)
+                                                                                                                                                                                                              {
+                                                                                                                                                                                                                TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                                                                                return str___40;
+                                                                                                                                                                                                              }
+                                                                                                                                                                                                              else
+                                                                                                                                                                                                              {
+                                                                                                                                                                                                                RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_context_block_0_0 );
+                                                                                                                                                                                                                _auto_context_block_0_0 = ROGUE_CREATE_OBJECT( RogueString );
+                                                                                                                                                                                                                RogueString__init(_auto_context_block_0_0);
+                                                                                                                                                                                                                RogueString__print__RogueCharacter( _auto_context_block_0_0, THIS );
+                                                                                                                                                                                                                TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                                                                                                                                                                                                                return _auto_context_block_0_0;
+                                                                                                                                                                                                              }
+                                                                                                                                                                                                            }
+                                                                                                                                                                                                          }
+                                                                                                                                                                                                        }
+                                                                                                                                                                                                      }
+                                                                                                                                                                                                    }
+                                                                                                                                                                                                  }
+                                                                                                                                                                                                }
+                                                                                                                                                                                              }
+                                                                                                                                                                                            }
+                                                                                                                                                                                          }
+                                                                                                                                                                                        }
+                                                                                                                                                                                      }
+                                                                                                                                                                                    }
+                                                                                                                                                                                  }
+                                                                                                                                                                                }
+                                                                                                                                                                              }
+                                                                                                                                                                            }
+                                                                                                                                                                          }
+                                                                                                                                                                        }
+                                                                                                                                                                      }
+                                                                                                                                                                    }
+                                                                                                                                                                  }
+                                                                                                                                                                }
+                                                                                                                                                              }
+                                                                                                                                                            }
+                                                                                                                                                          }
+                                                                                                                                                        }
+                                                                                                                                                      }
+                                                                                                                                                    }
+                                                                                                                                                  }
+                                                                                                                                                }
+                                                                                                                                              }
+                                                                                                                                            }
+                                                                                                                                          }
+                                                                                                                                        }
+                                                                                                                                      }
+                                                                                                                                    }
+                                                                                                                                  }
+                                                                                                                                }
+                                                                                                                              }
+                                                                                                                            }
+                                                                                                                          }
+                                                                                                                        }
+                                                                                                                      }
+                                                                                                                    }
+                                                                                                                  }
+                                                                                                                }
+                                                                                                              }
+                                                                                                            }
+                                                                                                          }
+                                                                                                        }
+                                                                                                      }
+                                                                                                    }
+                                                                                                  }
+                                                                                                }
+                                                                                              }
+                                                                                            }
+                                                                                          }
+                                                                                        }
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
@@ -7398,87 +7618,99 @@ void RogueValue__write_json_character__RogueCharacter_RogueString( RogueValue TH
   (void)_auto_i_0_3;
   RogueInt32 digit_4 = 0;
   (void)digit_4;
-  RogueLogical _auto_condition_0_5 = 0;
-  (void)_auto_condition_0_5;
+  RogueCharacter _auto_which_value_2_5 = 0;
+  (void)_auto_which_value_2_5;
+  RogueLogical _auto_condition_0_6 = 0;
+  (void)_auto_condition_0_6;
 
-  switch (ch_0)
+  _auto_which_value_2_5 = 0;
+  _auto_which_value_2_5 = ch_0;
+  if (_auto_which_value_2_5 == '"')
   {
-    case '"':
-    {
-      RogueString__print__RogueString( builder_1, str____10 );
-      break;
-    }
-    case '\\':
+    RogueString__print__RogueString( builder_1, str____10 );
+  }
+  else
+  {
+    if (_auto_which_value_2_5 == '\\')
     {
       RogueString__print__RogueString( builder_1, str___ );
-      break;
     }
-    case ((RogueCharacter)8):
+    else
     {
-      RogueString__print__RogueString( builder_1, str__b );
-      break;
-    }
-    case ((RogueCharacter)12):
-    {
-      RogueString__print__RogueString( builder_1, str__f );
-      break;
-    }
-    case ((RogueCharacter)10):
-    {
-      RogueString__print__RogueString( builder_1, str__n );
-      break;
-    }
-    case ((RogueCharacter)13):
-    {
-      RogueString__print__RogueString( builder_1, str__r );
-      break;
-    }
-    case ((RogueCharacter)9):
-    {
-      RogueString__print__RogueString( builder_1, str__t );
-      break;
-    }
-    default:
-    {
-      if ((((RogueInt32)ch_0) >= 32) && (((RogueInt32)ch_0) <= 126))
+      if (_auto_which_value_2_5 == ((RogueCharacter)8))
       {
-        RogueString__print__RogueCharacter( builder_1, ch_0 );
+        RogueString__print__RogueString( builder_1, str__b );
       }
       else
       {
-        if ((((((RogueInt32)ch_0) < 32) || (ch_0 == 127)) || (ch_0 == 8232)) || (ch_0 == 8233))
+        if (_auto_which_value_2_5 == ((RogueCharacter)12))
         {
-          RogueString__print__RogueString( builder_1, str__u );
-          n_2 = ((RogueInt32)ch_0);
-          _auto_i_0_3 = 5;
-          if (_auto_i_0_3 > 0)
-          {
-            _auto_condition_0_5 = --_auto_i_0_3;
-            goto _auto_loop_condition_0;
-            do
-            {
-              digit_4 = (n_2 >> 12) & 15;
-              n_2 = n_2 << 4;
-              if (digit_4 <= 9)
-              {
-                RogueString__print__RogueInt32( builder_1, digit_4 );
-              }
-              else
-              {
-                {
-                  RogueString__print__RogueCharacter( builder_1, ((RogueCharacter)((((RogueInt32)'a') + (digit_4 - 10)))) );
-                }
-              }
-              _auto_condition_0_5 = --_auto_i_0_3;
-              _auto_loop_condition_0:;
-            }
-            while (_auto_condition_0_5);
-          }
+          RogueString__print__RogueString( builder_1, str__f );
         }
         else
         {
+          if (_auto_which_value_2_5 == ((RogueCharacter)10))
           {
-            RogueString__print__RogueCharacter( builder_1, ch_0 );
+            RogueString__print__RogueString( builder_1, str__n );
+          }
+          else
+          {
+            if (_auto_which_value_2_5 == ((RogueCharacter)13))
+            {
+              RogueString__print__RogueString( builder_1, str__r );
+            }
+            else
+            {
+              if (_auto_which_value_2_5 == ((RogueCharacter)9))
+              {
+                RogueString__print__RogueString( builder_1, str__t );
+              }
+              else
+              {
+                if ((((RogueInt32)ch_0) >= 32) && (((RogueInt32)ch_0) <= 126))
+                {
+                  RogueString__print__RogueCharacter( builder_1, ch_0 );
+                }
+                else
+                {
+                  if ((((((RogueInt32)ch_0) < 32) || (ch_0 == 127)) || (ch_0 == 8232)) || (ch_0 == 8233))
+                  {
+                    RogueString__print__RogueString( builder_1, str__u );
+                    n_2 = ((RogueInt32)ch_0);
+                    _auto_i_0_3 = 5;
+                    if (_auto_i_0_3 > 0)
+                    {
+                      _auto_condition_0_6 = --_auto_i_0_3;
+                      goto _auto_loop_condition_0;
+                      do
+                      {
+                        digit_4 = (n_2 >> 12) & 15;
+                        n_2 = n_2 << 4;
+                        if (digit_4 <= 9)
+                        {
+                          RogueString__print__RogueInt32( builder_1, digit_4 );
+                        }
+                        else
+                        {
+                          {
+                            RogueString__print__RogueCharacter( builder_1, ((RogueCharacter)((((RogueInt32)'a') + (digit_4 - 10)))) );
+                          }
+                        }
+                        _auto_condition_0_6 = --_auto_i_0_3;
+                        _auto_loop_condition_0:;
+                      }
+                      while (_auto_condition_0_6);
+                    }
+                  }
+                  else
+                  {
+                    {
+                      RogueString__print__RogueCharacter( builder_1, ch_0 );
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -7759,12 +7991,14 @@ RogueLogical RogueFilePattern___matches__RogueString_RogueInt32_RogueInt32_Rogue
   (void)n_19;
   RogueCharacter filepath_ch_20 = 0;
   (void)filepath_ch_20;
-  RogueLogical _auto_condition_0_21 = 0;
-  (void)_auto_condition_0_21;
-  RogueLogical _auto_condition_1_22 = 0;
-  (void)_auto_condition_1_22;
-  RogueLogical _auto_condition_2_23 = 0;
-  (void)_auto_condition_2_23;
+  RogueCharacter _auto_which_value_9_21 = 0;
+  (void)_auto_which_value_9_21;
+  RogueLogical _auto_condition_0_22 = 0;
+  (void)_auto_condition_0_22;
+  RogueLogical _auto_condition_1_23 = 0;
+  (void)_auto_condition_1_23;
+  RogueLogical _auto_condition_2_24 = 0;
+  (void)_auto_condition_2_24;
 
   RogueInt32 _auto_local_pointer_fp_0 = TypeRogueObject.local_pointer_count;
 
@@ -7778,105 +8012,106 @@ RogueLogical RogueFilePattern___matches__RogueString_RogueInt32_RogueInt32_Rogue
   r0_8 = (p0_4 + 1);
   rcount_9 = pcount_5 - 1;
   ch_10 = RogueString__get__RogueInt32( pattern_3, p0_4 );
-  switch (ch_10)
+  _auto_which_value_9_21 = 0;
+  _auto_which_value_9_21 = ch_10;
+  if (_auto_which_value_9_21 == '*')
   {
-    case '*':
+    if (((rcount_9 >= 2) && (RogueString__get__RogueInt32( remaining_pattern_7, r0_8 ) == '*')) && (RogueString__get__RogueInt32( remaining_pattern_7, (r0_8 + 1) ) == '/'))
     {
-      if (((rcount_9 >= 2) && (RogueString__get__RogueInt32( remaining_pattern_7, r0_8 ) == '*')) && (RogueString__get__RogueInt32( remaining_pattern_7, (r0_8 + 1) ) == '/'))
+      if (RogueFilePattern___matches__RogueString_RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, filepath_0, f0_1, fcount_2, remaining_pattern_7, (r0_8 + 2), rcount_9 - 2, ignore_case_6 ))
       {
-        if (RogueFilePattern___matches__RogueString_RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, filepath_0, f0_1, fcount_2, remaining_pattern_7, (r0_8 + 2), rcount_9 - 2, ignore_case_6 ))
+        TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+        return 1;
+      }
+      ++r0_8;
+      --rcount_9;
+      _auto_collection_0_11 = (RogueRangeUpToIteratorxRogueInt32x){0};
+      _auto_collection_0_11 = RogueRangeUpToxRogueInt32x__iterator((RogueRangeUpToxRogueInt32x) {0,fcount_2,1});
+      _auto_next_1_12 = (RogueOptionalInt32){0};
+      _auto_next_1_12 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_0_11);
+      n_13 = 0;
+      _auto_condition_0_22 = _auto_next_1_12.exists;
+      goto _auto_loop_condition_0;
+      do
+      {
+        n_13 = _auto_next_1_12.value;
+        if (RogueFilePattern___matches__RogueString_RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, filepath_0, (f0_1 + n_13), fcount_2 - n_13, remaining_pattern_7, r0_8, rcount_9, ignore_case_6 ))
         {
           TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
           return 1;
         }
+        _auto_next_1_12 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_0_11);
+        _auto_condition_0_22 = _auto_next_1_12.exists;
+        _auto_loop_condition_0:;
+      }
+      while (_auto_condition_0_22);
+    }
+    else
+    {
+      if ((!!rcount_9) && (RogueString__get__RogueInt32( remaining_pattern_7, r0_8 ) == '*'))
+      {
         ++r0_8;
         --rcount_9;
-        _auto_collection_0_11 = (RogueRangeUpToIteratorxRogueInt32x){0};
-        _auto_collection_0_11 = RogueRangeUpToxRogueInt32x__iterator((RogueRangeUpToxRogueInt32x) {0,fcount_2,1});
-        _auto_next_1_12 = (RogueOptionalInt32){0};
-        _auto_next_1_12 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_0_11);
-        n_13 = 0;
-        _auto_condition_0_21 = _auto_next_1_12.exists;
-        goto _auto_loop_condition_0;
+        _auto_collection_3_14 = (RogueRangeUpToIteratorxRogueInt32x){0};
+        _auto_collection_3_14 = RogueRangeUpToxRogueInt32x__iterator((RogueRangeUpToxRogueInt32x) {0,fcount_2,1});
+        _auto_next_4_15 = (RogueOptionalInt32){0};
+        _auto_next_4_15 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_3_14);
+        n_16 = 0;
+        _auto_condition_1_23 = _auto_next_4_15.exists;
+        goto _auto_loop_condition_1;
         do
         {
-          n_13 = _auto_next_1_12.value;
-          if (RogueFilePattern___matches__RogueString_RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, filepath_0, (f0_1 + n_13), fcount_2 - n_13, remaining_pattern_7, r0_8, rcount_9, ignore_case_6 ))
+          n_16 = _auto_next_4_15.value;
+          if (RogueFilePattern___matches__RogueString_RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, filepath_0, (f0_1 + n_16), fcount_2 - n_16, remaining_pattern_7, r0_8, rcount_9, ignore_case_6 ))
           {
             TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
             return 1;
           }
-          _auto_next_1_12 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_0_11);
-          _auto_condition_0_21 = _auto_next_1_12.exists;
-          _auto_loop_condition_0:;
+          _auto_next_4_15 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_3_14);
+          _auto_condition_1_23 = _auto_next_4_15.exists;
+          _auto_loop_condition_1:;
         }
-        while (_auto_condition_0_21);
+        while (_auto_condition_1_23);
       }
       else
       {
-        if ((!!rcount_9) && (RogueString__get__RogueInt32( remaining_pattern_7, r0_8 ) == '*'))
         {
-          ++r0_8;
-          --rcount_9;
-          _auto_collection_3_14 = (RogueRangeUpToIteratorxRogueInt32x){0};
-          _auto_collection_3_14 = RogueRangeUpToxRogueInt32x__iterator((RogueRangeUpToxRogueInt32x) {0,fcount_2,1});
-          _auto_next_4_15 = (RogueOptionalInt32){0};
-          _auto_next_4_15 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_3_14);
-          n_16 = 0;
-          _auto_condition_1_22 = _auto_next_4_15.exists;
-          goto _auto_loop_condition_1;
+          _auto_collection_6_17 = (RogueRangeUpToLessThanIteratorxRogueInt32x){0};
+          _auto_collection_6_17 = RogueRangeUpToLessThanxRogueInt32x__iterator((RogueRangeUpToLessThanxRogueInt32x) {0,fcount_2,1});
+          _auto_next_7_18 = (RogueOptionalInt32){0};
+          _auto_next_7_18 = RogueRangeUpToLessThanIteratorxRogueInt32x__read_another(&_auto_collection_6_17);
+          n_19 = 0;
+          _auto_condition_2_24 = _auto_next_7_18.exists;
+          goto _auto_loop_condition_2;
           do
           {
-            n_16 = _auto_next_4_15.value;
-            if (RogueFilePattern___matches__RogueString_RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, filepath_0, (f0_1 + n_16), fcount_2 - n_16, remaining_pattern_7, r0_8, rcount_9, ignore_case_6 ))
+            n_19 = _auto_next_7_18.value;
+            ch_10 = RogueString__get__RogueInt32( filepath_0, (f0_1 + n_19) );
+            if (RogueFilePattern___matches__RogueString_RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, filepath_0, (f0_1 + n_19), fcount_2 - n_19, remaining_pattern_7, r0_8, rcount_9, ignore_case_6 ))
             {
               TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
               return 1;
             }
-            _auto_next_4_15 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_3_14);
-            _auto_condition_1_22 = _auto_next_4_15.exists;
-            _auto_loop_condition_1:;
-          }
-          while (_auto_condition_1_22);
-        }
-        else
-        {
-          {
-            _auto_collection_6_17 = (RogueRangeUpToLessThanIteratorxRogueInt32x){0};
-            _auto_collection_6_17 = RogueRangeUpToLessThanxRogueInt32x__iterator((RogueRangeUpToLessThanxRogueInt32x) {0,fcount_2,1});
-            _auto_next_7_18 = (RogueOptionalInt32){0};
-            _auto_next_7_18 = RogueRangeUpToLessThanIteratorxRogueInt32x__read_another(&_auto_collection_6_17);
-            n_19 = 0;
-            _auto_condition_2_23 = _auto_next_7_18.exists;
-            goto _auto_loop_condition_2;
-            do
+            if (ch_10 == '/')
             {
-              n_19 = _auto_next_7_18.value;
-              ch_10 = RogueString__get__RogueInt32( filepath_0, (f0_1 + n_19) );
-              if (RogueFilePattern___matches__RogueString_RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, filepath_0, (f0_1 + n_19), fcount_2 - n_19, remaining_pattern_7, r0_8, rcount_9, ignore_case_6 ))
-              {
-                TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-                return 1;
-              }
-              if (ch_10 == '/')
-              {
-                TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-                return 0;
-              }
-              _auto_next_7_18 = RogueRangeUpToLessThanIteratorxRogueInt32x__read_another(&_auto_collection_6_17);
-              _auto_condition_2_23 = _auto_next_7_18.exists;
-              _auto_loop_condition_2:;
+              TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+              return 0;
             }
-            while (_auto_condition_2_23);
-            RogueLogical _auto_result_3 = RogueFilePattern___matches__RogueString_RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, str_, 0, 0, remaining_pattern_7, r0_8, rcount_9, ignore_case_6 );
-            TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-            return _auto_result_3;
+            _auto_next_7_18 = RogueRangeUpToLessThanIteratorxRogueInt32x__read_another(&_auto_collection_6_17);
+            _auto_condition_2_24 = _auto_next_7_18.exists;
+            _auto_loop_condition_2:;
           }
+          while (_auto_condition_2_24);
+          RogueLogical _auto_result_3 = RogueFilePattern___matches__RogueString_RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, str_, 0, 0, remaining_pattern_7, r0_8, rcount_9, ignore_case_6 );
+          TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+          return _auto_result_3;
         }
       }
-      break;
     }
-    case '?':
+  }
+  else
+  {
+    if (_auto_which_value_9_21 == '?')
     {
       if (fcount_2 == 0)
       {
@@ -7892,9 +8127,8 @@ RogueLogical RogueFilePattern___matches__RogueString_RogueInt32_RogueInt32_Rogue
       RogueLogical _auto_result_4 = RogueFilePattern___matches__RogueString_RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, filepath_0, (f0_1 + 1), fcount_2 - 1, remaining_pattern_7, r0_8, rcount_9, ignore_case_6 );
       TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
       return _auto_result_4;
-      break;
     }
-    default:
+    else
     {
       if (fcount_2 == 0)
       {
@@ -12554,57 +12788,61 @@ RogueLogical RogueString___extract_strings__RogueInt32_RogueInt32_RogueString_Ro
   (void)rcount_18;
   RogueLogical found_digit_19 = 0;
   (void)found_digit_19;
-  RogueRangeUpToIteratorxRogueInt32x _auto_collection_9_20 = {0};
-  (void)_auto_collection_9_20;
-  RogueOptionalInt32 _auto_next_10_21 = {0};
-  (void)_auto_next_10_21;
-  RogueInt32 n_22 = 0;
-  (void)n_22;
-  RogueCharacter ch_23 = 0;
-  (void)ch_23;
-  RogueInt32 n_24 = 0;
-  (void)n_24;
-  RogueLogical _auto_condition_0_25 = 0;
-  (void)_auto_condition_0_25;
-  RogueLogical _auto_condition_1_26 = 0;
-  (void)_auto_condition_1_26;
-  RogueLogical _auto_condition_2_27 = 0;
-  (void)_auto_condition_2_27;
-  RogueLogical _auto_condition_3_28 = 0;
-  (void)_auto_condition_3_28;
-  RogueLogical _auto_condition_4_29 = 0;
-  (void)_auto_condition_4_29;
-  RogueString* _auto_anchored_arg_0_5_30 = 0;
-  (void)_auto_anchored_arg_0_5_30;
-  RogueLogical _auto_condition_6_31 = 0;
-  (void)_auto_condition_6_31;
-  RogueLogical _auto_condition_7_32 = 0;
-  (void)_auto_condition_7_32;
-  RogueString* _auto_anchored_arg_0_8_33 = 0;
-  (void)_auto_anchored_arg_0_8_33;
-  RogueString* _auto_anchored_arg_0_9_34 = 0;
-  (void)_auto_anchored_arg_0_9_34;
-  RogueLogical _auto_condition_10_35 = 0;
-  (void)_auto_condition_10_35;
-  RogueString* _auto_anchored_arg_0_11_36 = 0;
-  (void)_auto_anchored_arg_0_11_36;
-  RogueLogical _auto_condition_12_37 = 0;
-  (void)_auto_condition_12_37;
+  RogueCharacter _auto_which_value_9_20 = 0;
+  (void)_auto_which_value_9_20;
+  RogueRangeUpToIteratorxRogueInt32x _auto_collection_10_21 = {0};
+  (void)_auto_collection_10_21;
+  RogueOptionalInt32 _auto_next_11_22 = {0};
+  (void)_auto_next_11_22;
+  RogueInt32 n_23 = 0;
+  (void)n_23;
+  RogueCharacter _auto_which_value_13_24 = 0;
+  (void)_auto_which_value_13_24;
+  RogueCharacter ch_25 = 0;
+  (void)ch_25;
+  RogueInt32 n_26 = 0;
+  (void)n_26;
+  RogueLogical _auto_condition_0_27 = 0;
+  (void)_auto_condition_0_27;
+  RogueLogical _auto_condition_1_28 = 0;
+  (void)_auto_condition_1_28;
+  RogueLogical _auto_condition_2_29 = 0;
+  (void)_auto_condition_2_29;
+  RogueLogical _auto_condition_3_30 = 0;
+  (void)_auto_condition_3_30;
+  RogueLogical _auto_condition_4_31 = 0;
+  (void)_auto_condition_4_31;
+  RogueString* _auto_anchored_arg_0_5_32 = 0;
+  (void)_auto_anchored_arg_0_5_32;
+  RogueLogical _auto_condition_6_33 = 0;
+  (void)_auto_condition_6_33;
+  RogueLogical _auto_condition_7_34 = 0;
+  (void)_auto_condition_7_34;
+  RogueString* _auto_anchored_arg_0_8_35 = 0;
+  (void)_auto_anchored_arg_0_8_35;
+  RogueString* _auto_anchored_arg_0_9_36 = 0;
+  (void)_auto_anchored_arg_0_9_36;
+  RogueLogical _auto_condition_10_37 = 0;
+  (void)_auto_condition_10_37;
+  RogueString* _auto_anchored_arg_0_11_38 = 0;
+  (void)_auto_anchored_arg_0_11_38;
+  RogueLogical _auto_condition_12_39 = 0;
+  (void)_auto_condition_12_39;
 
   RogueInt32 _auto_local_pointer_fp_0 = TypeRogueObject.local_pointer_count;
 
   if (fcount_4 == 0)
   {
-    _auto_condition_0_25 = ((!!remaining_count_1) && ((RogueString__get__RogueInt32( THIS, i0_0 ) == ' ') || (RogueString__get__RogueInt32( THIS, i0_0 ) == ((RogueCharacter)9)))) && (!!remaining_count_1);
+    _auto_condition_0_27 = ((!!remaining_count_1) && ((RogueString__get__RogueInt32( THIS, i0_0 ) == ' ') || (RogueString__get__RogueInt32( THIS, i0_0 ) == ((RogueCharacter)9)))) && (!!remaining_count_1);
     goto _auto_loop_condition_0;
     do
     {
       ++i0_0;
       --remaining_count_1;
-      _auto_condition_0_25 = ((!!remaining_count_1) && ((RogueString__get__RogueInt32( THIS, i0_0 ) == ' ') || (RogueString__get__RogueInt32( THIS, i0_0 ) == ((RogueCharacter)9)))) && (!!remaining_count_1);
+      _auto_condition_0_27 = ((!!remaining_count_1) && ((RogueString__get__RogueInt32( THIS, i0_0 ) == ' ') || (RogueString__get__RogueInt32( THIS, i0_0 ) == ((RogueCharacter)9)))) && (!!remaining_count_1);
       _auto_loop_condition_0:;
     }
-    while (_auto_condition_0_25);
+    while (_auto_condition_0_27);
     if (remaining_count_1 > 0)
     {
       TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -12614,36 +12852,37 @@ RogueLogical RogueString___extract_strings__RogueInt32_RogueInt32_RogueString_Ro
     return 1;
   }
   format_ch_7 = RogueString__get__RogueInt32( format_2, f0_3 );
-  switch (format_ch_7)
+  _auto_which_value_13_24 = 0;
+  _auto_which_value_13_24 = format_ch_7;
+  if (_auto_which_value_13_24 == '*')
   {
-    case '*':
+    _auto_collection_1_8 = (RogueRangeUpToIteratorxRogueInt32x){0};
+    _auto_collection_1_8 = RogueRangeUpToxRogueInt32x__iterator((RogueRangeUpToxRogueInt32x) {0,remaining_count_1,1});
+    _auto_next_2_9 = (RogueOptionalInt32){0};
+    _auto_next_2_9 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_1_8);
+    n_10 = 0;
+    _auto_condition_1_28 = _auto_next_2_9.exists;
+    goto _auto_loop_condition_1;
+    do
     {
-      _auto_collection_1_8 = (RogueRangeUpToIteratorxRogueInt32x){0};
-      _auto_collection_1_8 = RogueRangeUpToxRogueInt32x__iterator((RogueRangeUpToxRogueInt32x) {0,remaining_count_1,1});
-      _auto_next_2_9 = (RogueOptionalInt32){0};
-      _auto_next_2_9 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_1_8);
-      n_10 = 0;
-      _auto_condition_1_26 = _auto_next_2_9.exists;
-      goto _auto_loop_condition_1;
-      do
+      n_10 = _auto_next_2_9.value;
+      if (RogueString___extract_strings__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueStringList_RogueLogical( THIS, (i0_0 + n_10), remaining_count_1 - n_10, format_2, (f0_3 + 1), fcount_4 - 1, results_5, ignore_case_6 ))
       {
-        n_10 = _auto_next_2_9.value;
-        if (RogueString___extract_strings__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueStringList_RogueLogical( THIS, (i0_0 + n_10), remaining_count_1 - n_10, format_2, (f0_3 + 1), fcount_4 - 1, results_5, ignore_case_6 ))
-        {
-          TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-          return !!results_5;
-        }
-        _auto_next_2_9 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_1_8);
-        _auto_condition_1_26 = _auto_next_2_9.exists;
-        _auto_loop_condition_1:;
+        TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+        return !!results_5;
       }
-      while (_auto_condition_1_26);
-      break;
+      _auto_next_2_9 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_1_8);
+      _auto_condition_1_28 = _auto_next_2_9.exists;
+      _auto_loop_condition_1:;
     }
-    case ' ':
+    while (_auto_condition_1_28);
+  }
+  else
+  {
+    if (_auto_which_value_13_24 == ' ')
     {
       n_11 = 0;
-      _auto_condition_2_27 = n_11 < remaining_count_1;
+      _auto_condition_2_29 = n_11 < remaining_count_1;
       goto _auto_loop_condition_2;
       do
       {
@@ -12653,10 +12892,10 @@ RogueLogical RogueString___extract_strings__RogueInt32_RogueInt32_RogueString_Ro
           goto _auto_escape_3;
         }
         ++n_11;
-        _auto_condition_2_27 = n_11 < remaining_count_1;
+        _auto_condition_2_29 = n_11 < remaining_count_1;
         _auto_loop_condition_2:;
       }
-      while (_auto_condition_2_27);
+      while (_auto_condition_2_29);
       _auto_escape_3:;
       if (n_11 == 0)
       {
@@ -12666,35 +12905,36 @@ RogueLogical RogueString___extract_strings__RogueInt32_RogueInt32_RogueString_Ro
       RogueLogical _auto_result_4 = RogueString___extract_strings__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueStringList_RogueLogical( THIS, (i0_0 + n_11), remaining_count_1 - n_11, format_2, (f0_3 + 1), fcount_4 - 1, results_5, ignore_case_6 );
       TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
       return _auto_result_4;
-      break;
     }
-    case '$':
+    else
     {
-      _auto_condition_3_28 = (!!remaining_count_1) && ((RogueString__get__RogueInt32( THIS, i0_0 ) == ' ') || (RogueString__get__RogueInt32( THIS, i0_0 ) == ((RogueCharacter)9)));
-      goto _auto_loop_condition_5;
-      do
+      if (_auto_which_value_13_24 == '$')
       {
-        ++i0_0;
-        --remaining_count_1;
-        _auto_condition_3_28 = (!!remaining_count_1) && ((RogueString__get__RogueInt32( THIS, i0_0 ) == ' ') || (RogueString__get__RogueInt32( THIS, i0_0 ) == ((RogueCharacter)9)));
-        _auto_loop_condition_5:;
-      }
-      while (_auto_condition_3_28);
-      m_start_13 = i0_0;
-      if ((fcount_4 >= 3) && (RogueString__get__RogueInt32( format_2, (f0_3 + 1) ) == '('))
-      {
-        if (RogueString__get__RogueInt32( format_2, (f0_3 + 2) ) == ')')
+        _auto_condition_3_30 = (!!remaining_count_1) && ((RogueString__get__RogueInt32( THIS, i0_0 ) == ' ') || (RogueString__get__RogueInt32( THIS, i0_0 ) == ((RogueCharacter)9)));
+        goto _auto_loop_condition_5;
+        do
         {
-          (f0_3 += 2);
-          (fcount_4 -= 2);
+          ++i0_0;
+          --remaining_count_1;
+          _auto_condition_3_30 = (!!remaining_count_1) && ((RogueString__get__RogueInt32( THIS, i0_0 ) == ' ') || (RogueString__get__RogueInt32( THIS, i0_0 ) == ((RogueCharacter)9)));
+          _auto_loop_condition_5:;
         }
-        else
+        while (_auto_condition_3_30);
+        m_start_13 = i0_0;
+        if ((fcount_4 >= 3) && (RogueString__get__RogueInt32( format_2, (f0_3 + 1) ) == '('))
         {
-          if ((fcount_4 >= 4) && (RogueString__get__RogueInt32( format_2, (f0_3 + 3) ) == ')'))
+          if (RogueString__get__RogueInt32( format_2, (f0_3 + 2) ) == ')')
           {
-            switch (RogueString__get__RogueInt32( format_2, (f0_3 + 2) ))
+            (f0_3 += 2);
+            (fcount_4 -= 2);
+          }
+          else
+          {
+            if ((fcount_4 >= 4) && (RogueString__get__RogueInt32( format_2, (f0_3 + 3) ) == ')'))
             {
-              case 'I':
+              _auto_which_value_9_20 = 0;
+              _auto_which_value_9_20 = RogueString__get__RogueInt32( format_2, (f0_3 + 2) );
+              if (_auto_which_value_9_20 == 'I')
               {
                 i1_14 = i0_0;
                 rcount_15 = remaining_count_1;
@@ -12704,172 +12944,180 @@ RogueLogical RogueString___extract_strings__RogueInt32_RogueInt32_RogueString_Ro
                   --rcount_15;
                 }
                 found_digit_16 = 0;
-                _auto_condition_4_29 = (!!rcount_15) && RogueCharacter__is_number__RogueInt32( RogueString__get__RogueInt32( THIS, i1_14 ), 10 );
+                _auto_condition_4_31 = (!!rcount_15) && RogueCharacter__is_number__RogueInt32( RogueString__get__RogueInt32( THIS, i1_14 ), 10 );
                 goto _auto_loop_condition_6;
                 do
                 {
                   ++i1_14;
                   --rcount_15;
                   found_digit_16 = 1;
-                  _auto_condition_4_29 = (!!rcount_15) && RogueCharacter__is_number__RogueInt32( RogueString__get__RogueInt32( THIS, i1_14 ), 10 );
+                  _auto_condition_4_31 = (!!rcount_15) && RogueCharacter__is_number__RogueInt32( RogueString__get__RogueInt32( THIS, i1_14 ), 10 );
                   _auto_loop_condition_6:;
                 }
-                while (_auto_condition_4_29);
+                while (_auto_condition_4_31);
                 if (found_digit_16)
                 {
                   if (RogueString___extract_strings__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueStringList_RogueLogical( THIS, i1_14, rcount_15, format_2, (f0_3 + 4), fcount_4 - 4, results_5, ignore_case_6 ))
                   {
-                    _auto_anchored_arg_0_5_30 = 0;
-                    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_5_30 );
-                    RogueStringList__add__RogueString( results_5, (_auto_anchored_arg_0_5_30=RogueString__substring__RogueInt32_RogueInt32( THIS, i0_0, i1_14 - i0_0 )) );
+                    _auto_anchored_arg_0_5_32 = 0;
+                    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_5_32 );
+                    RogueStringList__add__RogueString( results_5, (_auto_anchored_arg_0_5_32=RogueString__substring__RogueInt32_RogueInt32( THIS, i0_0, i1_14 - i0_0 )) );
                     TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
                     return 1;
                   }
                 }
-                break;
               }
-              case 'R':
+              else
               {
-                i1_17 = i0_0;
-                rcount_18 = remaining_count_1;
-                if ((!!rcount_18) && (RogueString__get__RogueInt32( THIS, i1_17 ) == '-'))
+                if (_auto_which_value_9_20 == 'R')
                 {
-                  ++i1_17;
-                  --rcount_18;
-                }
-                found_digit_19 = 0;
-                _auto_condition_6_31 = (!!rcount_18) && RogueCharacter__is_number__RogueInt32( RogueString__get__RogueInt32( THIS, i1_17 ), 10 );
-                goto _auto_loop_condition_7;
-                do
-                {
-                  ++i1_17;
-                  --rcount_18;
-                  found_digit_19 = 1;
-                  _auto_condition_6_31 = (!!rcount_18) && RogueCharacter__is_number__RogueInt32( RogueString__get__RogueInt32( THIS, i1_17 ), 10 );
-                  _auto_loop_condition_7:;
-                }
-                while (_auto_condition_6_31);
-                if ((!!rcount_18) && (RogueString__get__RogueInt32( THIS, i1_17 ) == '.'))
-                {
-                  ++i1_17;
-                  --rcount_18;
-                }
-                _auto_condition_7_32 = (!!rcount_18) && RogueCharacter__is_number__RogueInt32( RogueString__get__RogueInt32( THIS, i1_17 ), 10 );
-                goto _auto_loop_condition_8;
-                do
-                {
-                  ++i1_17;
-                  --rcount_18;
-                  found_digit_19 = 1;
-                  _auto_condition_7_32 = (!!rcount_18) && RogueCharacter__is_number__RogueInt32( RogueString__get__RogueInt32( THIS, i1_17 ), 10 );
-                  _auto_loop_condition_8:;
-                }
-                while (_auto_condition_7_32);
-                if (found_digit_19)
-                {
-                  if (RogueString___extract_strings__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueStringList_RogueLogical( THIS, i1_17, rcount_18, format_2, (f0_3 + 4), fcount_4 - 4, results_5, ignore_case_6 ))
+                  i1_17 = i0_0;
+                  rcount_18 = remaining_count_1;
+                  if ((!!rcount_18) && (RogueString__get__RogueInt32( THIS, i1_17 ) == '-'))
                   {
-                    _auto_anchored_arg_0_8_33 = 0;
-                    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_8_33 );
-                    RogueStringList__add__RogueString( results_5, (_auto_anchored_arg_0_8_33=RogueString__substring__RogueInt32_RogueInt32( THIS, i0_0, i1_17 - i0_0 )) );
-                    TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-                    return 1;
+                    ++i1_17;
+                    --rcount_18;
+                  }
+                  found_digit_19 = 0;
+                  _auto_condition_6_33 = (!!rcount_18) && RogueCharacter__is_number__RogueInt32( RogueString__get__RogueInt32( THIS, i1_17 ), 10 );
+                  goto _auto_loop_condition_7;
+                  do
+                  {
+                    ++i1_17;
+                    --rcount_18;
+                    found_digit_19 = 1;
+                    _auto_condition_6_33 = (!!rcount_18) && RogueCharacter__is_number__RogueInt32( RogueString__get__RogueInt32( THIS, i1_17 ), 10 );
+                    _auto_loop_condition_7:;
+                  }
+                  while (_auto_condition_6_33);
+                  if ((!!rcount_18) && (RogueString__get__RogueInt32( THIS, i1_17 ) == '.'))
+                  {
+                    ++i1_17;
+                    --rcount_18;
+                  }
+                  _auto_condition_7_34 = (!!rcount_18) && RogueCharacter__is_number__RogueInt32( RogueString__get__RogueInt32( THIS, i1_17 ), 10 );
+                  goto _auto_loop_condition_8;
+                  do
+                  {
+                    ++i1_17;
+                    --rcount_18;
+                    found_digit_19 = 1;
+                    _auto_condition_7_34 = (!!rcount_18) && RogueCharacter__is_number__RogueInt32( RogueString__get__RogueInt32( THIS, i1_17 ), 10 );
+                    _auto_loop_condition_8:;
+                  }
+                  while (_auto_condition_7_34);
+                  if (found_digit_19)
+                  {
+                    if (RogueString___extract_strings__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueStringList_RogueLogical( THIS, i1_17, rcount_18, format_2, (f0_3 + 4), fcount_4 - 4, results_5, ignore_case_6 ))
+                    {
+                      _auto_anchored_arg_0_8_35 = 0;
+                      RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_8_35 );
+                      RogueStringList__add__RogueString( results_5, (_auto_anchored_arg_0_8_35=RogueString__substring__RogueInt32_RogueInt32( THIS, i0_0, i1_17 - i0_0 )) );
+                      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                      return 1;
+                    }
                   }
                 }
-                break;
-              }
-              case '#':
-              {
-                if ((!!remaining_count_1) && RogueCharacter__is_number__RogueInt32( RogueString__get__RogueInt32( THIS, i0_0 ), 10 ))
+                else
                 {
-                  if (RogueString___extract_strings__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueStringList_RogueLogical( THIS, (i0_0 + 1), remaining_count_1 - 1, format_2, (f0_3 + 4), fcount_4 - 4, results_5, ignore_case_6 ))
+                  if (_auto_which_value_9_20 == '#')
                   {
-                    _auto_anchored_arg_0_9_34 = 0;
-                    RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_9_34 );
-                    RogueStringList__add__RogueString( results_5, (_auto_anchored_arg_0_9_34=RogueString__substring__RogueInt32_RogueInt32( THIS, m_start_13, 1 )) );
-                    TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-                    return 1;
+                    if ((!!remaining_count_1) && RogueCharacter__is_number__RogueInt32( RogueString__get__RogueInt32( THIS, i0_0 ), 10 ))
+                    {
+                      if (RogueString___extract_strings__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueStringList_RogueLogical( THIS, (i0_0 + 1), remaining_count_1 - 1, format_2, (f0_3 + 4), fcount_4 - 4, results_5, ignore_case_6 ))
+                      {
+                        _auto_anchored_arg_0_9_36 = 0;
+                        RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_9_36 );
+                        RogueStringList__add__RogueString( results_5, (_auto_anchored_arg_0_9_36=RogueString__substring__RogueInt32_RogueInt32( THIS, m_start_13, 1 )) );
+                        TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                        return 1;
+                      }
+                    }
+                  }
+                  else
+                  {
+                    if (_auto_which_value_9_20 == '$')
+                    {
+                      if ((!!remaining_count_1) && (RogueString__get__RogueInt32( THIS, i0_0 ) == '$'))
+                      {
+                        if (RogueString___extract_strings__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueStringList_RogueLogical( THIS, (i0_0 + 1), remaining_count_1 - 1, format_2, (f0_3 + 4), fcount_4 - 4, results_5, ignore_case_6 ))
+                        {
+                          TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+                          return 1;
+                        }
+                      }
+                    }
                   }
                 }
-                break;
               }
-              case '$':
-              {
-                if ((!!remaining_count_1) && (RogueString__get__RogueInt32( THIS, i0_0 ) == '$'))
-                {
-                  if (RogueString___extract_strings__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueStringList_RogueLogical( THIS, (i0_0 + 1), remaining_count_1 - 1, format_2, (f0_3 + 4), fcount_4 - 4, results_5, ignore_case_6 ))
-                  {
-                    TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-                    return 1;
-                  }
-                }
-                break;
-              }
+              TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+              return 0;
             }
+          }
+        }
+        _auto_collection_10_21 = (RogueRangeUpToIteratorxRogueInt32x){0};
+        _auto_collection_10_21 = RogueRangeUpToxRogueInt32x__iterator((RogueRangeUpToxRogueInt32x) {1,remaining_count_1,1});
+        _auto_next_11_22 = (RogueOptionalInt32){0};
+        _auto_next_11_22 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_10_21);
+        n_23 = 0;
+        _auto_condition_10_37 = _auto_next_11_22.exists;
+        goto _auto_loop_condition_9;
+        do
+        {
+          n_23 = _auto_next_11_22.value;
+          if (RogueString___extract_strings__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueStringList_RogueLogical( THIS, (i0_0 + n_23), remaining_count_1 - n_23, format_2, (f0_3 + 1), fcount_4 - 1, results_5, ignore_case_6 ))
+          {
+            _auto_anchored_arg_0_11_38 = 0;
+            RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_11_38 );
+            RogueStringList__add__RogueString( results_5, (_auto_anchored_arg_0_11_38=RogueString__substring__RogueInt32_RogueInt32( THIS, m_start_13, n_23 )) );
+            TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+            return 1;
+          }
+          _auto_next_11_22 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_10_21);
+          _auto_condition_10_37 = _auto_next_11_22.exists;
+          _auto_loop_condition_9:;
+        }
+        while (_auto_condition_10_37);
+      }
+      else
+      {
+        if (_auto_which_value_13_24 == '?')
+        {
+          if (remaining_count_1 == 0)
+          {
             TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
             return 0;
           }
-        }
-      }
-      _auto_collection_9_20 = (RogueRangeUpToIteratorxRogueInt32x){0};
-      _auto_collection_9_20 = RogueRangeUpToxRogueInt32x__iterator((RogueRangeUpToxRogueInt32x) {1,remaining_count_1,1});
-      _auto_next_10_21 = (RogueOptionalInt32){0};
-      _auto_next_10_21 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_9_20);
-      n_22 = 0;
-      _auto_condition_10_35 = _auto_next_10_21.exists;
-      goto _auto_loop_condition_9;
-      do
-      {
-        n_22 = _auto_next_10_21.value;
-        if (RogueString___extract_strings__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueStringList_RogueLogical( THIS, (i0_0 + n_22), remaining_count_1 - n_22, format_2, (f0_3 + 1), fcount_4 - 1, results_5, ignore_case_6 ))
-        {
-          _auto_anchored_arg_0_11_36 = 0;
-          RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_anchored_arg_0_11_36 );
-          RogueStringList__add__RogueString( results_5, (_auto_anchored_arg_0_11_36=RogueString__substring__RogueInt32_RogueInt32( THIS, m_start_13, n_22 )) );
+          RogueLogical _auto_result_10 = RogueString___extract_strings__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueStringList_RogueLogical( THIS, (i0_0 + 1), remaining_count_1 - 1, format_2, (f0_3 + 1), fcount_4 - 1, results_5, ignore_case_6 );
           TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-          return 1;
+          return _auto_result_10;
         }
-        _auto_next_10_21 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_9_20);
-        _auto_condition_10_35 = _auto_next_10_21.exists;
-        _auto_loop_condition_9:;
+        else
+        {
+          if (_auto_which_value_13_24 == '\\')
+          {
+            if (remaining_count_1 == 0)
+            {
+              TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+              return 0;
+            }
+            if (fcount_4 == 1)
+            {
+              RogueLogical _auto_result_11 = RogueString___extract_strings__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueStringList_RogueLogical( THIS, i0_0, remaining_count_1, format_2, (f0_3 + 1), fcount_4 - 1, results_5, ignore_case_6 );
+              TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
+              return _auto_result_11;
+            }
+            ++f0_3;
+            --fcount_4;
+            format_ch_7 = RogueString__get__RogueInt32( format_2, f0_3 );
+            if (1) goto _auto_satisfied_12;
+          }
+          else
+          {
+            if (1) goto _auto_satisfied_12;
+          }
+        }
       }
-      while (_auto_condition_10_35);
-      break;
-    }
-    case '?':
-    {
-      if (remaining_count_1 == 0)
-      {
-        TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-        return 0;
-      }
-      RogueLogical _auto_result_10 = RogueString___extract_strings__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueStringList_RogueLogical( THIS, (i0_0 + 1), remaining_count_1 - 1, format_2, (f0_3 + 1), fcount_4 - 1, results_5, ignore_case_6 );
-      TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-      return _auto_result_10;
-      break;
-    }
-    case '\\':
-    {
-      if (remaining_count_1 == 0)
-      {
-        TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-        return 0;
-      }
-      if (fcount_4 == 1)
-      {
-        RogueLogical _auto_result_11 = RogueString___extract_strings__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueStringList_RogueLogical( THIS, i0_0, remaining_count_1, format_2, (f0_3 + 1), fcount_4 - 1, results_5, ignore_case_6 );
-        TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
-        return _auto_result_11;
-      }
-      ++f0_3;
-      --fcount_4;
-      format_ch_7 = RogueString__get__RogueInt32( format_2, f0_3 );
-      if (1) goto _auto_satisfied_12;
-      break;
-    }
-    default:
-    {
-      if (1) goto _auto_satisfied_12;
     }
   }
   goto _auto_escape_13;
@@ -12879,13 +13127,13 @@ RogueLogical RogueString___extract_strings__RogueInt32_RogueInt32_RogueString_Ro
     TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
     return 0;
   }
-  ch_23 = RogueString__get__RogueInt32( THIS, i0_0 );
+  ch_25 = RogueString__get__RogueInt32( THIS, i0_0 );
   if (ignore_case_6)
   {
-    ch_23 = RogueCharacter__to_lowercase(ch_23);
+    ch_25 = RogueCharacter__to_lowercase(ch_25);
     format_ch_7 = RogueCharacter__to_lowercase(format_ch_7);
   }
-  if (format_ch_7 == ch_23)
+  if (format_ch_7 == ch_25)
   {
     RogueLogical _auto_result_14 = RogueString___extract_strings__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueStringList_RogueLogical( THIS, (i0_0 + 1), remaining_count_1 - 1, format_2, (f0_3 + 1), fcount_4 - 1, results_5, ignore_case_6 );
     TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
@@ -12893,29 +13141,29 @@ RogueLogical RogueString___extract_strings__RogueInt32_RogueInt32_RogueString_Ro
   }
   else
   {
-    if ((ch_23 == ' ') || (ch_23 == ((RogueCharacter)9)))
+    if ((ch_25 == ' ') || (ch_25 == ((RogueCharacter)9)))
     {
       if (f0_3 > 0)
       {
-        n_24 = 1;
-        _auto_condition_12_37 = n_24 < remaining_count_1;
+        n_26 = 1;
+        _auto_condition_12_39 = n_26 < remaining_count_1;
         goto _auto_loop_condition_15;
         do
         {
-          ch_23 = RogueString__get__RogueInt32( THIS, (i0_0 + n_24) );
-          if ((ch_23 != ' ') && (ch_23 != ((RogueCharacter)9)))
+          ch_25 = RogueString__get__RogueInt32( THIS, (i0_0 + n_26) );
+          if ((ch_25 != ' ') && (ch_25 != ((RogueCharacter)9)))
           {
             goto _auto_escape_16;
           }
-          ++n_24;
-          _auto_condition_12_37 = n_24 < remaining_count_1;
+          ++n_26;
+          _auto_condition_12_39 = n_26 < remaining_count_1;
           _auto_loop_condition_15:;
         }
-        while (_auto_condition_12_37);
+        while (_auto_condition_12_39);
         _auto_escape_16:;
-        if ((((i0_0 == 0) || (n_24 == remaining_count_1)) || (!RogueCharacter__is_identifier__RogueString( RogueString__get__RogueInt32( THIS, i0_0 - 1 ), str_ ))) || (!RogueCharacter__is_identifier_start__RogueString( RogueString__get__RogueInt32( THIS, (i0_0 + n_24) ), str_ )))
+        if ((((i0_0 == 0) || (n_26 == remaining_count_1)) || (!RogueCharacter__is_identifier__RogueString( RogueString__get__RogueInt32( THIS, i0_0 - 1 ), str_ ))) || (!RogueCharacter__is_identifier_start__RogueString( RogueString__get__RogueInt32( THIS, (i0_0 + n_26) ), str_ )))
         {
-          RogueLogical _auto_result_17 = RogueString___extract_strings__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueStringList_RogueLogical( THIS, (i0_0 + n_24), remaining_count_1 - n_24, format_2, f0_3, fcount_4, results_5, ignore_case_6 );
+          RogueLogical _auto_result_17 = RogueString___extract_strings__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueStringList_RogueLogical( THIS, (i0_0 + n_26), remaining_count_1 - n_26, format_2, f0_3, fcount_4, results_5, ignore_case_6 );
           TypeRogueObject.local_pointer_count = _auto_local_pointer_fp_0;
           return _auto_result_17;
         }
@@ -13041,116 +13289,121 @@ RogueInt32 RogueString___pattern_match_count__RogueInt32_RogueInt32_RogueString_
   (void)rcount_22;
   RogueLogical found_digit_23 = 0;
   (void)found_digit_23;
-  RogueInt32 result_24 = 0;
-  (void)result_24;
-  RogueRangeUpToIteratorxRogueInt32x _auto_collection_11_25 = {0};
-  (void)_auto_collection_11_25;
-  RogueOptionalInt32 _auto_next_12_26 = {0};
-  (void)_auto_next_12_26;
-  RogueInt32 len_27 = 0;
-  (void)len_27;
-  RogueInt32 n_28 = 0;
-  (void)n_28;
-  RogueRangeUpToIteratorxRogueInt32x _auto_collection_14_29 = {0};
-  (void)_auto_collection_14_29;
-  RogueOptionalInt32 _auto_next_15_30 = {0};
-  (void)_auto_next_15_30;
-  RogueInt32 n_31 = 0;
-  (void)n_31;
-  RogueInt32 count_32 = 0;
-  (void)count_32;
-  RogueCharacter ch_33 = 0;
-  (void)ch_33;
-  RogueInt32 n_34 = 0;
-  (void)n_34;
-  RogueLogical _auto_condition_0_35 = 0;
-  (void)_auto_condition_0_35;
-  RogueLogical _auto_condition_1_36 = 0;
-  (void)_auto_condition_1_36;
-  RogueLogical _auto_condition_2_37 = 0;
-  (void)_auto_condition_2_37;
-  RogueLogical _auto_condition_3_38 = 0;
-  (void)_auto_condition_3_38;
-  RogueLogical _auto_condition_4_39 = 0;
-  (void)_auto_condition_4_39;
-  RogueLogical _auto_condition_5_40 = 0;
-  (void)_auto_condition_5_40;
-  RogueLogical _auto_condition_6_41 = 0;
-  (void)_auto_condition_6_41;
-  RogueLogical _auto_condition_7_42 = 0;
-  (void)_auto_condition_7_42;
-  RogueLogical _auto_condition_8_43 = 0;
-  (void)_auto_condition_8_43;
-  RogueLogical _auto_condition_9_44 = 0;
-  (void)_auto_condition_9_44;
+  RogueCharacter _auto_which_value_11_24 = 0;
+  (void)_auto_which_value_11_24;
+  RogueInt32 result_25 = 0;
+  (void)result_25;
+  RogueRangeUpToIteratorxRogueInt32x _auto_collection_12_26 = {0};
+  (void)_auto_collection_12_26;
+  RogueOptionalInt32 _auto_next_13_27 = {0};
+  (void)_auto_next_13_27;
+  RogueInt32 len_28 = 0;
+  (void)len_28;
+  RogueInt32 n_29 = 0;
+  (void)n_29;
+  RogueRangeUpToIteratorxRogueInt32x _auto_collection_15_30 = {0};
+  (void)_auto_collection_15_30;
+  RogueOptionalInt32 _auto_next_16_31 = {0};
+  (void)_auto_next_16_31;
+  RogueInt32 n_32 = 0;
+  (void)n_32;
+  RogueInt32 count_33 = 0;
+  (void)count_33;
+  RogueCharacter _auto_which_value_18_34 = 0;
+  (void)_auto_which_value_18_34;
+  RogueCharacter ch_35 = 0;
+  (void)ch_35;
+  RogueInt32 n_36 = 0;
+  (void)n_36;
+  RogueLogical _auto_condition_0_37 = 0;
+  (void)_auto_condition_0_37;
+  RogueLogical _auto_condition_1_38 = 0;
+  (void)_auto_condition_1_38;
+  RogueLogical _auto_condition_2_39 = 0;
+  (void)_auto_condition_2_39;
+  RogueLogical _auto_condition_3_40 = 0;
+  (void)_auto_condition_3_40;
+  RogueLogical _auto_condition_4_41 = 0;
+  (void)_auto_condition_4_41;
+  RogueLogical _auto_condition_5_42 = 0;
+  (void)_auto_condition_5_42;
+  RogueLogical _auto_condition_6_43 = 0;
+  (void)_auto_condition_6_43;
+  RogueLogical _auto_condition_7_44 = 0;
+  (void)_auto_condition_7_44;
+  RogueLogical _auto_condition_8_45 = 0;
+  (void)_auto_condition_8_45;
+  RogueLogical _auto_condition_9_46 = 0;
+  (void)_auto_condition_9_46;
 
   if (fcount_4 == 0)
   {
     return i0_0;
   }
   format_ch_6 = RogueString__get__RogueInt32( format_2, f0_3 );
-  switch (format_ch_6)
+  _auto_which_value_18_34 = 0;
+  _auto_which_value_18_34 = format_ch_6;
+  if (_auto_which_value_18_34 == '*')
   {
-    case '*':
+    if (fcount_4 == 1)
     {
-      if (fcount_4 == 1)
+      result_7 = -1;
+      _auto_collection_0_8 = (RogueRangeUpToIteratorxRogueInt32x){0};
+      _auto_collection_0_8 = RogueRangeUpToxRogueInt32x__iterator((RogueRangeUpToxRogueInt32x) {0,remaining_count_1,1});
+      _auto_next_1_9 = (RogueOptionalInt32){0};
+      _auto_next_1_9 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_0_8);
+      n_10 = 0;
+      _auto_condition_0_37 = _auto_next_1_9.exists;
+      goto _auto_loop_condition_0;
+      do
       {
-        result_7 = -1;
-        _auto_collection_0_8 = (RogueRangeUpToIteratorxRogueInt32x){0};
-        _auto_collection_0_8 = RogueRangeUpToxRogueInt32x__iterator((RogueRangeUpToxRogueInt32x) {0,remaining_count_1,1});
-        _auto_next_1_9 = (RogueOptionalInt32){0};
+        n_10 = _auto_next_1_9.value;
+        count_11 = RogueString___pattern_match_count__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, (i0_0 + n_10), remaining_count_1 - n_10, format_2, (f0_3 + 1), fcount_4 - 1, ignore_case_5 );
+        if (count_11 == -1)
+        {
+          return result_7;
+        }
+        result_7 = count_11;
         _auto_next_1_9 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_0_8);
-        n_10 = 0;
-        _auto_condition_0_35 = _auto_next_1_9.exists;
-        goto _auto_loop_condition_0;
+        _auto_condition_0_37 = _auto_next_1_9.exists;
+        _auto_loop_condition_0:;
+      }
+      while (_auto_condition_0_37);
+      return result_7;
+    }
+    else
+    {
+      {
+        _auto_collection_3_12 = (RogueRangeUpToIteratorxRogueInt32x){0};
+        _auto_collection_3_12 = RogueRangeUpToxRogueInt32x__iterator((RogueRangeUpToxRogueInt32x) {0,remaining_count_1,1});
+        _auto_next_4_13 = (RogueOptionalInt32){0};
+        _auto_next_4_13 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_3_12);
+        n_14 = 0;
+        _auto_condition_1_38 = _auto_next_4_13.exists;
+        goto _auto_loop_condition_1;
         do
         {
-          n_10 = _auto_next_1_9.value;
-          count_11 = RogueString___pattern_match_count__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, (i0_0 + n_10), remaining_count_1 - n_10, format_2, (f0_3 + 1), fcount_4 - 1, ignore_case_5 );
-          if (count_11 == -1)
+          n_14 = _auto_next_4_13.value;
+          count_15 = RogueString___pattern_match_count__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, (i0_0 + n_14), remaining_count_1 - n_14, format_2, (f0_3 + 1), fcount_4 - 1, ignore_case_5 );
+          if (count_15 != -1)
           {
-            return result_7;
+            return count_15;
           }
-          result_7 = count_11;
-          _auto_next_1_9 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_0_8);
-          _auto_condition_0_35 = _auto_next_1_9.exists;
-          _auto_loop_condition_0:;
-        }
-        while (_auto_condition_0_35);
-        return result_7;
-      }
-      else
-      {
-        {
-          _auto_collection_3_12 = (RogueRangeUpToIteratorxRogueInt32x){0};
-          _auto_collection_3_12 = RogueRangeUpToxRogueInt32x__iterator((RogueRangeUpToxRogueInt32x) {0,remaining_count_1,1});
-          _auto_next_4_13 = (RogueOptionalInt32){0};
           _auto_next_4_13 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_3_12);
-          n_14 = 0;
-          _auto_condition_1_36 = _auto_next_4_13.exists;
-          goto _auto_loop_condition_1;
-          do
-          {
-            n_14 = _auto_next_4_13.value;
-            count_15 = RogueString___pattern_match_count__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, (i0_0 + n_14), remaining_count_1 - n_14, format_2, (f0_3 + 1), fcount_4 - 1, ignore_case_5 );
-            if (count_15 != -1)
-            {
-              return count_15;
-            }
-            _auto_next_4_13 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_3_12);
-            _auto_condition_1_36 = _auto_next_4_13.exists;
-            _auto_loop_condition_1:;
-          }
-          while (_auto_condition_1_36);
-          return -1;
+          _auto_condition_1_38 = _auto_next_4_13.exists;
+          _auto_loop_condition_1:;
         }
+        while (_auto_condition_1_38);
+        return -1;
       }
-      break;
     }
-    case ' ':
+  }
+  else
+  {
+    if (_auto_which_value_18_34 == ' ')
     {
       n_16 = 0;
-      _auto_condition_2_37 = n_16 < remaining_count_1;
+      _auto_condition_2_39 = n_16 < remaining_count_1;
       goto _auto_loop_condition_2;
       do
       {
@@ -13160,10 +13413,10 @@ RogueInt32 RogueString___pattern_match_count__RogueInt32_RogueInt32_RogueString_
           goto _auto_escape_3;
         }
         ++n_16;
-        _auto_condition_2_37 = n_16 < remaining_count_1;
+        _auto_condition_2_39 = n_16 < remaining_count_1;
         _auto_loop_condition_2:;
       }
-      while (_auto_condition_2_37);
+      while (_auto_condition_2_39);
       _auto_escape_3:;
       if (n_16 == 0)
       {
@@ -13171,34 +13424,35 @@ RogueInt32 RogueString___pattern_match_count__RogueInt32_RogueInt32_RogueString_
       }
       RogueInt32 _auto_result_4 = RogueString___pattern_match_count__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, (i0_0 + n_16), remaining_count_1 - n_16, format_2, (f0_3 + 1), fcount_4 - 1, ignore_case_5 );
       return _auto_result_4;
-      break;
     }
-    case '$':
+    else
     {
-      _auto_condition_3_38 = (!!remaining_count_1) && ((RogueString__get__RogueInt32( THIS, i0_0 ) == ' ') || (RogueString__get__RogueInt32( THIS, i0_0 ) == ((RogueCharacter)9)));
-      goto _auto_loop_condition_5;
-      do
+      if (_auto_which_value_18_34 == '$')
       {
-        ++i0_0;
-        --remaining_count_1;
-        _auto_condition_3_38 = (!!remaining_count_1) && ((RogueString__get__RogueInt32( THIS, i0_0 ) == ' ') || (RogueString__get__RogueInt32( THIS, i0_0 ) == ((RogueCharacter)9)));
-        _auto_loop_condition_5:;
-      }
-      while (_auto_condition_3_38);
-      if ((fcount_4 >= 3) && (RogueString__get__RogueInt32( format_2, (f0_3 + 1) ) == '('))
-      {
-        if (RogueString__get__RogueInt32( format_2, (f0_3 + 2) ) == ')')
+        _auto_condition_3_40 = (!!remaining_count_1) && ((RogueString__get__RogueInt32( THIS, i0_0 ) == ' ') || (RogueString__get__RogueInt32( THIS, i0_0 ) == ((RogueCharacter)9)));
+        goto _auto_loop_condition_5;
+        do
         {
-          (f0_3 += 2);
-          (fcount_4 -= 2);
+          ++i0_0;
+          --remaining_count_1;
+          _auto_condition_3_40 = (!!remaining_count_1) && ((RogueString__get__RogueInt32( THIS, i0_0 ) == ' ') || (RogueString__get__RogueInt32( THIS, i0_0 ) == ((RogueCharacter)9)));
+          _auto_loop_condition_5:;
         }
-        else
+        while (_auto_condition_3_40);
+        if ((fcount_4 >= 3) && (RogueString__get__RogueInt32( format_2, (f0_3 + 1) ) == '('))
         {
-          if ((fcount_4 >= 4) && (RogueString__get__RogueInt32( format_2, (f0_3 + 3) ) == ')'))
+          if (RogueString__get__RogueInt32( format_2, (f0_3 + 2) ) == ')')
           {
-            switch (RogueString__get__RogueInt32( format_2, (f0_3 + 2) ))
+            (f0_3 += 2);
+            (fcount_4 -= 2);
+          }
+          else
+          {
+            if ((fcount_4 >= 4) && (RogueString__get__RogueInt32( format_2, (f0_3 + 3) ) == ')'))
             {
-              case 'I':
+              _auto_which_value_11_24 = 0;
+              _auto_which_value_11_24 = RogueString__get__RogueInt32( format_2, (f0_3 + 2) );
+              if (_auto_which_value_11_24 == 'I')
               {
                 i1_18 = i0_0;
                 rcount_19 = remaining_count_1;
@@ -13208,175 +13462,183 @@ RogueInt32 RogueString___pattern_match_count__RogueInt32_RogueInt32_RogueString_
                   --rcount_19;
                 }
                 found_digit_20 = 0;
-                _auto_condition_4_39 = (!!rcount_19) && RogueCharacter__is_number__RogueInt32( RogueString__get__RogueInt32( THIS, i1_18 ), 10 );
+                _auto_condition_4_41 = (!!rcount_19) && RogueCharacter__is_number__RogueInt32( RogueString__get__RogueInt32( THIS, i1_18 ), 10 );
                 goto _auto_loop_condition_6;
                 do
                 {
                   ++i1_18;
                   --rcount_19;
                   found_digit_20 = 1;
-                  _auto_condition_4_39 = (!!rcount_19) && RogueCharacter__is_number__RogueInt32( RogueString__get__RogueInt32( THIS, i1_18 ), 10 );
+                  _auto_condition_4_41 = (!!rcount_19) && RogueCharacter__is_number__RogueInt32( RogueString__get__RogueInt32( THIS, i1_18 ), 10 );
                   _auto_loop_condition_6:;
                 }
-                while (_auto_condition_4_39);
+                while (_auto_condition_4_41);
                 if (found_digit_20)
                 {
                   RogueInt32 _auto_result_7 = RogueString___pattern_match_count__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, i1_18, rcount_19, format_2, (f0_3 + 4), fcount_4 - 4, ignore_case_5 );
                   return _auto_result_7;
                 }
-                break;
               }
-              case 'R':
+              else
               {
-                i1_21 = i0_0;
-                rcount_22 = remaining_count_1;
-                if ((!!rcount_22) && (RogueString__get__RogueInt32( THIS, i1_21 ) == '-'))
+                if (_auto_which_value_11_24 == 'R')
                 {
-                  ++i1_21;
-                  --rcount_22;
+                  i1_21 = i0_0;
+                  rcount_22 = remaining_count_1;
+                  if ((!!rcount_22) && (RogueString__get__RogueInt32( THIS, i1_21 ) == '-'))
+                  {
+                    ++i1_21;
+                    --rcount_22;
+                  }
+                  found_digit_23 = 0;
+                  _auto_condition_5_42 = (!!rcount_22) && RogueCharacter__is_number__RogueInt32( RogueString__get__RogueInt32( THIS, i1_21 ), 10 );
+                  goto _auto_loop_condition_8;
+                  do
+                  {
+                    ++i1_21;
+                    --rcount_22;
+                    found_digit_23 = 1;
+                    _auto_condition_5_42 = (!!rcount_22) && RogueCharacter__is_number__RogueInt32( RogueString__get__RogueInt32( THIS, i1_21 ), 10 );
+                    _auto_loop_condition_8:;
+                  }
+                  while (_auto_condition_5_42);
+                  if ((!!rcount_22) && (RogueString__get__RogueInt32( THIS, i1_21 ) == '.'))
+                  {
+                    ++i1_21;
+                    --rcount_22;
+                  }
+                  _auto_condition_6_43 = (!!rcount_22) && RogueCharacter__is_number__RogueInt32( RogueString__get__RogueInt32( THIS, i1_21 ), 10 );
+                  goto _auto_loop_condition_9;
+                  do
+                  {
+                    ++i1_21;
+                    --rcount_22;
+                    found_digit_23 = 1;
+                    _auto_condition_6_43 = (!!rcount_22) && RogueCharacter__is_number__RogueInt32( RogueString__get__RogueInt32( THIS, i1_21 ), 10 );
+                    _auto_loop_condition_9:;
+                  }
+                  while (_auto_condition_6_43);
+                  if (found_digit_23)
+                  {
+                    RogueInt32 _auto_result_10 = RogueString___pattern_match_count__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, i1_21, rcount_22, format_2, (f0_3 + 4), fcount_4 - 4, ignore_case_5 );
+                    return _auto_result_10;
+                  }
                 }
-                found_digit_23 = 0;
-                _auto_condition_5_40 = (!!rcount_22) && RogueCharacter__is_number__RogueInt32( RogueString__get__RogueInt32( THIS, i1_21 ), 10 );
-                goto _auto_loop_condition_8;
-                do
+                else
                 {
-                  ++i1_21;
-                  --rcount_22;
-                  found_digit_23 = 1;
-                  _auto_condition_5_40 = (!!rcount_22) && RogueCharacter__is_number__RogueInt32( RogueString__get__RogueInt32( THIS, i1_21 ), 10 );
-                  _auto_loop_condition_8:;
+                  if (_auto_which_value_11_24 == '#')
+                  {
+                    if ((!!remaining_count_1) && RogueCharacter__is_number__RogueInt32( RogueString__get__RogueInt32( THIS, i0_0 ), 10 ))
+                    {
+                      RogueInt32 _auto_result_11 = RogueString___pattern_match_count__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, (i0_0 + 1), remaining_count_1 - 1, format_2, (f0_3 + 4), fcount_4 - 4, ignore_case_5 );
+                      return _auto_result_11;
+                    }
+                  }
+                  else
+                  {
+                    if (_auto_which_value_11_24 == '$')
+                    {
+                      if ((!!remaining_count_1) && (RogueString__get__RogueInt32( THIS, i0_0 ) == '$'))
+                      {
+                        RogueInt32 _auto_result_12 = RogueString___pattern_match_count__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, (i0_0 + 1), remaining_count_1 - 1, format_2, (f0_3 + 4), fcount_4 - 4, ignore_case_5 );
+                        return _auto_result_12;
+                      }
+                    }
+                  }
                 }
-                while (_auto_condition_5_40);
-                if ((!!rcount_22) && (RogueString__get__RogueInt32( THIS, i1_21 ) == '.'))
-                {
-                  ++i1_21;
-                  --rcount_22;
-                }
-                _auto_condition_6_41 = (!!rcount_22) && RogueCharacter__is_number__RogueInt32( RogueString__get__RogueInt32( THIS, i1_21 ), 10 );
-                goto _auto_loop_condition_9;
-                do
-                {
-                  ++i1_21;
-                  --rcount_22;
-                  found_digit_23 = 1;
-                  _auto_condition_6_41 = (!!rcount_22) && RogueCharacter__is_number__RogueInt32( RogueString__get__RogueInt32( THIS, i1_21 ), 10 );
-                  _auto_loop_condition_9:;
-                }
-                while (_auto_condition_6_41);
-                if (found_digit_23)
-                {
-                  RogueInt32 _auto_result_10 = RogueString___pattern_match_count__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, i1_21, rcount_22, format_2, (f0_3 + 4), fcount_4 - 4, ignore_case_5 );
-                  return _auto_result_10;
-                }
-                break;
               }
-              case '#':
-              {
-                if ((!!remaining_count_1) && RogueCharacter__is_number__RogueInt32( RogueString__get__RogueInt32( THIS, i0_0 ), 10 ))
-                {
-                  RogueInt32 _auto_result_11 = RogueString___pattern_match_count__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, (i0_0 + 1), remaining_count_1 - 1, format_2, (f0_3 + 4), fcount_4 - 4, ignore_case_5 );
-                  return _auto_result_11;
-                }
-                break;
-              }
-              case '$':
-              {
-                if ((!!remaining_count_1) && (RogueString__get__RogueInt32( THIS, i0_0 ) == '$'))
-                {
-                  RogueInt32 _auto_result_12 = RogueString___pattern_match_count__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, (i0_0 + 1), remaining_count_1 - 1, format_2, (f0_3 + 4), fcount_4 - 4, ignore_case_5 );
-                  return _auto_result_12;
-                }
-                break;
-              }
+              return -1;
             }
+          }
+        }
+        if (fcount_4 == 1)
+        {
+          result_25 = -1;
+          _auto_collection_12_26 = (RogueRangeUpToIteratorxRogueInt32x){0};
+          _auto_collection_12_26 = RogueRangeUpToxRogueInt32x__iterator((RogueRangeUpToxRogueInt32x) {0,remaining_count_1,1});
+          _auto_next_13_27 = (RogueOptionalInt32){0};
+          _auto_next_13_27 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_12_26);
+          len_28 = 0;
+          _auto_condition_7_44 = _auto_next_13_27.exists;
+          goto _auto_loop_condition_13;
+          do
+          {
+            len_28 = _auto_next_13_27.value;
+            n_29 = RogueString___pattern_match_count__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, (i0_0 + len_28), remaining_count_1 - len_28, format_2, (f0_3 + 1), fcount_4 - 1, ignore_case_5 );
+            if (n_29 == -1)
+            {
+              return result_25;
+            }
+            result_25 = (i0_0 + len_28);
+            _auto_next_13_27 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_12_26);
+            _auto_condition_7_44 = _auto_next_13_27.exists;
+            _auto_loop_condition_13:;
+          }
+          while (_auto_condition_7_44);
+          return result_25;
+        }
+        else
+        {
+          {
+            _auto_collection_15_30 = (RogueRangeUpToIteratorxRogueInt32x){0};
+            _auto_collection_15_30 = RogueRangeUpToxRogueInt32x__iterator((RogueRangeUpToxRogueInt32x) {1,remaining_count_1,1});
+            _auto_next_16_31 = (RogueOptionalInt32){0};
+            _auto_next_16_31 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_15_30);
+            n_32 = 0;
+            _auto_condition_8_45 = _auto_next_16_31.exists;
+            goto _auto_loop_condition_14;
+            do
+            {
+              n_32 = _auto_next_16_31.value;
+              count_33 = RogueString___pattern_match_count__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, (i0_0 + n_32), remaining_count_1 - n_32, format_2, (f0_3 + 1), fcount_4 - 1, ignore_case_5 );
+              if (count_33 != -1)
+              {
+                return count_33;
+              }
+              _auto_next_16_31 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_15_30);
+              _auto_condition_8_45 = _auto_next_16_31.exists;
+              _auto_loop_condition_14:;
+            }
+            while (_auto_condition_8_45);
             return -1;
           }
         }
       }
-      if (fcount_4 == 1)
-      {
-        result_24 = -1;
-        _auto_collection_11_25 = (RogueRangeUpToIteratorxRogueInt32x){0};
-        _auto_collection_11_25 = RogueRangeUpToxRogueInt32x__iterator((RogueRangeUpToxRogueInt32x) {0,remaining_count_1,1});
-        _auto_next_12_26 = (RogueOptionalInt32){0};
-        _auto_next_12_26 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_11_25);
-        len_27 = 0;
-        _auto_condition_7_42 = _auto_next_12_26.exists;
-        goto _auto_loop_condition_13;
-        do
-        {
-          len_27 = _auto_next_12_26.value;
-          n_28 = RogueString___pattern_match_count__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, (i0_0 + len_27), remaining_count_1 - len_27, format_2, (f0_3 + 1), fcount_4 - 1, ignore_case_5 );
-          if (n_28 == -1)
-          {
-            return result_24;
-          }
-          result_24 = (i0_0 + len_27);
-          _auto_next_12_26 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_11_25);
-          _auto_condition_7_42 = _auto_next_12_26.exists;
-          _auto_loop_condition_13:;
-        }
-        while (_auto_condition_7_42);
-        return result_24;
-      }
       else
       {
+        if (_auto_which_value_18_34 == '?')
         {
-          _auto_collection_14_29 = (RogueRangeUpToIteratorxRogueInt32x){0};
-          _auto_collection_14_29 = RogueRangeUpToxRogueInt32x__iterator((RogueRangeUpToxRogueInt32x) {1,remaining_count_1,1});
-          _auto_next_15_30 = (RogueOptionalInt32){0};
-          _auto_next_15_30 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_14_29);
-          n_31 = 0;
-          _auto_condition_8_43 = _auto_next_15_30.exists;
-          goto _auto_loop_condition_14;
-          do
+          if (remaining_count_1 == 0)
           {
-            n_31 = _auto_next_15_30.value;
-            count_32 = RogueString___pattern_match_count__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, (i0_0 + n_31), remaining_count_1 - n_31, format_2, (f0_3 + 1), fcount_4 - 1, ignore_case_5 );
-            if (count_32 != -1)
-            {
-              return count_32;
-            }
-            _auto_next_15_30 = RogueRangeUpToIteratorxRogueInt32x__read_another(&_auto_collection_14_29);
-            _auto_condition_8_43 = _auto_next_15_30.exists;
-            _auto_loop_condition_14:;
+            return -1;
           }
-          while (_auto_condition_8_43);
-          return -1;
+          RogueInt32 _auto_result_15 = RogueString___pattern_match_count__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, (i0_0 + 1), remaining_count_1 - 1, format_2, (f0_3 + 1), fcount_4 - 1, ignore_case_5 );
+          return _auto_result_15;
+        }
+        else
+        {
+          if (_auto_which_value_18_34 == '\\')
+          {
+            if (remaining_count_1 == 0)
+            {
+              return -1;
+            }
+            if (fcount_4 == 1)
+            {
+              RogueInt32 _auto_result_16 = RogueString___pattern_match_count__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, i0_0, remaining_count_1, format_2, (f0_3 + 1), fcount_4 - 1, ignore_case_5 );
+              return _auto_result_16;
+            }
+            ++f0_3;
+            --fcount_4;
+            format_ch_6 = RogueString__get__RogueInt32( format_2, f0_3 );
+            if (1) goto _auto_satisfied_17;
+          }
+          else
+          {
+            if (1) goto _auto_satisfied_17;
+          }
         }
       }
-      break;
-    }
-    case '?':
-    {
-      if (remaining_count_1 == 0)
-      {
-        return -1;
-      }
-      RogueInt32 _auto_result_15 = RogueString___pattern_match_count__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, (i0_0 + 1), remaining_count_1 - 1, format_2, (f0_3 + 1), fcount_4 - 1, ignore_case_5 );
-      return _auto_result_15;
-      break;
-    }
-    case '\\':
-    {
-      if (remaining_count_1 == 0)
-      {
-        return -1;
-      }
-      if (fcount_4 == 1)
-      {
-        RogueInt32 _auto_result_16 = RogueString___pattern_match_count__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, i0_0, remaining_count_1, format_2, (f0_3 + 1), fcount_4 - 1, ignore_case_5 );
-        return _auto_result_16;
-      }
-      ++f0_3;
-      --fcount_4;
-      format_ch_6 = RogueString__get__RogueInt32( format_2, f0_3 );
-      if (1) goto _auto_satisfied_17;
-      break;
-    }
-    default:
-    {
-      if (1) goto _auto_satisfied_17;
     }
   }
   goto _auto_escape_18;
@@ -13385,42 +13647,42 @@ RogueInt32 RogueString___pattern_match_count__RogueInt32_RogueInt32_RogueString_
   {
     return -1;
   }
-  ch_33 = RogueString__get__RogueInt32( THIS, i0_0 );
+  ch_35 = RogueString__get__RogueInt32( THIS, i0_0 );
   if (ignore_case_5)
   {
-    ch_33 = RogueCharacter__to_lowercase(ch_33);
+    ch_35 = RogueCharacter__to_lowercase(ch_35);
     format_ch_6 = RogueCharacter__to_lowercase(format_ch_6);
   }
-  if (format_ch_6 == ch_33)
+  if (format_ch_6 == ch_35)
   {
     RogueInt32 _auto_result_19 = RogueString___pattern_match_count__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, (i0_0 + 1), remaining_count_1 - 1, format_2, (f0_3 + 1), fcount_4 - 1, ignore_case_5 );
     return _auto_result_19;
   }
   else
   {
-    if ((ch_33 == ' ') || (ch_33 == ((RogueCharacter)9)))
+    if ((ch_35 == ' ') || (ch_35 == ((RogueCharacter)9)))
     {
       if (f0_3 > 0)
       {
-        n_34 = 1;
-        _auto_condition_9_44 = n_34 < remaining_count_1;
+        n_36 = 1;
+        _auto_condition_9_46 = n_36 < remaining_count_1;
         goto _auto_loop_condition_20;
         do
         {
-          ch_33 = RogueString__get__RogueInt32( THIS, (i0_0 + n_34) );
-          if ((ch_33 != ' ') && (ch_33 != ((RogueCharacter)9)))
+          ch_35 = RogueString__get__RogueInt32( THIS, (i0_0 + n_36) );
+          if ((ch_35 != ' ') && (ch_35 != ((RogueCharacter)9)))
           {
             goto _auto_escape_21;
           }
-          ++n_34;
-          _auto_condition_9_44 = n_34 < remaining_count_1;
+          ++n_36;
+          _auto_condition_9_46 = n_36 < remaining_count_1;
           _auto_loop_condition_20:;
         }
-        while (_auto_condition_9_44);
+        while (_auto_condition_9_46);
         _auto_escape_21:;
-        if ((((i0_0 == 0) || (n_34 == remaining_count_1)) || (!RogueCharacter__is_identifier__RogueString( RogueString__get__RogueInt32( THIS, i0_0 - 1 ), str_ ))) || (!RogueCharacter__is_identifier_start__RogueString( RogueString__get__RogueInt32( THIS, (i0_0 + n_34) ), str_ )))
+        if ((((i0_0 == 0) || (n_36 == remaining_count_1)) || (!RogueCharacter__is_identifier__RogueString( RogueString__get__RogueInt32( THIS, i0_0 - 1 ), str_ ))) || (!RogueCharacter__is_identifier_start__RogueString( RogueString__get__RogueInt32( THIS, (i0_0 + n_36) ), str_ )))
         {
-          RogueInt32 _auto_result_22 = RogueString___pattern_match_count__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, (i0_0 + n_34), remaining_count_1 - n_34, format_2, f0_3, fcount_4, ignore_case_5 );
+          RogueInt32 _auto_result_22 = RogueString___pattern_match_count__RogueInt32_RogueInt32_RogueString_RogueInt32_RogueInt32_RogueLogical( THIS, (i0_0 + n_36), remaining_count_1 - n_36, format_2, f0_3, fcount_4, ignore_case_5 );
           return _auto_result_22;
         }
       }
@@ -22758,7 +23020,7 @@ void RogueMorlock__run_script__RogueValue_RoguePackageInfo( RogueMorlock* THIS, 
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_13_37 );
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_14_38 );
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_15_39 );
-  crc32_15 = ((RogueFile__crc32((_auto_anchored_context_13_37=(RogueFile) {info_1->filepath})) ^ RogueFile__crc32((_auto_anchored_context_14_38=(RogueFile) {package_filepath_11}))) ^ RogueFile__crc32((_auto_anchored_context_15_39=(RogueFile) {script_launcher_filepath_9}))) ^ RogueString__hash_code(str_2_12);
+  crc32_15 = ((RogueFile__crc32((_auto_anchored_context_13_37=(RogueFile) {info_1->filepath})) ^ RogueFile__crc32((_auto_anchored_context_14_38=(RogueFile) {package_filepath_11}))) ^ RogueFile__crc32((_auto_anchored_context_15_39=(RogueFile) {script_launcher_filepath_9}))) ^ RogueString__hash_code(str_2_13);
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_16_40 );
   if (!(RogueFile__exists((_auto_anchored_context_16_40=(RogueFile) {exe_filepath_13})))) goto _auto_unsatisfied_0;
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_17_41 );
@@ -23291,12 +23553,12 @@ void RogueMorlock__print_usage( RogueMorlock* THIS )
   _auto_context_block_0_0 = ROGUE_CREATE_OBJECT( RogueString );
   RogueString__init(_auto_context_block_0_0);
   RogueString__print__RogueString( _auto_context_block_0_0, str_Morlock_v );
-  RogueString__print__RogueString( _auto_context_block_0_0, str_2_2_1 );
+  RogueString__print__RogueString( _auto_context_block_0_0, str_2_2_2 );
   RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), _auto_context_block_0_0 );
   RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_context_block_1_1 );
   _auto_context_block_1_1 = ROGUE_CREATE_OBJECT( RogueString );
   RogueString__init(_auto_context_block_1_1);
-  RogueString__print__RogueString( _auto_context_block_1_1, str_February_11__2023 );
+  RogueString__print__RogueString( _auto_context_block_1_1, str_March_19__2023 );
   RogueString__print__RogueString( _auto_context_block_1_1, str__by_Brom_Bresenham );
   RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), _auto_context_block_1_1 );
   RogueGlobal__println(ROGUE_SINGLETON(RogueGlobal));
@@ -40055,7 +40317,7 @@ RogueString* str__Source_ScriptLaunch;
 RogueString* str__Source_Package_rogu;
 RogueString* str__exe;
 RogueString* str_source_crc32_txt;
-RogueString* str_2_12;
+RogueString* str_2_13;
 RogueString* str_roguec;
 RogueString* str____debug___api___mai;
 RogueString* str_cl__nologo_;
@@ -40084,8 +40346,8 @@ RogueString* str_options;
 RogueString* str_home;
 RogueString* str_dependency;
 RogueString* str_Morlock_v;
-RogueString* str_2_2_1;
-RogueString* str_February_11__2023;
+RogueString* str_2_2_2;
+RogueString* str_March_19__2023;
 RogueString* str__by_Brom_Bresenham;
 RogueString* str_USAGE___morlock__com;
 RogueString* str_curl__fsSL_;
@@ -40754,7 +41016,7 @@ int Rogue_launch()
   str__Source_Package_rogu = RogueString_create_string_table_entry( "/Source/Package.rogue");
   str__exe = RogueString_create_string_table_entry( ".exe");
   str_source_crc32_txt = RogueString_create_string_table_entry( "source_crc32.txt");
-  str_2_12 = RogueString_create_string_table_entry( "2.12");
+  str_2_13 = RogueString_create_string_table_entry( "2.13");
   str_roguec = RogueString_create_string_table_entry( "roguec");
   str____debug___api___mai = RogueString_create_string_table_entry( " --debug --api --main --output=");
   str_cl__nologo_ = RogueString_create_string_table_entry( "cl /nologo ");
@@ -40783,8 +41045,8 @@ int Rogue_launch()
   str_home = RogueString_create_string_table_entry( "home");
   str_dependency = RogueString_create_string_table_entry( "dependency");
   str_Morlock_v = RogueString_create_string_table_entry( "Morlock v");
-  str_2_2_1 = RogueString_create_string_table_entry( "2.2.1");
-  str_February_11__2023 = RogueString_create_string_table_entry( "February 11, 2023");
+  str_2_2_2 = RogueString_create_string_table_entry( "2.2.2");
+  str_March_19__2023 = RogueString_create_string_table_entry( "March 19, 2023");
   str__by_Brom_Bresenham = RogueString_create_string_table_entry( " by Brom Bresenham");
   str_USAGE___morlock__com = RogueString_create_string_table_entry( "USAGE\n  morlock <command>\n\nCOMMANDS\n  help\n    Show this help text.\n\n  alias <command> <line1> [<line2> ...]\n    Creates a Mac/Linux shell script or Windows batch file on the Morlock path\n    that executes the given line or lines of code. Use 'morlock unlink <alias>'\n    to remove.\n\n  create <provider>/<app-name>\n    For example, `create mygithub/myapp` will create a template install script\n    `myapp.rogue`. Edit it and move it to a root subfolder called `Morlock/`\n    (or `morlock/`).\n\n  install <package>\n    'morlock install user/repo/app-name' - installs package user/app-name\n    'morlock install user/app-name'      - shorthand for user/app-name/app-name\n\n  link <package>\n    Re-links the launchers for the specified package.\n\n  link <launcher-name> <exe-filepath>\n    Links an arbitrary launcher on the Morlock path to an arbitrary executable.\n    For example: 'morlock link myprog ~/MyProject/Build/myprog.exe'.\n\n  list\n    Shows list of all installed packages.\n\n  uninstall <package>\n    Uninstalls the specified package.\n\n  unlink <package-name-or-launcher-name>\n    Unlinks launchers so they're no longer on the Morlock binpath.\n\n  update [package-a [package-b ...]]\n    Updates listed packages or else all packages, including Morlock, Rogue,\n    and Rogo.\n\nPACKAGE FORMAT\n  provider/repo/app-name\n  provider/repo\n  repo\n  https://github.com/provider/repo/morlock/app-name.rogue");
   str_curl__fsSL_ = RogueString_create_string_table_entry( "curl -fsSL ");
