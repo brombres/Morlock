@@ -4,6 +4,37 @@
 @echo --------------------------------------------------------------------------------
 @echo Creating home folder: %HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock
 @mkdir "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock"
+
+@echo:
+@echo ================================================================================
+@echo PREINSTALL NOTE: VIRUS CHECKER FALSE POSITIVES
+@echo:
+@echo Windows Defender currently MISTAKENLY identifies Morlock and certain other
+@echo compiled Rogue programs as containing viruses. The issue seems related to the
+@echo style of C-based runtime infrastructure that Rogue generates.
+@echo:
+@echo This misclassification has been reported. Until it is resolved, you can either
+@echo whitelist the Morlock folder in Windows Defender or handle the false positives
+@echo on a case-by-case basis. If you choose the latter, you may need to reinstate
+@echo executables that Windows Defender blocks and re-run the Morlock install command
+@echo several times to successfully install Morlock, Rogue, and Rogo for the first
+@echo time.
+@echo:
+@echo To whitelist the Morlock folder in Windows Defender for Windows 11:
+@echo:
+@echo   1. Open "Virus & Threat Protection" from the search bar.
+@echo   2. Under "Virus & Thread Protection Settings", click "Manage Settings".
+@echo   3. Find "Exclusions" at the bottom and click "Add or remove exclusions".
+@echo   4. Click "+ Add an exclusion" ^> "Folder".
+@echo   5. Copy and paste the following path and then click "Select Folder":
+@echo      %HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock
+@echo:
+@echo Morlock and RogueC are compiled locally from C source downloaded from GitHub.
+@echo RogueC is then used to compile Rogo and other Rogue programs from Rogue source.
+@echo The full source for Morlock/RogueC/Rogo can be inspected at github.com/brombres
+@echo ================================================================================
+@pause
+
 :CREATED_HOME
 
 @if exist "%HOMEDRIVE%%HOMEPATH%\AppData\Local\Morlock\build\brombres\morlock" goto CREATED_BUILD
