@@ -203,7 +203,7 @@ class PackageInfo
 
       File( folder/"cache.json" ).delete  # delete any existing cache
 
-    method create_default_script( contents:Value )->Logical
+    method create_default_script( contents:Variant )->Logical
       local builder = String()
       builder.println "class $Package : Package" (app_name.capitalized)
       builder.println "  PROPERTIES"
@@ -294,7 +294,7 @@ class PackageInfo
       if (suppress_error) return false
       throw Error( "Error executing:\n$"(cmd) )
 
-    method package_args->Value
+    method package_args->Variant
       return @{ morlock_home:Morlock.HOME, :version, script_filepath:filepath, :host, :repo }
 
     method parse_package_name( script:String )->String

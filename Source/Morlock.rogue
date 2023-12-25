@@ -42,7 +42,7 @@ class Morlock [singleton]
 
       perform_action( cmd )
 
-    method perform_action( cmd:Value )
+    method perform_action( cmd:Variant )
       which (cmd//action)
         case "alias"
           if (cmd//args.is_empty)
@@ -327,7 +327,7 @@ class Morlock [singleton]
       endForEach
       return packages.to_list
 
-    method run_script( command:Value, info:PackageInfo )
+    method run_script( command:Variant, info:PackageInfo )
       local action = command//action->String
       if (action != "install" and not File(info.folder).exists)
         throw error( "Package $ is not installed." (info.name) )
@@ -358,7 +358,7 @@ class Morlock [singleton]
         local crc32 : Int32
         contingent
           # Recompile?
-          crc32 = File(info.filepath).crc32 ~ File(package_filepath).crc32 ~ File(script_launcher_filepath).crc32 ~ $rogueVersion.hash_code
+          crc32 = File(info.filepath).crc32 ~ File(package_filepath).crc32 ~ File(script_launcher_filepath).crc32 ~ $rogueVersion.hash_code->Int32
           necessary (File(exe_filepath).exists)
           necessary (File(crc32_filepath).exists)
           necessary (crc32->String == String(File(crc32_filepath)).trimmed)
@@ -440,7 +440,7 @@ class Morlock [singleton]
 
       return info
 
-    method parse_args( args:String[] )->Value
+    method parse_args( args:String[] )->Variant
       if (System.is_windows)
         HOME = "%HOMEDRIVE%%HOMEPATH%/AppData/Local/Morlock"
       else

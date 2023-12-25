@@ -9,7 +9,7 @@ uses Codec/Zip
 
 class Bootstrap [singleton]
   PROPERTIES
-    cmd : Value
+    cmd : Variant
     printed_installing_header = false
 
   METHODS

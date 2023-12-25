@@ -25,9 +25,9 @@ class Package
     archive_folder    : String   # Name of unzipped folder  ->  "helloworld-1.0"
 
     releases          = @[]      # Auto-populated           ->  ["3.2.1"] (usually only 1 install at a time)
-    assets            : Value
-    properties        : Value    # Cmd line arg as JSON value. Note properties//command has parsed cmd line args
-    cache             : Value    # Arbitrary info table @{...} you can store values into, then call save_cache()
+    assets            : Variant
+    properties        : Variant    # Cmd line arg as JSON value. Note properties//command has parsed cmd line args
+    cache             : Variant    # Arbitrary info table @{...} you can store values into, then call save_cache()
 
     is_unpacked       : String   # Internal flag
 
@@ -41,7 +41,7 @@ class Package
       assert args.count
       init( JSON.parse(args.first) )
 
-    method init( name, properties:Value )
+    method init( name, properties:Variant )
       init( properties )
 
     method init( properties )
@@ -94,7 +94,7 @@ class Package
 
       return null
 
-    method assets->Value
+    method assets->Variant
       if (@assets) return @assets
 
       local url = "https://api.github.com/repos/$/$/releases/$/assets"(provider,repo,release_id)
@@ -170,9 +170,9 @@ class Package
       endForEach
       throw Error( "Failed to download binary asset '$'."(asset_name) )
 
-    method download_asset( asset:Value, to_file=null:File? )->File
+    method download_asset( asset:Variant, to_file=null:File? )->File
       # asset
-      #   One of the values in the 'assets' Value list
+      #   One of the values in the 'assets' Variant list
       if (not to_file) to_file = File( asset//name->String )
       local url = "https://api.github.com/repos/brombres/windowsmedialibs/releases/assets/$"(asset//id->Int32)
       execute( ''curl -H "Accept: application/octet-stream" -LfsS $ -o $''(url,to_file.value.abs.esc), &quiet )
@@ -394,7 +394,7 @@ class Package
       JSON.save( cache, File(package_folder/"cache.json") )
 
     method scan_repo_releases( min_version=null:String, max_version=null:String, platforms=null:Platforms )
-      local info : Value
+      local info : Variant
 
       if (cache//repo_releases)
         info = cache//repo_releases
