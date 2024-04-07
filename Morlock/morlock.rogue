@@ -6,7 +6,7 @@ class MorlockPackage : Package
 
   METHODS
     method init
-      dependency( "brombres/rogue@2.0.1" )
+      dependency( "brombres/rogue@2.34" )
       scan_repo_releases
 
     method install
