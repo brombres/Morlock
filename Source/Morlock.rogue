@@ -204,7 +204,8 @@ class Morlock [singleton]
 
             println "Linking $ -> $" (launcher_name,exe_filepath)
             if (System.is_windows)
-              File( launcher_filepath ).save( ''@$ %*''(File(File(exe_filepath).conventional_filepath).esc) )
+              local launch_cmd = ''@$ %*''(File(File(exe_filepath).conventional_filepath).esc)
+              File( launcher_filepath ).save( launch_cmd )
             else
               local link_cmd = "ln -s $ $" (exe_filepath,launcher_filepath)
               execute( link_cmd, &quiet )
@@ -358,7 +359,7 @@ class Morlock [singleton]
         local crc32 : Int32
         contingent
           # Recompile?
-          crc32 = File(info.filepath).crc32 ~ File(package_filepath).crc32 ~ File(script_launcher_filepath).crc32 ~ $rogueVersion.hash_code->Int32
+          crc32 = File(info.filepath).crc32 ~ File(package_filepath).crc32 ~ File(script_launcher_filepath).crc32 ~ $rogueVersion.hashcode->Int32
           necessary (File(exe_filepath).exists)
           necessary (File(crc32_filepath).exists)
           necessary (crc32->String == String(File(crc32_filepath)).trimmed)
