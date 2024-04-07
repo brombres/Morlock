@@ -332,7 +332,7 @@ RogueRuntimeType TypeGeometryXYZW = { "XYZW", 0, 23, 202, 0, 0, 1073742082, Type
 
 void* TypeRogueVariant_vtable[32] = {(void*)RogueVariant__add__RogueVariant,(void*)RogueVariant__at__RogueInt,(void*)RogueVariant__contains__RogueVariant,(void*)RogueVariant__count,(void*)RogueVariant__first,(void*)RogueVariant__first__RogueOPARENFunctionOPARENRogueVariantCPARENRETURNSRogueLogicalCPAREN,(void*)RogueVariant__get__RogueInt,(void*)RogueVariant__get__RogueString,(void*)RogueVariant__get__RogueVariant,(void*)RogueVariant__hashcode,(void*)RogueVariant__is_empty,(void*)RogueVariant__is_integer,(void*)RogueVariant__is_list,(void*)RogueVariant__is_number,(void*)RogueVariant__keys,(void*)RogueVariant__Optionaloperator,(void*)RogueVariant__operator____RogueVariant,(void*)RogueVariant__operatorLTGT__RogueVariant,(void*)RogueVariant__print_to__RoguePrintWriter,(void*)RogueVariant__remove_first,(void*)RogueVariant__set__RogueInt_RogueVariant,(void*)RogueVariant__set__RogueString_RogueVariant,(void*)RogueVariant__set__RogueVariant_RogueVariant,(void*)RogueVariant__toxRogueInt32x,(void*)RogueVariant__toxRogueIntx,(void*)RogueVariant__toxRogueLogicalx,(void*)RogueVariant__toxRogueStringx,(void*)RogueVariant__to_json__RogueLogical_RogueLogical,(void*)RogueVariant__write_json__RogueString_RogueLogical_RogueLogical,(void*)RogueVariant__write_json_string__RogueString_RogueString,(void*)RogueVariant__write_json_character__RogueCharacter_RogueString,(void*)RogueVariant__to_listxRogueStringx};
 
-RogueRuntimeType TypeRogueVariant = { "Variant", 0, 24, 64, 0, 0, 1073807618, TypeRogueVariant_vtable, 0, 0, 0, sizeof(RogueVariant), Rogue_base_types+46, 0, 0, 0, 0, 0, 0, 0 };
+RogueRuntimeType TypeRogueVariant = { "Variant", 0, 24, 65, 0, 0, 1073807618, TypeRogueVariant_vtable, 0, 0, 0, sizeof(RogueVariant), Rogue_base_types+46, 0, 0, 0, 0, 0, 0, 0 };
 
 void* TypeRogueConsoleCursor_vtable[2] = {(void*)RogueConsoleCursor__hide__RogueLogical_RoguePrintWriter,(void*)RogueConsoleCursor__show__RoguePrintWriter};
 
@@ -544,20 +544,20 @@ RogueRuntimeType TypeRogueStringPool = { "StringPool", 0, 91, 52, 0, 0, 10759049
 RogueStringPool* RogueStringPool_singleton = 0;
 RogueRuntimeType TypeRogueCommonPrimitiveMethodsxRogueInt64x = { "CommonPrimitiveMethods<<Rogue::Int64>>", 0, 92, 53, 0, 0, 1073742096};
 RogueRuntimeType TypeRogueCommonPrimitiveMethodsxRogueIntx = { "CommonPrimitiveMethods<<Rogue::Int>>", 0, 93, 54, 0, 0, 1073742096};
+RogueRuntimeType TypeRogueCommonPrimitiveMethodsxRogueInt32x = { "CommonPrimitiveMethods<<Rogue::Int32>>", 0, 94, 55, 0, 0, 1073742096};
 
 void* TypeRogueListReaderxRogueBytex_vtable[14] = {(void*)RogueListReaderxRogueBytex__toxRogueStringx,(void*)RogueObject__hashcode,(void*)RogueObject__print_to__RoguePrintWriter,(void*)RogueObject__object_id,(void*)RogueObject__operator____RogueObject,(void*)RogueListReaderxRogueBytex__init_object,(void*)RogueObject__write_json__RogueString_RogueLogical_RogueLogical,(void*)RogueListReaderxRogueBytex__type_name,(void*)RogueListReaderxRogueBytex__init__RogueByteList_RogueInt,(void*)RogueListReaderxRogueBytex__has_another,(void*)RogueListReaderxRogueBytex__read,(void*)RogueListReaderxRogueBytex__seek__RogueInt,(void*)RogueListReaderxRogueBytex__close,(void*)RogueListReaderxRogueBytex__position};
 
-RogueRuntimeType TypeRogueListReaderxRogueBytex = { "ListReader<<Rogue::Byte>>", 0, 94, 55, 0, 0, 1073807624, TypeRogueListReaderxRogueBytex_vtable, 0, 0, 0, sizeof(RogueListReaderxRogueBytex), Rogue_base_types+44, 2, 0, (RogueFn_Object)RogueListReaderxRogueBytex__init_object, 0, (RogueFn_Object)RogueListReaderxRogueBytex_gc_trace, 0, 0 };
-RogueRuntimeType TypeRogueAugment_11_Rogue_ByteList = { "Augment_11_Rogue_Byte[]", 0, 95, 56, 0, 0, 1140850960};
-RogueRuntimeType TypeRogueAugment_14_Rogue_ByteList = { "Augment_14_Rogue_Byte[]", 0, 96, 57, 0, 0, 1140850960};
-RogueRuntimeType TypeRogueAugment_29_Rogue_ByteList = { "Augment_29_Rogue_Byte[]", 0, 97, 58, 0, 0, 1140850960};
-RogueRuntimeType TypeRogueCommonPrimitiveMethodsxRogueBytex = { "CommonPrimitiveMethods<<Rogue::Byte>>", 0, 98, 59, 0, 0, 1073742096};
-RogueRuntimeType TypeRogueCommonPrimitiveMethodsxRogueRealx = { "CommonPrimitiveMethods<<Rogue::Real>>", 0, 99, 60, 0, 0, 1073742096};
-RogueRuntimeType TypeRogueCommonPrimitiveMethodsxRogueReal64x = { "CommonPrimitiveMethods<<Rogue::Real64>>", 0, 100, 61, 0, 0, 1073742096};
-RogueRuntimeType TypeRogueAugment_12_Rogue_Character = { "Augment_12_Rogue_Character", 0, 101, 62, 0, 0, 1140850960};
-RogueRuntimeType TypeRogueOptionalType = { "OptionalType", 0, 102, 63, 0, 0, 1073742096};
-RogueRuntimeType TypeRogueReaderxRogueCharacterx = { "Reader<<Rogue::Character>>", 0, 103, 65, 0, 0, 1090519312};
-RogueRuntimeType TypeRogueCommonPrimitiveMethodsxRogueInt32x = { "CommonPrimitiveMethods<<Rogue::Int32>>", 0, 104, 66, 0, 0, 1073742096};
+RogueRuntimeType TypeRogueListReaderxRogueBytex = { "ListReader<<Rogue::Byte>>", 0, 95, 56, 0, 0, 1073807624, TypeRogueListReaderxRogueBytex_vtable, 0, 0, 0, sizeof(RogueListReaderxRogueBytex), Rogue_base_types+44, 2, 0, (RogueFn_Object)RogueListReaderxRogueBytex__init_object, 0, (RogueFn_Object)RogueListReaderxRogueBytex_gc_trace, 0, 0 };
+RogueRuntimeType TypeRogueAugment_11_Rogue_ByteList = { "Augment_11_Rogue_Byte[]", 0, 96, 57, 0, 0, 1140850960};
+RogueRuntimeType TypeRogueAugment_14_Rogue_ByteList = { "Augment_14_Rogue_Byte[]", 0, 97, 58, 0, 0, 1140850960};
+RogueRuntimeType TypeRogueAugment_29_Rogue_ByteList = { "Augment_29_Rogue_Byte[]", 0, 98, 59, 0, 0, 1140850960};
+RogueRuntimeType TypeRogueCommonPrimitiveMethodsxRogueBytex = { "CommonPrimitiveMethods<<Rogue::Byte>>", 0, 99, 60, 0, 0, 1073742096};
+RogueRuntimeType TypeRogueCommonPrimitiveMethodsxRogueRealx = { "CommonPrimitiveMethods<<Rogue::Real>>", 0, 100, 61, 0, 0, 1073742096};
+RogueRuntimeType TypeRogueCommonPrimitiveMethodsxRogueReal64x = { "CommonPrimitiveMethods<<Rogue::Real64>>", 0, 101, 62, 0, 0, 1073742096};
+RogueRuntimeType TypeRogueAugment_12_Rogue_Character = { "Augment_12_Rogue_Character", 0, 102, 63, 0, 0, 1140850960};
+RogueRuntimeType TypeRogueOptionalType = { "OptionalType", 0, 103, 64, 0, 0, 1073742096};
+RogueRuntimeType TypeRogueReaderxRogueCharacterx = { "Reader<<Rogue::Character>>", 0, 104, 66, 0, 0, 1090519312};
 RogueRuntimeType TypeRogueCommonPrimitiveMethodsxRogueReal32x = { "CommonPrimitiveMethods<<Rogue::Real32>>", 0, 105, 67, 0, 0, 1073742096};
 RogueRuntimeType TypeRogueReaderxRogueStringx = { "Reader<<Rogue::String>>", 0, 106, 68, 0, 0, 1090519312};
 RogueRuntimeType TypeRogueBufferedPrintWriterxglobal_output_bufferx = { "BufferedPrintWriter<<global_output_buffer>>", 0, 107, 73, 0, 0, 1090584848};
@@ -26833,7 +26833,7 @@ RogueString* RogueListReaderxRogueBytex__toxRogueStringx( RogueListReaderxRogueB
 RogueString* RogueListReaderxRogueBytex__type_name( RogueListReaderxRogueBytex* THISOBJ )
 {
   {
-    RogueString* _auto_result_0 = (RogueString*)RogueObject____type_name__RogueInt( ((RogueInt)94) );
+    RogueString* _auto_result_0 = (RogueString*)RogueObject____type_name__RogueInt( ((RogueInt)95) );
     return _auto_result_0;
   }
 }
@@ -37669,7 +37669,7 @@ void RogueMorlock__run_script__RogueVariant_RoguePackageInfo( RogueMorlock* THIS
             TypeRogueOptionalFilePattern.local_pointer_count = _auto_local_pointer_fp_3;
             return;
           }
-          crc32_15 = ((_auto_call_result_31_55 ^ _auto_call_result_33_57) ^ _auto_call_result_35_59) ^ ((RogueInt32)RogueString__hashcode(str_2_34));
+          crc32_15 = ((_auto_call_result_31_55 ^ _auto_call_result_33_57) ^ _auto_call_result_35_59) ^ ((RogueInt32)RogueString__hashcode(str_2_34_0_2));
           RogueRuntimeType_local_pointer_stack_add( &TypeRogueFile, &_auto_anchored_context_36_60 );
           _auto_call_result_37_61 = RogueFile__exists((_auto_anchored_context_36_60=(RogueFile) {exe_filepath_13}));
           if (Rogue_exception)
@@ -38888,7 +38888,7 @@ void RogueMorlock__print_usage( RogueMorlock* THISOBJ )
       return;
     }
     RogueString__print__RogueString( _auto_context_block_0_0, str_Morlock_v );
-    RogueString__print__RogueString( _auto_context_block_0_0, str_2_4 );
+    RogueString__print__RogueString( _auto_context_block_0_0, str_2_4_1 );
     RogueGlobal__println__RogueString( ROGUE_SINGLETON(RogueGlobal), _auto_context_block_0_0 );
     RogueRuntimeType_local_pointer_stack_add( &TypeRogueObject, &_auto_context_block_1_1 );
     _auto_context_block_1_1 = ROGUE_CREATE_OBJECT( RogueString );
@@ -66151,7 +66151,7 @@ RogueRuntimeType* Rogue_types[206] =
   &TypeRogueObject, &TypeRogueOPARENFunctionOPARENRogueStringCPARENCPAREN, &TypeRogueOPARENFunctionOPARENRogueStringCPARENRETURNSRogueLogicalCPAREN, &TypeRogueListReaderxRogueStringx,
   &TypeRogueOPARENFunctionOPARENRogueString_RogueStringCPARENRETURNSRogueLogicalCPAREN, &TypeRogueObject, &TypeRogueCharacterList, &TypeRogueStringReader,
   &TypeRogueObject, &TypeRogueObject, &TypeRogueBufferedPrintWriter, &TypeRogueStringPool,
-  &TypeRogueObject, &TypeRogueObject, &TypeRogueListReaderxRogueBytex, &TypeRogueObject,
+  &TypeRogueObject, &TypeRogueObject, &TypeRogueObject, &TypeRogueListReaderxRogueBytex,
   &TypeRogueObject, &TypeRogueObject, &TypeRogueObject, &TypeRogueObject,
   &TypeRogueObject, &TypeRogueObject, &TypeRogueObject, &TypeRogueObject,
   &TypeRogueObject, &TypeRogueObject, &TypeRogueObject, &TypeRogueObject,
@@ -66184,16 +66184,16 @@ RogueRuntimeType* Rogue_types[206] =
 
 RogueInt Rogue_base_types[239] =
 {
-  59,66,54,53,67,60,61,12,30,73,12,33,30,12,12,12,12,33,11,63,
-  15,12,12,12,12,63,63,12,68,12,12,33,11,12,33,11,63,12,65,12,
-  30,87,88,12,12,69,12,12,33,11,30,12,12,33,11,12,65,30,100,63,
+  60,55,54,53,67,61,62,12,30,73,12,33,30,12,12,12,12,33,11,64,
+  15,12,12,12,12,64,64,12,68,12,12,33,11,12,33,11,64,12,66,12,
+  30,87,88,12,12,69,12,12,33,11,30,12,12,33,11,12,66,30,100,64,
   12,69,12,50,12,32,12,32,12,12,12,33,11,30,12,12,33,11,12,14,
-  12,63,12,12,33,11,12,63,30,12,12,33,11,12,33,11,12,33,12,69,
+  12,64,12,12,33,11,12,64,30,12,12,33,11,12,33,11,12,33,12,69,
   12,50,12,69,12,69,12,12,12,12,12,14,12,12,33,11,12,118,12,29,
   15,12,118,12,29,15,12,118,12,118,12,29,15,12,12,12,14,12,12,33,
   11,12,12,12,33,11,12,69,12,12,12,12,50,35,12,35,12,12,68,12,
   34,12,35,12,12,12,33,11,160,12,12,12,33,11,40,12,40,12,29,15,
-  12,12,29,15,12,12,12,65,40,12,40,12,40,12,12,12,35,12,35,12,
+  12,12,29,15,12,12,12,66,40,12,40,12,40,12,12,12,35,12,35,12,
   35,12,35,12,35,12,183,12,12,92,12,92,12,92,12,35,12,40,12,137,
   12,14,12,30,100,74,12,102,12,74,12,102,12,12,33,11,12,33,11
 };
@@ -66267,7 +66267,7 @@ void* Rogue_dispatch_type_name___RogueObject( void* THISOBJ )
     case 47: return RogueStringReader__type_name((RogueStringReader*)THISOBJ);
     case 51: return RogueBufferedPrintWriter__type_name((RogueBufferedPrintWriter*)THISOBJ);
     case 52: return RogueStringPool__type_name((RogueStringPool*)THISOBJ);
-    case 55: return RogueListReaderxRogueBytex__type_name((RogueListReaderxRogueBytex*)THISOBJ);
+    case 56: return RogueListReaderxRogueBytex__type_name((RogueListReaderxRogueBytex*)THISOBJ);
     case 70: return RogueStackTrace__type_name((RogueStackTrace*)THISOBJ);
     case 72: return RogueStackTraceFrameList__type_name((RogueStackTraceFrameList*)THISOBJ);
     case 74: return RogueOPARENFunctionOPARENCPARENCPAREN__type_name((RogueOPARENFunctionOPARENCPARENCPAREN*)THISOBJ);
@@ -66375,7 +66375,7 @@ void Rogue_dispatch_close_( void* THISOBJ )
     case 10: RogueGlobal__close((RogueGlobal*)THISOBJ); return;
     case 13: RogueString__close((RogueString*)THISOBJ); return;
     case 51: RogueBufferedPrintWriter__close((RogueBufferedPrintWriter*)THISOBJ); return;
-    case 55: RogueListReaderxRogueBytex__close((RogueListReaderxRogueBytex*)THISOBJ); return;
+    case 56: RogueListReaderxRogueBytex__close((RogueListReaderxRogueBytex*)THISOBJ); return;
     case 76: RogueConsole__close((RogueConsole*)THISOBJ); return;
     case 79: RogueFileReader__close((RogueFileReader*)THISOBJ); return;
     case 80: RogueFileWriter__close((RogueFileWriter*)THISOBJ); return;
@@ -66552,7 +66552,7 @@ void* Rogue_dispatch_toxRogueStringx___RogueObject( void* THISOBJ )
     case 42: return RogueByteList__toxRogueStringx((RogueByteList*)THISOBJ);
     case 44: return RogueCharacterList__toxRogueStringx((RogueCharacterList*)THISOBJ);
     case 47: return RogueStringReader__toxRogueStringx((RogueStringReader*)THISOBJ);
-    case 55: return RogueListReaderxRogueBytex__toxRogueStringx((RogueListReaderxRogueBytex*)THISOBJ);
+    case 56: return RogueListReaderxRogueBytex__toxRogueStringx((RogueListReaderxRogueBytex*)THISOBJ);
     case 70: return RogueStackTrace__toxRogueStringx((RogueStackTrace*)THISOBJ);
     case 72: return RogueStackTraceFrameList__toxRogueStringx((RogueStackTraceFrameList*)THISOBJ);
     case 75: return RogueOPARENFunctionOPARENCPARENCPARENList__toxRogueStringx((RogueOPARENFunctionOPARENCPARENCPARENList*)THISOBJ);
@@ -66643,7 +66643,7 @@ RogueLogical Rogue_dispatch_has_another___RogueLogical( void* THISOBJ )
   {
     case 38: return RogueListReaderxRogueStringx__has_another((RogueListReaderxRogueStringx*)THISOBJ);
     case 47: return RogueStringReader__has_another((RogueStringReader*)THISOBJ);
-    case 55: return RogueListReaderxRogueBytex__has_another((RogueListReaderxRogueBytex*)THISOBJ);
+    case 56: return RogueListReaderxRogueBytex__has_another((RogueListReaderxRogueBytex*)THISOBJ);
     case 76: return RogueConsole__has_another((RogueConsole*)THISOBJ);
     case 79: return RogueFileReader__has_another((RogueFileReader*)THISOBJ);
     case 110: return RogueWindowsProcessReader__has_another((RogueWindowsProcessReader*)THISOBJ);
@@ -66672,7 +66672,7 @@ RogueInt Rogue_dispatch_position___RogueInt( void* THISOBJ )
   {
     case 38: return RogueListReaderxRogueStringx__position((RogueListReaderxRogueStringx*)THISOBJ);
     case 47: return RogueStringReader__position((RogueStringReader*)THISOBJ);
-    case 55: return RogueListReaderxRogueBytex__position((RogueListReaderxRogueBytex*)THISOBJ);
+    case 56: return RogueListReaderxRogueBytex__position((RogueListReaderxRogueBytex*)THISOBJ);
     case 79: return RogueFileReader__position((RogueFileReader*)THISOBJ);
     case 80: return RogueFileWriter__position((RogueFileWriter*)THISOBJ);
     case 110: return RogueWindowsProcessReader__position((RogueWindowsProcessReader*)THISOBJ);
@@ -66701,7 +66701,7 @@ RogueByte Rogue_dispatch_read___RogueByte( void* THISOBJ )
 {
   switch (((RogueObject*)THISOBJ)->__type->id)
   {
-    case 55: return RogueListReaderxRogueBytex__read((RogueListReaderxRogueBytex*)THISOBJ);
+    case 56: return RogueListReaderxRogueBytex__read((RogueListReaderxRogueBytex*)THISOBJ);
     case 79: return RogueFileReader__read((RogueFileReader*)THISOBJ);
     case 110: return RogueWindowsProcessReader__read((RogueWindowsProcessReader*)THISOBJ);
     case 112: return RoguePosixProcessReader__read((RoguePosixProcessReader*)THISOBJ);
@@ -66714,7 +66714,7 @@ void Rogue_dispatch_seek__RogueInt( void* THISOBJ, RogueInt p0 )
 {
   switch (((RogueObject*)THISOBJ)->__type->id)
   {
-    case 55: RogueListReaderxRogueBytex__seek__RogueInt((RogueListReaderxRogueBytex*)THISOBJ,p0); return;
+    case 56: RogueListReaderxRogueBytex__seek__RogueInt((RogueListReaderxRogueBytex*)THISOBJ,p0); return;
     case 79: RogueFileReader__seek__RogueInt((RogueFileReader*)THISOBJ,p0); return;
     case 110: RogueWindowsProcessReader__seek__RogueInt((RogueWindowsProcessReader*)THISOBJ,p0); return;
     case 112: RoguePosixProcessReader__seek__RogueInt((RoguePosixProcessReader*)THISOBJ,p0); return;
@@ -67007,7 +67007,7 @@ RogueString* str__Source_ScriptLaunch = 0;
 RogueString* str__Source_Package_rogu = 0;
 RogueString* str__exe = 0;
 RogueString* str_source_crc32_txt = 0;
-RogueString* str_2_34 = 0;
+RogueString* str_2_34_0_2 = 0;
 RogueString* str_roguec = 0;
 RogueString* str____debug___api___mai = 0;
 RogueString* str_cl__nologo_ = 0;
@@ -67036,7 +67036,7 @@ RogueString* str_options = 0;
 RogueString* str_home = 0;
 RogueString* str_dependency = 0;
 RogueString* str_Morlock_v = 0;
-RogueString* str_2_4 = 0;
+RogueString* str_2_4_1 = 0;
 RogueString* str_April_7__2024 = 0;
 RogueString* str__by_Brom_Bresenham = 0;
 RogueString* str_USAGE___morlock__com = 0;
@@ -67817,7 +67817,7 @@ int Rogue_launch( void )
     str__Source_Package_rogu = RogueString_create_string_table_entry( "/Source/Package.rogue");
     str__exe = RogueString_create_string_table_entry( ".exe");
     str_source_crc32_txt = RogueString_create_string_table_entry( "source_crc32.txt");
-    str_2_34 = RogueString_create_string_table_entry( "2.34");
+    str_2_34_0_2 = RogueString_create_string_table_entry( "2.34.0.2");
     str_roguec = RogueString_create_string_table_entry( "roguec");
     str____debug___api___mai = RogueString_create_string_table_entry( " --debug --api --main --output=");
     str_cl__nologo_ = RogueString_create_string_table_entry( "cl /nologo ");
@@ -67846,7 +67846,7 @@ int Rogue_launch( void )
     str_home = RogueString_create_string_table_entry( "home");
     str_dependency = RogueString_create_string_table_entry( "dependency");
     str_Morlock_v = RogueString_create_string_table_entry( "Morlock v");
-    str_2_4 = RogueString_create_string_table_entry( "2.4");
+    str_2_4_1 = RogueString_create_string_table_entry( "2.4.1");
     str_April_7__2024 = RogueString_create_string_table_entry( "April 7, 2024");
     str__by_Brom_Bresenham = RogueString_create_string_table_entry( " by Brom Bresenham");
     str_USAGE___morlock__com = RogueString_create_string_table_entry( "USAGE\n  morlock <command>\n\nCOMMANDS\n  help\n    Show this help text.\n\n  alias <command> <line1> [<line2> ...]\n    Creates a Mac/Linux shell script or Windows batch file on the Morlock path\n    that executes the given line or lines of code. Use 'morlock unlink <alias>'\n    to remove.\n\n  create <provider>/<app-name>\n    For example, `create mygithub/myapp` will create a template install script\n    `myapp.rogue`. Edit it and move it to a root subfolder called `Morlock/`\n    (or `morlock/`).\n\n  install <package>\n    'morlock install user/repo/app-name' - installs package user/app-name\n    'morlock install user/app-name'      - shorthand for user/app-name/app-name\n\n  link <package>\n    Re-links the launchers for the specified package.\n\n  link <launcher-name> <exe-filepath>\n    Links an arbitrary launcher on the Morlock path to an arbitrary executable.\n    For example: 'morlock link myprog ~/MyProject/Build/myprog.exe'.\n\n  list\n    Shows list of all installed packages.\n\n  uninstall <package>\n    Uninstalls the specified package.\n\n  unlink <package-name-or-launcher-name>\n    Unlinks launchers so they're no longer on the Morlock binpath.\n\n  update [package-a [package-b ...]]\n    Updates listed packages or else all packages, including Morlock, Rogue,\n    and Rogo.\n\nPACKAGE FORMAT\n  provider/repo/app-name\n  provider/repo\n  repo\n  https://github.com/provider/repo/morlock/app-name.rogue");
