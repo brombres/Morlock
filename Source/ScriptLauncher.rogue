@@ -1,6 +1,8 @@
 try
+  local type_Package = <<Package>> : TypeInfo
+
   forEach (type in TypeInfo.iterator)
-    if (type.instance_of(<<Package>>) and type is not <<Package>>)
+    if (type.instance_of(<<Package>>) and type is not type_Package)
       local package = type.create_object<<Package>>
       package.init( System.command_line_arguments.cloned )
       package.select_version
