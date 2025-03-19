@@ -2,8 +2,8 @@
 
 About     | Current Release
 ----------|-----------------------
-Version   | 2.4.1
-Date      | April 7, 2024
+Version   | 2.5
+Date      | March 19, 2025
 Platforms | Windows, macOS, Linux (Ubuntu+), Cygwin
 Author    | Brom Bresenham
 
