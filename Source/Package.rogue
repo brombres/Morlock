@@ -387,7 +387,7 @@ class Package
         version = version.without_suffix('.')
       endIf
 
-      releases.add @{ :id, :version, :url, platforms:platforms->String, filename:filename_for_url(url) }
+      releases.add @{ id, version, url, platforms:platforms->String, filename:filename_for_url(url) }
 
     method save_cache
       File( package_folder ).create_folder

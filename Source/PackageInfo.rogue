@@ -295,7 +295,7 @@ class PackageInfo
       throw Error( "Error executing:\n$"(cmd) )
 
     method package_args->Variant
-      return @{ morlock_home:Morlock.HOME, :version, script_filepath:filepath, :host, :repo }
+      return @{ morlock_home:Morlock.HOME, version, script_filepath:filepath, host, repo }
 
     method parse_package_name( script:String )->String
       forEach (line in LineReader(script))
